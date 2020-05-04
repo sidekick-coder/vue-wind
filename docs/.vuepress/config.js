@@ -1,7 +1,7 @@
 const packageJSON = require('../../package.json')
 
 module.exports = {
-    base: process.env.NODE_ENV === "production" ? "/docs/" : "/",
+    base: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
     title: packageJSON.name,
     description: packageJSON.description,
     themeConfig: {
@@ -35,3 +35,4 @@ module.exports = {
             },
         ],
     },
+};
