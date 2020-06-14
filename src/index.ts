@@ -1,5 +1,5 @@
 import install from "./install";
-import "./styles/tailwind.css";
+import "./styles/main.css";
 
 export default {
     install,

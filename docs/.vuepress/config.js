@@ -1,4 +1,10 @@
+const getSubdirectoriesNames = require("./utils");
 const packageJSON = require('../../package.json')
+const path = require("path");
+
+const componentsDocs = getSubdirectoriesNames(
+    path.resolve(__dirname, "../components-ui/")
+).map(file => `/components-ui/${file}`);
 
 module.exports = {
     base: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
@@ -33,6 +39,22 @@ module.exports = {
                     }
                 ]
             },
+            {
+                title: "Components",
+                children: componentsDocs
+            },
         ],
     },
+    plugins: [
+        [
+            'vuepress-plugin-typescript',
+            'register-components',
+            {
+                componentsDir: "../../src/components"
+            }
+        ]
+    ],
+    chainWebpack(config) {
+        config.resolve.extensions.add(".ts");
+    }
 };
