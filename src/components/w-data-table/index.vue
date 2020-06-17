@@ -5,7 +5,7 @@
                 <th
                     v-for="(header, index) in headers"
                     :key="index"
-                    :class="head.classes"
+                    :class="[headerItemsDefaultClasses, header.classes]"
                 >
                     {{ header.name }}
                 </th>
@@ -13,9 +13,9 @@
         </thead>
         <tbody>
             <template v-if="items.length === 0">
-                <tr :class="tr.classes">
+                <tr :class="itemsTrDefaultClasses">
                     <td
-                        :class="[td.classes, 'text-center']"
+                        :class="[itemsThDefaultClasses, 'text-center']"
                         :colspan="headers.length"
                     >
                         No items
@@ -26,15 +26,18 @@
                 <tr
                     v-for="(item, index) in items"
                     :key="index"
-                    :class="tr.classes"
+                    :class="itemsTrDefaultClasses"
                 >
+                <template v-for="value in valuesNames">
                     <td
-                        v-for="value in valuesNames"
                         :key="index + value"
-                        :class="[td.classes]"
+                        :class="[itemsThDefaultClasses]"
                     >
-                        {{ item[value] }}
+                        <slot :name="`item.${value}`" :item="item">
+                            {{ item[value] }}
+                        </slot>
                     </td>
+                </template>
                 </tr>
             </template>
         </tbody>
@@ -55,20 +58,28 @@ export default {
             type: Array,
             required: false,
             default: () => []
-        }
+        },
+        headerItemsDefaultClasses: {
+            type: [String, Array, Object],
+            default: () => [
+                "px-5", "py-3", "text-left"
+            ]
+        },
+        itemsTrDefaultClasses: {
+            type: [String, Array, Object],
+            default: () => [
+                "border-b", "border-t"
+            ]
+        },
+        itemsThDefaultClasses: {
+            type: [String, Array, Object],
+            default: () => [
+                "px-5", "py-3"
+            ]
+        },
     },
     data(){
-        return {
-            head: {
-                classes: ["px-5", "py-3", "text-left"]
-            },
-            tr: {
-                classes: ["border-b", "border-t"]
-            },
-            td: {
-                classes: ["px-5", "py-3"]
-            },
-        }
+        return {}
     },
     computed: {
         valuesNames(){
