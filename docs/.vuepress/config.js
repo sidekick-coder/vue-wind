@@ -1,15 +1,20 @@
-const getSubdirectoriesNames = require("./utils");
 const packageJSON = require('../../package.json')
-const path = require("path");
+const getComponentsDocs = require('./get-components-docs');
 
-const componentsDocs = getSubdirectoriesNames(
-    path.resolve(__dirname, "../components-ui/")
-).map(file => `/components-ui/${file}`);
+const componentsDocs = getComponentsDocs();
+
+const sidebarComponentsLinks = componentsDocs.map(c => ({
+    title: c.frontmatter.componentName,
+    path: c.path,
+}));
 
 module.exports = {
     base: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
     title: packageJSON.name,
     description: packageJSON.description,
+    async additionalPages(){
+        return componentsDocs;
+    },
     themeConfig: {
         logo: '/images/vue-wind-2.svg',
         sidebarDepth: 0,
@@ -41,7 +46,7 @@ module.exports = {
             },
             {
                 title: "Components",
-                children: componentsDocs
+                children: sidebarComponentsLinks
             },
         ],
     },
@@ -51,8 +56,8 @@ module.exports = {
             'register-components',
             {
                 componentsDir: "../../src/components"
-            }
-        ]
+            },
+        ],
     ],
     chainWebpack(config) {
         config.resolve.extensions.add(".ts");

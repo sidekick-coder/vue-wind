@@ -1,23 +1,21 @@
-import upperFirst from "lodash/upperFirst";
-import camelCase from "lodash/camelCase";
-import { VueConstructor } from "vue";
-
+import upperFirst from 'lodash/upperFirst';
+import camelCase from 'lodash/camelCase';
+import { VueConstructor } from 'vue';
 
 export default function registerComponents (Vue: VueConstructor) {
-
-    const componentDirectoryContext = require.context("./components", true, /\.(vue|ts)$/);
+    const componentDirectoryContext = require.context('./components', true, /^(?!.*\.(spec|test)\.ts$).*\.(ts|vue)$/);
 
     const fileNames = componentDirectoryContext.keys();
-    
+
     fileNames.forEach((fileName) => {
         const component = componentDirectoryContext(fileName);
-    
+
         const componentName = upperFirst(
             camelCase(
                 fileName
-                    .replace(/^\.\//, "")
-                    .replace(/\.\w+$/, "")
-                    .replace("index", "")
+                    .replace(/^\.\//, '')
+                    .replace(/\.\w+$/, '')
+                    .replace('index', '')
             )
         );
 
