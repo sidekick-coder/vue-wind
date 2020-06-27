@@ -31,7 +31,7 @@
                 <template v-for="value in valuesNames">
                     <td
                         :key="index + value"
-                        :class="[itemsThDefaultClasses]"
+                        :class="[itemsTdDefaultClasses]"
                     >
                         <slot :name="`item.${value}`" :item="item">
                             {{ item[value] }}
@@ -47,7 +47,7 @@
 <script>
 
 export default {
-    name: "WDataTable",
+    name: 'WDataTable',
     props: {
         headers: {
             type: Array,
@@ -62,29 +62,29 @@ export default {
         headerItemsDefaultClasses: {
             type: [String, Array, Object],
             default: () => [
-                "px-5", "py-3", "text-left"
+                'px-5', 'py-3', 'text-left'
             ]
         },
         itemsTrDefaultClasses: {
             type: [String, Array, Object],
             default: () => [
-                "border-b", "border-t"
+                'border-b', 'border-t'
             ]
         },
-        itemsThDefaultClasses: {
+        itemsTdDefaultClasses: {
             type: [String, Array, Object],
             default: () => [
-                "px-5", "py-3"
+                'px-5', 'py-3'
             ]
-        },
-    },
-    data(){
-        return {}
-    },
-    computed: {
-        valuesNames(){
-            return this.headers.map((header) => header.value);
         }
     },
+    data () {
+        return {};
+    },
+    computed: {
+        valuesNames () {
+            return this.headers.map((header) => header.value);
+        }
+    }
 };
 </script>
