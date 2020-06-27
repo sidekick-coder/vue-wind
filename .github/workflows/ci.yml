@@ -1,4 +1,4 @@
-name: Deploy site
+name: Project ci
 
 on:
   push:
@@ -16,11 +16,8 @@ jobs:
       - name: install_dependences
         run: npm install
 
-      - name: build vuepress
-        run: npm run docs:build
+      - name: lint
+        run: npm run lint
       
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/.vuepress/dist
+      - name: test
+        run: npm run test
