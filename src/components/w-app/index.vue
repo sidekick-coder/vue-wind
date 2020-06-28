@@ -4,7 +4,6 @@
             <slot name="drawer"></slot>
         </div>
 
-        
         <div :class="[mainDefaultClass, mainClass]">
             <slot name="top-bar"></slot>
             <div :class="[contentDefaultClass, contentClass]">
@@ -15,10 +14,10 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-    name: "WApp",
+    name: 'WApp',
     props: {
         drawerClass: {
             type: [Array, Object, String],
@@ -39,33 +38,33 @@ export default Vue.extend({
             type: [Array, Object, String],
             required: false,
             default: () => [
-                "w-1/6",
-                "flex-1"
+                'w-1/6',
+                'flex-1'
             ]
         },
         mainDefaultClass: {
             type: [Array, Object, String],
             required: false,
             default: () => [
-                "flex",
-                "flex-col",
-                "w-5/6",
+                'flex',
+                'flex-col',
+                'w-5/6'
             ]
         },
         contentDefaultClass: {
             type: [Array, Object, String],
             required: false,
             default: () => [
-                "p-10",
-                "flex-1"
+                'p-10',
+                'flex-1'
             ]
-        },
+        }
     },
     computed: {
-        haveDrawerSlot() {
+        haveDrawerSlot () {
             return !!this.$slots.drawer;
         }
     }
-})
+});
 
 </script>
