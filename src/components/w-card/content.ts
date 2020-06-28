@@ -1,11 +1,11 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-    name: "WCardContent",
+    name: 'WCardContent',
     functional: true,
-    render(createElement, { data, children }) {
+    render (createElement, { data, children }) {
         const classes = {
-            "p-5": true
+            'p-5': true
         };
 
         data.class = {
@@ -13,6 +13,6 @@ export default Vue.extend({
             ...classes
         };
 
-        return createElement("div", data, children);
+        return createElement('div', data, children);
     }
 });

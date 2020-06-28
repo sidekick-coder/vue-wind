@@ -1,7 +1,8 @@
-import Vue from "vue";
+import Vue from 'vue';
+import { VNode } from 'vue/types/umd';
 
 export default Vue.extend({
-    name: "WBtn",
+    name: 'WBtn',
     functional: true,
     props: {
         loading: {
@@ -21,38 +22,28 @@ export default Vue.extend({
             default: false
         }
     },
-    render(createElement, { props, data, children }) {
-        const classes: any[] = [
-            {
-                "hover:bg-gray-400": true,
-                "font-bold": true,
-                "py-2 px-4": true,
-                "items-center": true
-            }
+    render (createElement, { props, data, children }) {
+        const classes = [
+            'hover:bg-gray-400',
+            'font-bold',
+            'py-2 px-4',
+            'items-center'
         ];
 
-        const content: any[] = [];
+        const content: VNode[] = [];
 
         if (!props.text) {
-            classes.push({
-                "bg-indigo-600": true,
-                "text-white": true
-            });
+            classes.push('bg-indigo-600', 'text-white');
         }
         if (props.block) {
-            classes.push({
-                "w-full": true,
-                block: true
-            });
+            classes.push('w-full', 'block');
         }
 
         if (props.rounded) {
-            classes.push({
-                rounded: true
-            });
+            classes.push('rounded');
         }
         content.push(
-            createElement("w-icon", {
+            createElement('w-icon', {
                 class: {
                     hidden: !props.loading
                 }
@@ -60,17 +51,17 @@ export default Vue.extend({
         );
         content.push(
             createElement(
-                "span",
+                'span',
                 { class: { hidden: props.loading } },
                 children
             )
         );
-        classes.forEach((c) => {
+        classes.forEach((className) => {
             data.class = {
                 ...data.class,
-                ...c
+                [className]: true
             };
         });
-        return createElement("button", data, content);
+        return createElement('button', data, content);
     }
 });

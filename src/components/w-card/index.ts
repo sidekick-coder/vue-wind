@@ -1,13 +1,13 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-    name: "WCard",
+    name: 'WCard',
     functional: true,
     props: {
         color: {
             type: String,
             required: false,
-            default: "white"
+            default: 'white'
         },
         rounded: {
             type: Boolean,
@@ -22,22 +22,22 @@ export default Vue.extend({
         borderColor: {
             type: String,
             required: false,
-            default: "gray-200"
+            default: 'gray-200'
         },
         borderStyle: {
             type: String,
             required: false,
-            default: "solid"
+            default: 'solid'
         },
         maxWidth: {
             type: String,
             required: false,
-            default: "gray-200"
+            default: 'gray-200'
         },
         width: {
             type: String,
             required: false,
-            default: "100%"
+            default: '100%'
         },
         shadow: {
             type: [Boolean, String],
@@ -45,59 +45,54 @@ export default Vue.extend({
             default: true
         }
     },
-    render(createElement, { props, data, children }) {
-        const classes: any = {};
+    render (createElement, { props, data, children }) {
+        const classes: string[] = [];
         const styles = [`width:${props.width}`];
-        let style = data.style || "";
+        let style = data.style || '';
 
         if (props.color) {
-            classes[`bg-${props.color}`] = true;
+            classes.push(`bg-${props.color}`);
         }
 
         if (props.rounded) {
-            classes.rounded = true;
+            classes.push('rounded');
         }
 
         if (props.border) {
-            classes.border = true;
+            classes.push('border');
         }
 
         if (props.border && props.borderColor) {
-            classes[`border-${props.borderColor}`] = true;
+            classes.push(`border-${props.borderColor}`);
         }
 
         if (props.border && props.borderStyle) {
-            classes[`border-${props.borderStyle}`] = true;
+            classes.push(`border-${props.borderStyle}`);
         }
 
-        if (props.maxWidth.includes("px")) {
+        if (props.maxWidth.includes('px')) {
             styles.push(`max-width: ${props.maxWidth}`);
         } else {
-            classes[`max-w-${props.maxWidth}`] = true;
+            classes.push(`max-w-${props.maxWidth}`);
         }
 
         if (props.shadow === true) {
-            classes.shadow = true;
+            classes.push('shadow');
         } else if (props.shadow) {
-            classes[`shadow-${props.shadow}`] = true;
+            classes.push(`shadow-${props.shadow}`);
         }
 
-        if (Array.isArray(data.class)) {
-            data.class.forEach((c) => {
-                classes[c] = true;
-            });
-            data.class = classes;
-        } else {
+        classes.forEach(className => {
             data.class = {
                 ...data.class,
-                ...classes
+                [className]: true
             };
-        }
+        });
 
-        style += styles.join(";");
+        style += styles.join(';');
 
         data.style = style;
 
-        return createElement("div", data, children);
+        return createElement('div', data, children);
     }
 });

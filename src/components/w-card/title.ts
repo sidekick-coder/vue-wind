@@ -1,12 +1,12 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-    name: "WCardTitle",
+    name: 'WCardTitle',
     functional: true,
-    render(createElement, { data, children }) {
+    render (createElement, { data, children }) {
         const classes = {
-            "px-5": true,
-            "py-4": true
+            'px-5': true,
+            'py-4': true
         };
 
         data.class = {
@@ -14,7 +14,6 @@ export default Vue.extend({
             ...classes
         };
 
-        return createElement("div", data, children);
+        return createElement('div', data, children);
     }
 });
-
