@@ -1,9 +1,9 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-    name: "WList",
+    name: 'WList',
     functional: true,
-    render(createElement, { data, children }) {
+    render (createElement, { data, children }) {
         const classes = {};
 
         data.class = {
@@ -11,6 +11,6 @@ export default Vue.extend({
             ...classes
         };
 
-        return createElement("div", data, children);
+        return createElement('div', data, children);
     }
 });

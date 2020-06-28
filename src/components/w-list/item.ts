@@ -1,25 +1,30 @@
-import Vue from "vue";
-import { VNode } from "vue/types/umd";
+import Vue from 'vue';
+import { VNode } from 'vue/types/umd';
 
-export default Vue.extend({
+interface Props {
+    contentDefaulClass: string | object | string[];
+    to: string | object;
+}
+
+export default Vue.extend<Props>({
     functional: true,
-    name: "WListItem",
+    name: 'WListItem',
     props: {
         contentDefaulClass: {
             type: [String, Object, Array],
-            default: () => ["flex items-center px-5 py-2"]
+            default: () => ['flex items-center px-5 py-2']
         },
         to: {
-            type: [String, Object],
+            type: [String, Object]
         }
     },
-    render(createElement, { data, children, slots, props }) {
+    render (createElement, { data, children, props }) {
         const itemChildren: VNode[] = [];
 
         if (props.to) {
             itemChildren.push(
                 createElement(
-                    "router-link",
+                    'router-link',
                     {
                         props: { to: props.to },
                         class: props.contentDefaulClass
@@ -29,10 +34,10 @@ export default Vue.extend({
             );
         } else {
             itemChildren.push(
-                createElement("div", { class: props.contentDefaulClass }, children)
+                createElement('div', { class: props.contentDefaulClass }, children)
             );
         }
 
-        return createElement("div", data, itemChildren);
+        return createElement('div', data, itemChildren);
     }
 });
