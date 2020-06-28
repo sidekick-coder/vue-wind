@@ -22,13 +22,16 @@ module.exports = {
                 loader: 'babel-loader'
             },
             {
-                test: /\.ts?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: [
+                    { loader: 'babel-loader' },
+                    { loader: 'ts-loader', options: { appendTsSuffixTo: [/\.vue$/] } }
+                ]
             },
             {
                 test: /\.svg$/,
-                use: [
+                loader: [
                     'babel-loader',
                     'vue-svg-loader'
                 ]
