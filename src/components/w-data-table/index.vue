@@ -1,52 +1,64 @@
 <template>
-    <table class="table-auto w-full shadow">
-        <thead>
-            <tr>
-                <th
-                    v-for="(header, index) in headers"
-                    :key="index"
-                    :class="[headerItemsDefaultClasses, header.classes]"
-                >
-                    {{ header.name }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <template v-if="items.length === 0">
-                <tr :class="itemsTrDefaultClasses">
-                    <td
-                        :class="[itemsThDefaultClasses, 'text-center']"
-                        :colspan="headers.length"
-                    >
-                        No items
-                    </td>
+    <div>
+        <table class="table-auto w-full shadow">
+            <thead>
+                <tr v-if="headers">
+                    <th
+                        v-for="(header, index) in headers"
+                        :key="index"
+                        :class="[headerItemsDefaultClasses, header.class]"
+                        v-text="header.name"
+                    />
                 </tr>
-            </template>
-            <template v-else>
-                <tr
-                    v-for="(item, index) in items"
-                    :key="index"
-                    :class="itemsTrDefaultClasses"
-                >
-                <template v-for="value in valuesNames">
-                    <td
-                        :key="index + value"
-                        :class="[itemsTdDefaultClasses]"
-                    >
-                        <slot :name="`item.${value}`" :item="item">
-                            {{ item[value] }}
-                        </slot>
-                    </td>
+            </thead>
+            <tbody>
+                <template v-if="!items || items.length === 0">
+                    <tr :class="itemsTrDefaultClasses">
+                        <td
+                            :class="[itemsTdDefaultClasses, 'text-center']"
+                            :colspan="headers.length || 1"
+                        >
+                            <slot name="empty-items">No items</slot>
+                        </td>
+                    </tr>
                 </template>
-                </tr>
-            </template>
-        </tbody>
-    </table>
+                <template v-else>
+                    <tr
+                        v-for="(item, index) in items"
+                        :key="index"
+                        :class="itemsTrDefaultClasses"
+                    >
+                    <template v-for="value in valuesNames">
+                        <td
+                            :key="index + value"
+                            :class="[itemsTdDefaultClasses]"
+                        >
+                            <slot :name="`item.${value}`" :item="item">{{ item[value] }}</slot>
+                        </td>
+                    </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 
-export default {
+export interface Props {
+    headers: {
+        name: string;
+        value: string;
+        class?: string;
+    }[],
+    items: object[],
+    headerItemsDefaultClasses: string | string[] | object,
+    itemsTrDefaultClasses: string | string[] | object,
+    itemsTdDefaultClasses: string | string[] | object,
+}
+
+export default Vue.extend<{}, {}, {}, Props>({
     name: 'WDataTable',
     props: {
         headers: {
@@ -78,13 +90,10 @@ export default {
             ]
         }
     },
-    data () {
-        return {};
-    },
     computed: {
         valuesNames () {
             return this.headers.map((header) => header.value);
         }
     }
-};
+});
 </script>
