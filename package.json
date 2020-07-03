@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "description": "vue components using tailwind styles",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "@types/index.d.ts",
   "scripts": {
     "build": "npm run clean && webpack",
     "test": "mochapack --webpack-config webpack.config.js --require test/setup.js src/**/*.test.ts",
     "lint": "eslint . --ext .ts,.vue,.js",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -rf @types",
     "watch": "webpack --watch",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs"

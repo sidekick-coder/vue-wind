@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractplugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -62,6 +63,10 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.WatchIgnorePlugin([
+            /\.js$/,
+            /\.d\.ts$/
+        ]),
         new VueLoaderPlugin(),
         new MiniCssExtractplugin({
             filename: 'css/[name].css'
