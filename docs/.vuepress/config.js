@@ -59,6 +59,9 @@ module.exports = {
             },
         ],
     ],
+    postcss: {
+        plugins: [require('tailwindcss')('./tailwind.config.js'), require('autoprefixer')],
+    },
     chainWebpack(config) {
         config.resolve.extensions.add(".ts");
     }
