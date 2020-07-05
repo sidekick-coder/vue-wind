@@ -1,8 +1,8 @@
 <template>
   <w-transition-fade-in>
-      <div v-if="dialog" class="fixed inset-0 z-10 flex flex-col items-center justify-center">
-          <div :class="overlayClass" @click="toggleDialog"></div>
-          <div :class="[contentClass,`w-${this.width}`,`max-w-${this.maxWidth}`]">
+      <div v-if="dialog" :class="['w-dialog',dialogClass]">
+          <div :class="['w-dialog-overlay', overlayClass]" @click="dialog = false"></div>
+          <div :class="['w-dialog-content',contentClass,`w-${width}`,`max-w-${maxWidth}`]">
             <slot />
           </div>
       </div>
@@ -31,6 +31,13 @@ export default Vue.extend<Data, {}, Computed, Props>({
             type: String,
             default: 'none'
         },
+        dialogClass: {
+            type: [String, Array, Object],
+            default: () => [
+                'fixed inset-0 z-30',
+                'flex flex-col items-center justify-center'
+            ]
+        },
         overlayClass: {
             type: [String, Array, Object],
             default: () => [
@@ -41,19 +48,10 @@ export default Vue.extend<Data, {}, Computed, Props>({
         contentClass: {
             type: [String, Array, Object],
             default: () => [
-                'z-20',
+                'z-40',
                 'p-4'
             ]
         }
-    },
-    model: {
-        prop: 'value',
-        event: 'input'
-    },
-    data () {
-        return {
-            show: this.value
-        };
     },
     computed: {
         dialog: {
@@ -63,11 +61,6 @@ export default Vue.extend<Data, {}, Computed, Props>({
             set (value) {
                 this.$emit('input', value);
             }
-        }
-    },
-    methods: {
-        toggleDialog () {
-            this.dialog = !this.dialog;
         }
     }
 });

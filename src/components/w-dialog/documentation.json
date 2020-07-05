@@ -1,0 +1,38 @@
+{
+    "components": {
+        "w-dialog": {
+            "props": {
+                "value": {
+                    "type": ["boolean"],
+                    "description": "v-model property",
+                    "default": "false"
+                },
+                "width": {
+                    "type": ["string"],
+                    "description": "width of dialog content element",
+                    "default": "w-full"
+                },
+                "maxWidth": {
+                    "type": ["string"],
+                    "description": "max-width of dialog content element",
+                    "default": "max-w-none"
+                },
+                "dialogClass": {
+                    "type": ["string", "string[]", "object"],
+                    "description": "default classes of overlay element",
+                    "default": "fixed inset-0 z-30 flex flex-col items-center justify-center"
+                },
+                "overlayClass": {
+                    "type": ["string", "string[]", "object"],
+                    "description": "default classes of overlay element",
+                    "default": "bg-opacity-50 bg-black absolute inset-0"
+                },
+                "contentClass": {
+                    "type": ["string", "string[]", "object"],
+                    "description": "default classes of content element",
+                    "default": "z-40 p-4"
+                }
+            }
+        }
+    }
+}
