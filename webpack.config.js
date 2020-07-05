@@ -3,9 +3,24 @@ const MiniCssExtractplugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require('webpack');
 
+const cssLoader = [
+    'style-loader',
+    MiniCssExtractplugin.loader,
+    'css-loader',
+    {
+        loader: 'postcss-loader',
+        options: {
+            plugins: [
+                require('tailwindcss'),
+                require('autoprefixer')
+            ]
+        }
+    }
+];
+
 module.exports = {
     entry: './src/index.ts',
-    mode: process.env.NODE_ENV || 'production',
+    // mode: process.env.NODE_ENV || 'production',
     devtool: 'inline-source-map',
     performance: {
         hints: false,
@@ -39,20 +54,7 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [
-                    'style-loader',
-                    MiniCssExtractplugin.loader,
-                    'css-loader',
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [
-                                require('tailwindcss'),
-                                require('autoprefixer')
-                            ]
-                        }
-                    }
-                ]
+                use: process.env.NODE_ENV !== 'test' ? cssLoader : ['null-loader']
             }
         ]
     },

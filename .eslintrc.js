@@ -42,9 +42,9 @@ module.exports = {
                 '**/*.test.js'
             ],
             env: {
-                jest: true
+                mocha: true
             },
-            plugins: ['jest']
+            plugins: ['mocha']
         }
     ]
 };
