@@ -7,6 +7,7 @@ module.exports = {
     },
     extends: [
         'plugin:vue/essential',
+        'plugin:mocha/recommended',
         '@vue/standard',
         '@vue/typescript',
         '@vue/typescript/recommended'
@@ -23,6 +24,7 @@ module.exports = {
     rules: {
         indent: ['error', 4],
         semi: ['error', 'always'],
+        'mocha/no-mocha-arrows': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off'
