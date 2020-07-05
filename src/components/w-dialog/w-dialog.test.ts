@@ -7,111 +7,110 @@ import { mount, MountOptions } from '@vue/test-utils';
 import WDialog from './w-dialog.vue';
 import WTransitionFadeIn from './../w-transition/fade-in.vue';
 
-describe.only("w-dialog (unit)", () => {
+describe.only('w-dialog (unit)', () => {
     const component = (data?: MountOptions<InstanceType<typeof WDialog>>) => mount(WDialog, data);
 
-    it.only("should render default slot in content of dialog", () => {
+    it.only('should render default slot in content of dialog', () => {
         const wrapper = component({
             propsData: { value: true },
             slots: {
-                default: "Hello word"
+                default: 'Hello word'
             }
         });
 
-        expect(wrapper.html()).to.contain("Hello word");
+        expect(wrapper.html()).to.contain('Hello word');
     });
-    it.only("should have WTransitionFadeIn component for animation", () => {
+    it.only('should have WTransitionFadeIn component for animation', () => {
         const wrapper = component();
 
-        expect(wrapper.findComponent(WTransitionFadeIn).exists()).to.be.true;
+        expect(wrapper.findComponent(WTransitionFadeIn).exists()).to.be.equal(true);
     });
-    it.only("should component have classes of dialogClass prop", () => {
+    it.only('should component have classes of dialogClass prop', () => {
         const dialogClass = [
             faker.lorem.word(),
             faker.lorem.word(),
-            faker.lorem.word(),
-        ]
+            faker.lorem.word()
+        ];
         const wrapper = component({
             propsData: {
                 value: true,
                 dialogClass
             }
         });
-        
+
         const allClasses = dialogClass.concat(['w-dialog']);
 
-        expect(wrapper.find(".w-dialog").classes()).to.have.members(allClasses);
+        expect(wrapper.find('.w-dialog').classes()).to.have.members(allClasses);
     });
-    it.only("should overlay element have classes of overlayClass prop", () => {
+    it.only('should overlay element have classes of overlayClass prop', () => {
         const overlayClass = [
             faker.lorem.word(),
             faker.lorem.word(),
-            faker.lorem.word(),
-        ]
+            faker.lorem.word()
+        ];
         const wrapper = component({
             propsData: {
                 value: true,
                 overlayClass
             }
         });
-        
+
         const allClasses = overlayClass.concat(['w-dialog-overlay']);
 
-        expect(wrapper.find(".w-dialog-overlay").classes()).to.have.members(allClasses);
+        expect(wrapper.find('.w-dialog-overlay').classes()).to.have.members(allClasses);
     });
-    
-    it.only("should content element have classes of contentClass prop", () => {
+
+    it.only('should content element have classes of contentClass prop', () => {
         const contentClass = [
             faker.lorem.word(),
             faker.lorem.word(),
-            faker.lorem.word(),
+            faker.lorem.word()
         ];
-        
+
         const wrapper = component({
             propsData: {
                 value: true,
                 contentClass
             }
         });
-        
-        const allClasses = contentClass.concat(['w-dialog-content']);
-        
-        allClasses.forEach(className => {
-            expect(wrapper.find(".w-dialog-content").classes()).to.include(className);
-        });
 
+        const allClasses = contentClass.concat(['w-dialog-content']);
+
+        allClasses.forEach(className => {
+            expect(wrapper.find('.w-dialog-content').classes()).to.include(className);
+        });
     });
-    
-    it.only("should content element have class of with when prop seted", () => {
-        const width = faker.random.number({  min: 1, max: 15 }).toString();
-        
+
+    it.only('should content element have class of with when prop seted', () => {
+        const width = faker.random.number({ min: 1, max: 15 }).toString();
+
         const wrapper = component({
             propsData: {
                 value: true,
                 width
             }
         });
-        
-        expect(wrapper.find(".w-dialog-content").classes()).to.include(`w-${width}`);
+
+        expect(wrapper.find('.w-dialog-content').classes()).to.include(`w-${width}`);
     });
-    it.only("should content element have class of maxWith when prop is seted", () => {
-        const maxWidth = faker.random.number({  min: 1, max: 15 }).toString();
-        
+    it.only('should content element have class of maxWith when prop is seted', () => {
+        const maxWidth = faker.random.number({ min: 1, max: 15 }).toString();
+
         const wrapper = component({
             propsData: {
                 value: true,
                 maxWidth
             }
         });
-        
-        expect(wrapper.find(".w-dialog-content").classes()).to.include(`max-w-${maxWidth}`);
+
+        expect(wrapper.find('.w-dialog-content').classes()).to.include(`max-w-${maxWidth}`);
     });
-    
-    it.only("should emit event input with false value to hide component when click in overlay", async () => {
-        const maxWidth = faker.random.number({  min: 1, max: 15 }).toString();
+
+    it.only('should emit event input with false value to hide component when click in overlay', async () => {
+        const maxWidth = faker.random.number({ min: 1, max: 15 }).toString();
 
         const input = sinon.stub();
-        
+
         const wrapper = component({
             propsData: {
                 value: true,
@@ -120,9 +119,8 @@ describe.only("w-dialog (unit)", () => {
             listeners: { input }
         });
 
-        await wrapper.find(".w-dialog-overlay").trigger("click");
+        await wrapper.find('.w-dialog-overlay').trigger('click');
 
         sinon.assert.calledOnceWithExactly(input, false);
-        
     });
 });
