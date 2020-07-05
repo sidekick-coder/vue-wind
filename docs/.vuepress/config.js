@@ -53,6 +53,14 @@ module.exports = {
     plugins: [
         [
             'vuepress-plugin-typescript',
+            {
+                tsLoaderOptions: {
+                    transpileOnly: true,
+                    compilerOptions: {
+                        
+                    }
+                },
+            },
             'register-components',
             {
                 componentsDir: "../../src/components"
