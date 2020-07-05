@@ -2,7 +2,7 @@ import { mount, MountOptions } from '@vue/test-utils';
 import { expect } from 'chai';
 import faker from 'faker';
 
-import WDataTable from './index.vue';
+import WDataTable from './w-data-table.vue';
 
 export interface Computed {
     valuesNames: string;
@@ -41,7 +41,7 @@ describe('w-data-table (unit)', () => {
     };
 
     describe('template', () => {
-        it.only('should render a <th> for each item of prop headers', async () => {
+        it('should render a <th> for each item of prop headers', async () => {
             const headers = givenTableHeaders();
 
             const wrapper = component({
@@ -51,11 +51,11 @@ describe('w-data-table (unit)', () => {
             const html = wrapper.html();
 
             headers.forEach(header => {
-                expect(html).to.contains(`<th class="px-5 py-3 text-left">${header.name}</th>`);
+                expect(html).to.contains(`<th class="px-5 py-3 text-left text-gray-600 text-sm">${header.name}</th>`);
             });
         });
 
-        it.only('should each header <th> item contain classes of headerItemsDefaultClasses prop', () => {
+        it('should each header <th> item contain classes of headerItemsDefaultClasses prop', () => {
             const headers = givenTableHeaders();
 
             const randomClass = faker.internet.domainWord();
@@ -73,7 +73,7 @@ describe('w-data-table (unit)', () => {
                 expect(html).to.contains(`<th class="${randomClass}">${header.name}</th>`);
             });
         });
-        it.only('should render header <th> item with extra class in item object prop', () => {
+        it('should render header <th> item with extra class in item object prop', () => {
             const headers = givenTableHeaders(5, {
                 class: faker.random.word()
             });
@@ -93,12 +93,12 @@ describe('w-data-table (unit)', () => {
                 expect(html).to.contains(`<th class="${randomClass} ${header.class}">${header.name}</th>`);
             });
         });
-        it.only('should render <td> empty-items message in <tbody> if items props length is 0', () => {
+        it('should render <td> empty-items message in <tbody> if items props length is 0', () => {
             const wrapper = component();
 
-            expect(wrapper.html()).to.contains('<td colspan="1" class="px-5 py-3 text-center">No items</td>');
+            expect(wrapper.html()).to.contains('<td colspan="1" class="px-5 py-3 text-gray-600 text-sm text-center">No items</td>');
         });
-        it.only('should render <td> empty-items-slot in <tbody> if items props length is 0', () => {
+        it('should render <td> empty-items-slot in <tbody> if items props length is 0', () => {
             const randomText = faker.lorem.words(3);
 
             const wrapper = component({
@@ -107,9 +107,9 @@ describe('w-data-table (unit)', () => {
                 }
             });
 
-            expect(wrapper.html()).to.contains(`<td colspan="1" class="px-5 py-3 text-center">${randomText}</td>`);
+            expect(wrapper.html()).to.contains(`<td colspan="1" class="px-5 py-3 text-gray-600 text-sm text-center">${randomText}</td>`);
         });
-        it.only('should <td> empty-items-slot contain classes of itemsThDefaultClasses prop', () => {
+        it('should <td> empty-items-slot contain classes of itemsThDefaultClasses prop', () => {
             const randomClass = faker.internet.domainWord();
 
             const wrapper = component({
@@ -120,7 +120,7 @@ describe('w-data-table (unit)', () => {
 
             expect(wrapper.html()).to.contains(`<td colspan="1" class="${randomClass} text-center">No items</td>`);
         });
-        it.only('should render a <td> in <tbody> for each item of prop items', () => {
+        it('should render a <td> in <tbody> for each item of prop items', () => {
             const items = givenTableItems();
 
             const wrapper = component({
@@ -133,10 +133,10 @@ describe('w-data-table (unit)', () => {
             const html = wrapper.html();
 
             items.forEach(item => {
-                expect(html).to.contains(`<td class="px-5 py-3">${item.value}</td>`);
+                expect(html).to.contains(`<td class="px-5 py-3 text-gray-600 text-sm">${item.value}</td>`);
             });
         });
-        it.only('should each item <td> rendered contain classes of itemsTdDefaultClasses prop', () => {
+        it('should each item <td> rendered contain classes of itemsTdDefaultClasses prop', () => {
             const items = givenTableItems();
             const randomClass = faker.internet.domainWord();
 
@@ -154,7 +154,7 @@ describe('w-data-table (unit)', () => {
                 expect(html).to.contains(`<td class="${randomClass}">${item.value}</td>`);
             });
         });
-        it.only('should use item.{headerValue} slot for the items if is defined', () => {
+        it('should use item.{headerValue} slot for the items if is defined', () => {
             const items = givenTableItems(5);
             const randomWord = faker.internet.domainWord();
 
@@ -175,13 +175,13 @@ describe('w-data-table (unit)', () => {
             const html = wrapper.html();
 
             items.forEach(item => {
-                expect(html).to.contains(`<td class="px-5 py-3">${randomWord}-${item.title}</td>`);
-                expect(html).to.contains(`<td class="px-5 py-3">${randomWord}-${item.value}</td>`);
+                expect(html).to.contains(`<td class="px-5 py-3 text-gray-600 text-sm">${randomWord}-${item.title}</td>`);
+                expect(html).to.contains(`<td class="px-5 py-3 text-gray-600 text-sm">${randomWord}-${item.value}</td>`);
             });
         });
     });
     describe('computed', () => {
-        it.only('should valuesNames return an array of strings in headers prop values', () => {
+        it('should valuesNames return an array of strings in headers prop values', () => {
             const headers = givenTableHeaders();
 
             const wrapper = component({

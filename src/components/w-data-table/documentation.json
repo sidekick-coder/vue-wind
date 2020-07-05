@@ -9,7 +9,7 @@
                     "codeExample": {
                         "name": "header name",
                         "value": "item field name",
-                        "classes": "extra classes"
+                        "class": "extra classes"
                     }
                 },
                 "items": {

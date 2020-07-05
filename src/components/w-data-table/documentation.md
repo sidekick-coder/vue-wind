@@ -1,12 +1,23 @@
+---
+title: Data table
+---
+
 ## Simple usage
 
+<component-code-view>
+
+::: slot template
 ```vue
 <template>
     <div>
         <w-data-table :headers="headers" :items="items"></w-data-table>
     </div>
 </template>
+```
+:::
 
+::: slot script
+```vue
 <script>
 export default {
     data(){
@@ -32,8 +43,43 @@ export default {
 }
 </script>
 ```
+:::
+
+::: slot typescript
+
+```ts
+import { defineComponent, reactive } from '@vue/composition-api';
+import { Header } from 'vue-wind/@types/components/w-data-table';
+
+type State {
+    headers: Header[]
+}
+
+export default defineComponent({
+    setup(){
+        const state = reactive<State>({
+            headers: [
+                {
+                    name: "Customer fisrt name",
+                    value: "first_name"
+                },
+                {
+                    name: "Customer last name",
+                    value: "last_name"
+                },
+            ],
+        });
+        return  { headers: state.headers };
+    },
+})
+```
+:::
+</component-code-view>
 
 ## Item slot
+<component-code-view>
+
+::: slot template
 
 ```vue
 <template>
@@ -45,7 +91,13 @@ export default {
         </w-data-table>
     </div>
 </template>
+```
 
+:::
+
+::: slot script
+
+```vue
 <script>
 export default {
     data(){
@@ -71,3 +123,9 @@ export default {
 }
 </script>
 ```
+
+:::
+
+
+</component-code-view>
+

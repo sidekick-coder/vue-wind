@@ -45,13 +45,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Header } from './types';
 
 export interface Props {
-    headers: {
-        name: string;
-        value: string;
-        class?: string;
-    }[],
+    headers: Header[],
     items: object[],
     headerItemsDefaultClasses: string | string[] | object,
     itemsTrDefaultClasses: string | string[] | object,
@@ -74,7 +71,7 @@ export default Vue.extend<{}, {}, {}, Props>({
         headerItemsDefaultClasses: {
             type: [String, Array, Object],
             default: () => [
-                'px-5', 'py-3', 'text-left'
+                'px-5', 'py-3', 'text-left', 'text-gray-600', 'text-sm'
             ]
         },
         itemsTrDefaultClasses: {
@@ -86,7 +83,7 @@ export default Vue.extend<{}, {}, {}, Props>({
         itemsTdDefaultClasses: {
             type: [String, Array, Object],
             default: () => [
-                'px-5', 'py-3'
+                'px-5', 'py-3', 'text-gray-600', 'text-sm'
             ]
         }
     },
