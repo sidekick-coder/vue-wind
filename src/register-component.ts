@@ -1,14 +1,32 @@
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
+import { upperFirst, camelCase, uniq } from 'lodash';
 import { VueConstructor } from 'vue';
+
+const getComponentName = (filename: string) => {
+    const name = upperFirst(
+        camelCase(
+            filename
+                .replace(/^\.\//, '')
+                .replace(/\.\w+$/, '')
+                .replace('index', '')
+        )
+    );
+    const duplicates = name.replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(' ');
+
+    if (duplicates.length > 1) {
+        return uniq(duplicates).join('');
+    }
+
+    return duplicates.join('');
+};
 
 export default function registerComponents (Vue: VueConstructor, includeExamples = false) {
     const componentDirectoryContext = require.context('./components', true, /^(?!.*\.(spec|test)\.ts$).*\.(ts|vue)$/);
 
     const fileNames = componentDirectoryContext.keys();
+    const componentsLoaded: string[] = [];
 
-    fileNames.forEach((fileName) => {
-        const component = componentDirectoryContext(fileName);
+    fileNames.forEach((filename) => {
+        const component = componentDirectoryContext(filename);
 
         const excludeKeys = ['types'];
 
@@ -16,18 +34,17 @@ export default function registerComponents (Vue: VueConstructor, includeExamples
             excludeKeys.push('example');
         }
 
-        if (excludeKeys.some(v => fileName.includes(v))) {
+        if (excludeKeys.some(v => filename.includes(v))) {
             return;
         }
 
-        const componentName = upperFirst(
-            camelCase(
-                fileName
-                    .replace(/^\.\//, '')
-                    .replace(/\.\w+$/, '')
-                    .replace('index', '')
-            )
-        );
+        const componentName = getComponentName(filename);
+
+        if (componentsLoaded.includes(componentName)) {
+            return;
+        }
+
+        componentsLoaded.push(componentName);
 
         Vue.component(
             componentName,
