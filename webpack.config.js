@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractplugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const webpack = require('webpack');
 
 const cssLoader = [
     'style-loader',
@@ -20,7 +19,6 @@ const cssLoader = [
 
 module.exports = {
     entry: './src/index.ts',
-    // mode: process.env.NODE_ENV || 'production',
     devtool: 'inline-source-map',
     performance: {
         hints: false,

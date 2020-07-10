@@ -1,6 +1,6 @@
 {
   "name": "vue-wind",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "vue components using tailwind styles",
   "main": "dist/index.js",
   "types": "@types/index.d.ts",
@@ -9,7 +9,7 @@
     "test": "NODE_ENV=test mochapack --mode=development --webpack-config webpack.config.js --require test/setup.js src/**/*.test.ts",
     "lint": "eslint . --ext .ts,.vue,.js",
     "clean": "rm -rf dist && rm -rf @types",
-    "watch": "webpack --mode=development --watch",
+    "watch": "webpack --mode=production --watch",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs"
   },
