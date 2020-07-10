@@ -65,10 +65,6 @@ module.exports = {
         }
     },
     plugins: [
-        new webpack.WatchIgnorePlugin([
-            /\.js$/,
-            /\.d\.ts$/
-        ]),
         new VueLoaderPlugin(),
         new MiniCssExtractplugin({
             filename: 'css/[name].css'
