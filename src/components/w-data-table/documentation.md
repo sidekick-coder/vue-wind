@@ -1,10 +1,13 @@
 ---
 title: Data table
 ---
+<component-showcase-view :component-names='["WDataTable"]' />
 
 ## Simple usage
 
 <component-code-view>
+
+<w-data-table-docs-example-1 class="-mt-4"  />
 
 ::: slot template
 ```vue
@@ -52,7 +55,8 @@ import { defineComponent, reactive } from '@vue/composition-api';
 import { Header } from 'vue-wind/@types/components/w-data-table';
 
 type State {
-    headers: Header[]
+    headers: Header[];
+    items: any[];
 }
 
 export default defineComponent({
@@ -68,6 +72,12 @@ export default defineComponent({
                     value: "last_name"
                 },
             ],
+            items: [
+                {
+                    first_name: "Jonh",
+                    last_name: "Walker"
+                }
+            ],
         });
         return  { headers: state.headers };
     },
@@ -79,6 +89,8 @@ export default defineComponent({
 ## Item slot
 <component-code-view>
 
+<w-data-table-docs-example-2 class="-mt-4" />
+
 ::: slot template
 
 ```vue
@@ -86,7 +98,9 @@ export default defineComponent({
     <div>
         <w-data-table :headers="headers" :items="items">
           <template v-slot:item.first_name="{ item }">
+            <span class="text-teal-500">
                 {{ item.first_name.toUpperCase() }}
+            </span>
           </template>  
         </w-data-table>
     </div>

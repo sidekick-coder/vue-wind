@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table-auto w-full shadow">
+        <table class="table table-auto w-full shadow">
             <thead>
                 <tr v-if="headers">
                     <th
@@ -27,6 +27,7 @@
                         v-for="(item, index) in items"
                         :key="index"
                         :class="itemsTrDefaultClasses"
+                        @click="$emit('click:item')"
                     >
                     <template v-for="value in valuesNames">
                         <td
@@ -60,6 +61,7 @@ export default Vue.extend<{}, {}, {}, Props>({
     props: {
         headers: {
             type: Array,
+            description: 'Array of headers in format { name: string, value: string; }',
             required: false,
             default: () => []
         },
@@ -85,6 +87,13 @@ export default Vue.extend<{}, {}, {}, Props>({
             default: () => [
                 'px-5', 'py-3', 'text-gray-600', 'text-sm'
             ]
+        }
+    },
+    docs: {
+        events: {
+            'click:item': {
+                description: 'Emited when click in a table item'
+            }
         }
     },
     computed: {
