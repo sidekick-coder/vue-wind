@@ -56,9 +56,7 @@ module.exports = {
             {
                 tsLoaderOptions: {
                     transpileOnly: true,
-                    compilerOptions: {
-                        
-                    }
+                    compilerOptions: {}
                 },
             },
             'register-components',

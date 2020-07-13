@@ -1,5 +1,7 @@
-import registerComponents from "./../../src/register-component";
+import VueWind from '../../src/index';
 
 export default ({ Vue }, ctx) => {
-    registerComponents(Vue, true);
+    Vue.use(VueWind, {
+        includeDocs: true,
+    });
 }

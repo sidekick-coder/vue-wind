@@ -1,6 +1,6 @@
 <template>
     <w-card>
-      <div class="flex border-b">
+      <div class="flex border-b my-4">
         <template v-for='(item, index) in items'>
           <w-btn
             v-if="$slots[item]"

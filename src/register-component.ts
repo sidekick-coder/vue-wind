@@ -31,7 +31,7 @@ export default function registerComponents (Vue: VueConstructor, includeExamples
         const excludeKeys = ['types'];
 
         if (!includeExamples) {
-            excludeKeys.push('example');
+            excludeKeys.push('docs-');
         }
 
         if (excludeKeys.some(v => filename.includes(v))) {

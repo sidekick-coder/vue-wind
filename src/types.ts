@@ -1,3 +1,4 @@
 export interface PluginOptions {
-    iconComponent: string;
+    iconComponent?: string;
+    includeDocs?: boolean;
 }

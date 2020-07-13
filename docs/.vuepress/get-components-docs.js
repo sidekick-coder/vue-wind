@@ -7,10 +7,9 @@ const getComponentsDocs = () => {
     const folders = glob.sync(`${dirname}/*`);
     folders.forEach(folder => {
         const [markDownFile] = glob.sync(`${folder}/documentation.md`);
-        const [jsonFile] = glob.sync(`${folder}/documentation.json`);
         const componentName = path.basename(folder).replace("w-", "");
         
-        if (!markDownFile && !jsonFile) {
+        if (!markDownFile) {
             return;
         }
 
@@ -19,10 +18,6 @@ const getComponentsDocs = () => {
             filePath: markDownFile,
             frontmatter: {
                 componentName,
-                layout: 'ComponentsLayout',
-                sidebar: true,
-                navbar: true,
-                jsonFile: jsonFile ? require(jsonFile) : undefined
             }
         });
 
