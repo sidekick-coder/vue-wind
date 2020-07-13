@@ -1,5 +1,6 @@
 const packageJSON = require('../../package.json')
 const getComponentsDocs = require('./get-components-docs');
+const path = require("path")
 
 const componentsDocs = getComponentsDocs();
 
@@ -66,7 +67,10 @@ module.exports = {
         ],
     ],
     postcss: {
-        plugins: [require('tailwindcss')('./tailwind.config.js'), require('autoprefixer')],
+        plugins: [
+            require('tailwindcss')(path.resolve(__dirname, './tailwind.config.js')),
+            require('autoprefixer')
+        ],
     },
     chainWebpack(config) {
         config.resolve.extensions.add(".ts");
