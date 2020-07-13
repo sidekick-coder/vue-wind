@@ -4,8 +4,7 @@
     "module": "es2015",                     
     "allowJs": true,                       
     "declaration": true,                   
-    "outDir": "./dist",
-    "rootDir": "./src",               
+    "outDir": "./dist",        
     "strict": true,
     "moduleResolution": "node",
     "declarationDir": "@types",
@@ -15,5 +14,5 @@
   "include": [
     "src/**/*.ts"
   ],
-  "exclude": ["node_modules", "docs", "@types"]
+  "exclude": ["node_modules", "docs", "dist", "docs/.vuepress/dist"]
 }
