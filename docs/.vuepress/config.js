@@ -2,6 +2,9 @@ const packageJSON = require('../../package.json')
 const getComponentsDocs = require('./get-components-docs');
 const path = require("path")
 
+const sidebar = require("./sidebar");
+const navbar = require("./navbar");
+
 const componentsDocs = getComponentsDocs();
 
 const sidebarComponentsLinks = componentsDocs.map(c => ({
@@ -21,35 +24,8 @@ module.exports = {
         sidebarDepth: 0,
         nextLinks: false,
         prevLinks: false,
-        nav: [
-            {
-                text: "Home",
-                link: "/"
-            },
-            {
-                text: "Getting start",
-                link: "/guide/getting-start"
-            },
-            {
-                text: "Github",
-                link: "https://github.com/htron-dev/vue-wind"
-            },
-        ],
-        sidebar: [
-            {
-                title: "Guide",
-                children: [
-                    {
-                        title: "Getting start",
-                        path: "/guide/getting-start",
-                    }
-                ]
-            },
-            {
-                title: "Components",
-                children: sidebarComponentsLinks
-            },
-        ],
+        nav: navbar,
+        sidebar,
     },
     plugins: [
         [
