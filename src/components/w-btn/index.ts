@@ -9,10 +9,6 @@ export default Vue.extend({
             type: String,
             default: 'indigo-600'
         },
-        loading: {
-            type: Boolean,
-            default: false
-        },
         text: {
             type: Boolean,
             default: false
@@ -23,15 +19,30 @@ export default Vue.extend({
         },
         rounded: {
             type: Boolean,
+            description: 'Make button border rounded',
+            default: false
+        },
+        loading: {
+            type: Boolean,
+            description: 'Show loading spin',
             default: false
         },
         spinSize: {
             type: String,
+            description: 'Size of loading spin',
             default: '1.3rem'
         },
         spinSeep: {
             type: String,
+            description: 'Speed of loading spin',
             default: '1s'
+        }
+    },
+    docs: {
+        events: {
+            click: {
+                description: 'Default click event'
+            }
         }
     },
     render (createElement, { props, data, children }) {
