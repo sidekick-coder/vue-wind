@@ -32,12 +32,22 @@ export default Vue.extend({
         maxWidth: {
             type: String,
             required: false,
-            default: 'gray-200'
+            default: null
         },
         width: {
             type: String,
             required: false,
             default: '100%'
+        },
+        minHeight: {
+            type: String,
+            required: false,
+            default: null
+        },
+        height: {
+            type: String,
+            required: false,
+            default: null
         },
         shadow: {
             type: [Boolean, String],
@@ -70,10 +80,18 @@ export default Vue.extend({
             classes.push(`border-${props.borderStyle}`);
         }
 
-        if (props.maxWidth.includes('px')) {
+        if (props.maxWidth && props.maxWidth.includes('px')) {
             styles.push(`max-width: ${props.maxWidth}`);
         } else {
             classes.push(`max-w-${props.maxWidth}`);
+        }
+
+        if (props.minHeight) {
+            styles.push(`min-height: ${props.minHeight}`);
+        }
+
+        if (props.height) {
+            styles.push(`height: ${props.height}`);
         }
 
         if (props.shadow === true) {

@@ -3,15 +3,15 @@ import Vue from 'vue';
 export default Vue.extend({
     name: 'WCardContent',
     functional: true,
-    render (createElement, { data, children }) {
-        const classes = {
-            'p-5': true
-        };
-
-        data.class = {
-            ...data.class,
-            ...classes
-        };
+    props: {
+        defaultClass: {
+            type: String,
+            required: false,
+            default: 'p-5'
+        }
+    },
+    render (createElement, { data, props, children }) {
+        data.class = [props.defaultClass, data.class];
 
         return createElement('div', data, children);
     }
