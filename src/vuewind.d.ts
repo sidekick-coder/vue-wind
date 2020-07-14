@@ -22,5 +22,15 @@ declare module 'vue/types/options' {
         }
       }
     };
-}
+  }
+
+  interface FunctionalComponentOptions<Props> {
+    docs?: {
+      events?: {
+        [prop: string]: {
+          description: string
+        }
+      }
+    };
+  }
 }
