@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { upperFirst, camelCase } from 'lodash';
+
 export default {
     props: {
         componentNames: {
@@ -53,9 +55,10 @@ export default {
         setComponents(names){
             const components = [];
             names.forEach(name => {
-                const componentData = this.$root.$options.components[name];
+                const globalName = upperFirst(camelCase(name));
+                const componentData = this.$root.$options.components[globalName];
                 if (componentData) {
-                    components.push(this.getComponentData(componentData.options));
+                    components.push(this.getComponentData(componentData.options, name));
                 }
             });
             if (components.length) {
@@ -63,8 +66,8 @@ export default {
                 this.active = 0;
             }
         },
-        getComponentData(componentOptions) {
-            const { props, name, docs } = componentOptions;
+        getComponentData(componentOptions, name) {
+            const { props, docs } = componentOptions;
 
             const component = {
                 name,

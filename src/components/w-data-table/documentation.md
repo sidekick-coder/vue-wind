@@ -1,7 +1,7 @@
 ---
 title: Data table
 ---
-<component-showcase-view :component-names='["WDataTable"]' />
+<component-showcase-view :component-names='["w-data-table"]' />
 
 ## Simple usage
 
