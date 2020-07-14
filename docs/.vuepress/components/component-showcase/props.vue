@@ -45,7 +45,7 @@ export default {
                 return value();
             }
 
-            return value;
+            return value || 'undefiend';
         },
     }
 }
