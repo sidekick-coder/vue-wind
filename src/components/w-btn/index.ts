@@ -63,7 +63,7 @@ export default Vue.extend({
         content.push(
             createElement('w-icon', {
                 props: {
-                    vannila: true
+                    vanilla: true
                 },
                 style: {
                     '--size': props.spinSize,
