@@ -14,6 +14,9 @@ const sidebarComponentsLinks = componentsDocs.map(c => ({
 
 module.exports = {
     base: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
+    build: {
+        assetsPublicPath: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
+    },
     title: packageJSON.name,
     description: packageJSON.description,
     async additionalPages(){
