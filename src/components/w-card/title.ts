@@ -5,7 +5,7 @@ export default Vue.extend({
     functional: true,
     props: {
         defaultClass: {
-            type: String,
+            type: [String, Array, Object],
             required: false,
             default: 'px-5 pt-4'
         }

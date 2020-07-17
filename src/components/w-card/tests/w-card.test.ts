@@ -1,7 +1,7 @@
 import { mount, MountOptions } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import WCard from './w-card';
+import WCard from '../w-card';
 
 describe('w-card (unit)', () => {
     const component = (data?: MountOptions<InstanceType<typeof WCard>>) => mount(WCard, data);
