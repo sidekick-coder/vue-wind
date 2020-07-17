@@ -11,7 +11,7 @@ title: Card component
 
 <w-card max-width="300px" class="mx-auto">
 
-![game](/images/game-sample.jpg)
+<img :src="$withBase('/images/game-sample.jpg')" alt="game-sample">
 
 <w-card-title class='font-bold'>Game Life</w-card-title>
 
