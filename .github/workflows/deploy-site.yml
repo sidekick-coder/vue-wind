@@ -19,7 +19,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: install_dependences
+      - name: install_dependencies
         run: npm install
 
       - name: build vuepress
@@ -30,3 +30,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/.vuepress/dist
+          commit_message: ${{ github.event.head_commit.message }}
