@@ -1,6 +1,6 @@
 {
   "name": "vue-wind",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "vue components using tailwind styles",
   "main": "dist/index.js",
   "types": "@types/index.d.ts",
@@ -11,7 +11,8 @@
     "clean": "rm -rf dist && rm -rf @types",
     "watch": "webpack --mode=production --watch",
     "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs"
+    "docs:dev": "vuepress dev docs",
+    "prepublish": "npm run build && npm run test"
   },
   "husky": {
     "hooks": {
