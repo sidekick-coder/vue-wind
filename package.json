@@ -11,7 +11,8 @@
     "clean": "rm -rf dist && rm -rf @types",
     "watch": "webpack --mode=production --watch",
     "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs"
+    "docs:dev": "vuepress dev docs",
+    "prepublish": "npm run build && npm run test"
   },
   "husky": {
     "hooks": {
