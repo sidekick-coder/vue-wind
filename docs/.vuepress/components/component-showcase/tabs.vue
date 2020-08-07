@@ -3,7 +3,7 @@
         <div class="flex flex-col border-r w-2/12 text-left">
             <template v-for='(tab, name) in tabs'>
                 <w-btn
-                    v-if="tab"
+                    v-if="componentOptions[name]"
                     :key="name"
                     :text='name !== active'
                     :color='name === active ? "teal-500" : ""'
@@ -15,10 +15,13 @@
         </div>
         <div class='w-full overflow-x-auto'>
             <div v-if='active === "props"'>
-                <component-showcase-props :props-data='tabs.props' />
+                <component-showcase-props :props-options='tabs.props' :exclude-props='componentOptions.excludeProps' />
             </div>
             <div v-if='active === "events"'>
                 <component-showcase-events :events-data='tabs.events' />
+            </div>
+            <div v-if='active === "methods"'>
+                <component-showcase-methods :methods-data='tabs.methods' />
             </div>
         </div>
     </w-card>
@@ -37,11 +40,9 @@ export default {
     },
     data(){
         return {
-            active: 'props',
+            active: null,
             capitalize,
-            tabs: {
-                props: null,
-            },
+            tabs: {},
         };
     },
     watch: {
@@ -52,9 +53,19 @@ export default {
     },
     methods: {
         load(){
-            this.active = 'props';
-            this.tabs.props = this.componentOptions.props || null;
-            this.tabs.events = this.componentOptions.events || null;
+            const { props, events, methods }  = this.componentOptions;
+            if (props) {
+                this.tabs.props = this.componentOptions.props;
+            }
+            if (events) {
+                this.tabs.events = this.componentOptions.events;
+            }
+            
+            if (methods) {
+                this.tabs.methods = this.componentOptions.methods;
+            }
+            
+            this.active = Object.keys(this.tabs)[0];
         },
        
     }

@@ -21,6 +21,12 @@ declare module 'vue/types/options' {
           description: string
         }
       }
+      methods?: {
+        [prop: string]: {
+          description: string,
+          returns: string,
+        }
+      }
     };
   }
 
