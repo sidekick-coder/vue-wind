@@ -7,7 +7,7 @@
             :is='component'
             v-bind="$attrs"
             :class="['mt-2', inputClasses]"
-            :value='lazyValue'
+            :value='inputModel'
             @input="e => inputModel = e.target.value"
         />
       </label>
@@ -16,29 +16,34 @@
         :is='component'
         v-bind="$attrs"
         :class="inputClasses"
-        :value='lazyValue'
+        :value='inputModel'
         @input="e => inputModel = e.target.value"
         />
     </div>
     <w-transition-slide-down>
-      <div class="my-2 text-red-500 text-xs" v-if="errorMessage">
-        {{errorMessage}}
-      </div>
+      <div
+        v-if="errorMessage"
+        class="my-2 text-red-500 text-xs"
+        v-text="errorMessage" />
     </w-transition-slide-down>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+
+import WTransitionSlideDown from '../w-transition/slide-down.vue';
 import { Props, Computed, Methods } from './types';
 
 interface Data {
   errorMessage: string | null;
-  lazyValue: string | number | null;
 }
 
 export default Vue.extend<Data, Methods, Computed, Props>({
     name: 'WInput',
+    components: {
+        WTransitionSlideDown
+    },
     props: {
         value: {
             type: [String, Number],
@@ -105,19 +110,17 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
     data () {
         return {
-            errorMessage: null,
-            lazyValue: this.value
+            errorMessage: null
         };
     },
     computed: {
         inputModel: {
             get () {
-                return this.lazyValue;
+                return this.value;
             },
             set (value) {
-                this.lazyValue = value;
-                this.validate();
                 this.$emit('update:value', value);
+                this.validate();
             }
         },
         inputClasses () {
@@ -130,7 +133,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
                 classes.push(
                     `border-${this.borderColor}`,
                     `text-${this.textColor}`,
-                    `focus:boder-${this.focusBorderColor}`
+                    `focus:border-${this.focusBorderColor}`
                 );
             }
 
