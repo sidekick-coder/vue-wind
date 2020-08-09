@@ -35,4 +35,4 @@ Vue.use(VueWind);
 
 ```
 
-Finaly you can use all the components avaliable in the framework, check the list in the [site](https://htron-dev.github.io/vue-wind/components/btn.html)
+Finaly you can use all the components avaliable in the framework, check the list in the [site](https://htron-dev.github.io/vue-wind)
