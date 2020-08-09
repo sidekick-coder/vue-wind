@@ -5,7 +5,7 @@ export default Vue.extend({
     name: 'WTextField',
     functional: true,
     model: {
-        event: 'model:update'
+        event: 'update:value'
     },
     render (createElement, { data, children }) {
         const input = createElement(WInput, {
