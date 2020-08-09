@@ -231,17 +231,16 @@ describe('w-input (unit)', () => {
         });
         it('should when set inputModel call validate() method', async () => {
             const randomValue = faker.random.words(5);
-            const validate = sinon.stub();
             const wrapper = component({
-                methods: { validate },
                 propsData: { value: randomValue }
             });
+            const validateSpy = sinon.spy((wrapper.vm as any), 'validate');
 
             wrapper.find('input').trigger('input');
 
             await wrapper.vm.$nextTick();
 
-            sinon.assert.calledOnce(validate);
+            sinon.assert.calledOnce(validateSpy);
         });
         it('should when set inputModel emit event "update:value"', async () => {
             const randomValue = faker.random.words(5);
