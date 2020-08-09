@@ -7,11 +7,6 @@ const navbar = require("./navbar");
 
 const componentsDocs = getComponentsDocs();
 
-const sidebarComponentsLinks = componentsDocs.map(c => ({
-    title: c.frontmatter.componentName,
-    path: c.path,
-}));
-
 module.exports = {
     base: process.env.NODE_ENV === "production" ? "/vue-wind/" : "/",
     build: {
@@ -19,6 +14,16 @@ module.exports = {
     },
     title: packageJSON.name,
     description: packageJSON.description,
+    head: [
+        ['meta', { property: 'og:type', content: 'website' }],
+        ['meta', { property: 'og:title', content: packageJSON.name }],
+        ['meta', { property: 'og:description', content: packageJSON.description }],
+        ['meta', { property: 'og:url', content: packageJSON.homepage }],
+        ['meta', { property: 'og:site_name', content: packageJSON.name }],
+        ['meta', { property: 'og:image', content: 'https://raw.githubusercontent.com/htron-dev/vue-wind/master/screenshots/vue-wind.jpg' }],
+        ['meta', { property: 'og:image:with', content: '1024' }],
+        ['meta', { property: 'og:image:height', content: '768' }],
+    ],
     async additionalPages(){
         return componentsDocs;
     },
@@ -38,10 +43,6 @@ module.exports = {
                     transpileOnly: true,
                     compilerOptions: {}
                 },
-            },
-            'register-components',
-            {
-                componentsDir: "../../src/components"
             },
         ],
     ],

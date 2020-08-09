@@ -3,14 +3,15 @@
         Error component
     </w-card>
     <w-card v-else>
-        <div class='border-b flex'>
+        <div class='flex'>
             <w-btn
                 v-for='(component, index) in components'
                 :key='index'
                 color='teal-500'
                 style='min-width:160px'
                 @click='active = index'
-                :text="index !== active">
+                :text="index !== active"
+            >
                 {{component.name}}
             </w-btn>
         </div>
@@ -26,7 +27,7 @@ import { upperFirst, camelCase } from 'lodash';
 export default {
     props: {
         componentNames: {
-            type: [String, Array],
+            type: [String, Array, Object],
             required: true,
             default: () => []
         },
@@ -34,7 +35,7 @@ export default {
     data () {
         return {
             components: [],
-            active: null,
+            active: 0,
         }
     },
     created(){
@@ -42,36 +43,55 @@ export default {
     },
     methods: {
         load (){
-            let names = [];
-            
-            if (typeof this.componentNames === "string") {
-                names.push(this.componentNames);
-            } else {
-                names = this.componentNames;
+
+            if (Array.isArray(this.componentNames)) {
+                this.setComponents(this.componentNames)
+            } else if (typeof this.componentNames === "object") {
+                this.addComponentViewObject(this.componentNames);
+            } else if (typeof this.componentNames === "string") {
+                this.addComponentViewString(this.componentNames)
             }
-            
-            this.setComponents(names);
         },
-        setComponents(names){
-            const components = [];
-            names.forEach(name => {
-                const globalName = upperFirst(camelCase(name));
-                const componentData = this.$root.$options.components[globalName];
-                if (componentData) {
-                    components.push(this.getComponentData(componentData.options, name));
+        addComponentViewObject(component){
+            const mainComponent = this.getComponentData(component.name, component.excludeProps);
+            if (component.merge) {
+                component.merge.forEach(c => {
+                    const options = this.getComponentData(c, component.excludeProps);
+                    mainComponent.props = Object.assign(mainComponent.props || {}, options.props);
+                    mainComponent.events = Object.assign(mainComponent.events || {}, options.events);
+                    mainComponent.methods = Object.assign(mainComponent.methods || {}, options.methods);
+                })
+            }
+            this.components.push(mainComponent);
+        },
+        addComponentViewString(componentName){
+            this.components.push(
+                this.getComponentData(componentName)
+            );
+        },
+        setComponents(components){
+            components.forEach(component => {
+                if (typeof component === 'string') {
+                    this.addComponentViewString(component);
+                } else {
+                    this.addComponentViewObject(component);
                 }
             });
-            if (components.length) {
-                this.components = components;
-                this.active = 0;
-            }
         },
-        getComponentData(componentOptions, name) {
-            const { props, docs } = componentOptions;
+        getComponentData(componentName, excludeProps = []) {
+            const globalName = upperFirst(camelCase(componentName));
+            const componentData = this.$root.$options.components[globalName];
+            if (!componentData) {
+                return { name: componentName, props: {}, events: {} };
+            }
+            
+            const { props, docs } = componentData.options;
 
             const component = {
-                name,
-                props,
+                name: componentName,
+                props: props ?? null,
+                methods: docs ? docs.methods : null,
+                excludeProps,
                 events: docs ? docs.events : null
             }
 
