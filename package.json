@@ -34,7 +34,7 @@
   "bugs": {
     "url": "https://github.com/htron-dev/vue-wind/issues"
   },
-  "homepage": "https://github.com/htron-dev/vue-wind#readme",
+  "homepage": "https://htron-dev.github.io/vue-wind",
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
