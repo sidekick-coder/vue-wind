@@ -88,8 +88,6 @@ import { Rule } from 'vue-wind/@types/components/w-input';
 
 type State {
         model: string,
-        email: string,
-        phone: string,
         rules: Rule[]
 }
 
