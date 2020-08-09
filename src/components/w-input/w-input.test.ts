@@ -204,14 +204,19 @@ describe('w-input (unit)', () => {
                 sinon.stub()
             ];
 
-            const wrapper = component({
-                propsData: {
-                    value: randomValue,
-                    rules
-                }
+            const wrapper = mount({
+                data: () => ({ model: '', rules }),
+                components: { WInput },
+                template: `
+                    <div>
+                        <w-input v-model='model' :rules='rules'  />
+                    </div>
+                `
             });
 
-            wrapper.find('input').trigger('input');
+            wrapper.find('input').setValue(randomValue);
+
+            await wrapper.vm.$nextTick();
 
             rules.forEach(rule => {
                 sinon.assert.calledOnceWithExactly(rule, randomValue);
@@ -230,13 +235,12 @@ describe('w-input (unit)', () => {
             expect((wrapper.vm as any).inputModel).to.be.equal(randomValue);
         });
         it('should when set inputModel call validate() method', async () => {
-            const randomValue = faker.random.words(5);
             const wrapper = component({
-                propsData: { value: randomValue }
+                propsData: { value: '' }
             });
             const validateSpy = sinon.spy((wrapper.vm as any), 'validate');
 
-            wrapper.find('input').trigger('input');
+            wrapper.setProps({ value: faker.random.words(5) });
 
             await wrapper.vm.$nextTick();
 

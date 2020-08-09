@@ -13,7 +13,7 @@ export interface Props {
 }
 
 export interface Methods {
-    validate: () => void;
+    validate: () => boolean;
 }
 
 export interface Computed {

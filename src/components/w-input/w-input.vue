@@ -48,7 +48,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         value: {
             type: [String, Number],
             required: false,
-            default: null
+            default: ''
         },
         component: {
             type: String,
@@ -103,6 +103,12 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             'update:value': {
                 description: 'update model value'
             }
+        },
+        methods: {
+            validate: {
+                description: 'validate value and show errors',
+                returns: 'boolean'
+            }
         }
     },
     model: {
@@ -120,7 +126,6 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             },
             set (value) {
                 this.$emit('update:value', value);
-                this.validate();
             }
         },
         inputClasses () {
@@ -138,6 +143,11 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             }
 
             return classes.concat(defaultClasses);
+        }
+    },
+    watch: {
+        inputModel () {
+            this.validate();
         }
     },
     methods: {
