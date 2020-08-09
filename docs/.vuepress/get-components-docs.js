@@ -7,7 +7,7 @@ const getComponentsDocs = () => {
     const folders = glob.sync(`${dirname}/*`);
     folders.forEach(folder => {
         const [markDownFile] = glob.sync(`${folder}/documentation.md`);
-        const componentName = path.basename(folder).replace("w-", "");
+        const componentName = path.basename(folder);
         
         if (!markDownFile) {
             return;

@@ -3,14 +3,15 @@
         Error component
     </w-card>
     <w-card v-else>
-        <div class='border-b flex'>
+        <div class='flex'>
             <w-btn
                 v-for='(component, index) in components'
                 :key='index'
                 color='teal-500'
                 style='min-width:160px'
                 @click='active = index'
-                :text="index !== active">
+                :text="index !== active"
+            >
                 {{component.name}}
             </w-btn>
         </div>

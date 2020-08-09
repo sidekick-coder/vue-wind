@@ -10,10 +10,11 @@
                     text
                     v-text="capitalize(name)"
                     @click='active = name'
+                    class="text-left"
                 />
             </template>
         </div>
-        <div class='w-full overflow-x-auto'>
+        <div class='w-full overflow-x-auto  border-t'>
             <div v-if='active === "props"'>
                 <component-showcase-props :props-options='tabs.props' :exclude-props='componentOptions.excludeProps' />
             </div>
@@ -54,19 +55,30 @@ export default {
     methods: {
         load(){
             const { props, events, methods }  = this.componentOptions;
-            if (props) {
+            if (this.haveData(props)) {
                 this.tabs.props = this.componentOptions.props;
             }
-            if (events) {
+            if (this.haveData(events)) {
                 this.tabs.events = this.componentOptions.events;
             }
             
-            if (methods) {
+            if (this.haveData(methods)) {
                 this.tabs.methods = this.componentOptions.methods;
             }
             
             this.active = Object.keys(this.tabs)[0];
         },
+        haveData(value){
+            if (!value) {
+                return false;
+            }
+
+            if (!Object.keys(value).length) {
+                return false;
+            }
+
+            return true;
+        }
        
     }
 }
