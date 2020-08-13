@@ -110,10 +110,12 @@ describe('w-input (unit)', () => {
     });
 
     describe('props', () => {
-        it('should create a element with the name in component prop', () => {
+        it('should create a element with the name in component data', () => {
             const wrapper = component({
-                propsData: {
-                    component: 'textarea'
+                data () {
+                    return {
+                        component: 'textarea'
+                    };
                 }
             });
 
@@ -150,6 +152,21 @@ describe('w-input (unit)', () => {
             expect(input.attributes('class')).to.includes(randomClass);
         });
 
+        it('should input have border color class of color prop', () => {
+            const randomColor = faker.random.arrayElement(['teal', 'blue', 'red']);
+
+            const wrapper = component({
+                propsData: {
+                    label: faker.random.word(),
+                    color: randomColor
+                }
+            });
+
+            const input = wrapper.find('input');
+
+            expect(input.attributes('class')).to.includes(`border-${randomColor}`);
+        });
+
         it('should input have text color class of textColor prop', () => {
             const randomColor = faker.random.arrayElement(['teal', 'blue', 'red']);
 
@@ -165,34 +182,34 @@ describe('w-input (unit)', () => {
             expect(input.attributes('class')).to.includes(`text-${randomColor}`);
         });
 
-        it('should input have border color class of borderColor prop', () => {
+        it('should input have focus border color class of focus:color prop', () => {
             const randomColor = faker.random.arrayElement(['teal', 'blue', 'red']);
 
             const wrapper = component({
                 propsData: {
                     label: faker.random.word(),
-                    borderColor: randomColor
-                }
-            });
-
-            const input = wrapper.find('input');
-
-            expect(input.attributes('class')).to.includes(`border-${randomColor}`);
-        });
-
-        it('should input have focus border color class of focusBorderColor prop', () => {
-            const randomColor = faker.random.arrayElement(['teal', 'blue', 'red']);
-
-            const wrapper = component({
-                propsData: {
-                    label: faker.random.word(),
-                    focusBorderColor: randomColor
+                    'focus:color': randomColor
                 }
             });
 
             const input = wrapper.find('input');
 
             expect(input.attributes('class')).to.includes(`focus:border-${randomColor}`);
+        });
+
+        it('should input have focus text color class of focus:textColor prop', () => {
+            const randomColor = faker.random.arrayElement(['teal', 'blue', 'red']);
+
+            const wrapper = component({
+                propsData: {
+                    label: faker.random.word(),
+                    'focus:textColor': randomColor
+                }
+            });
+
+            const input = wrapper.find('input');
+
+            expect(input.attributes('class')).to.includes(`focus:text-${randomColor}`);
         });
 
         it('should call all functions in rules props when v-model changes', async () => {
@@ -262,30 +279,58 @@ describe('w-input (unit)', () => {
         });
         it('should inputClasses have classes of props defaultInputClass and colors classes', () => {
             const defaultInputClass = faker.random.words(5);
-            const textColor = faker.random.arrayElement(['teal', 'blue', 'red']);
-            const borderColor = faker.random.arrayElement(['teal', 'blue', 'red']);
-            const focusBorderColor = faker.random.arrayElement(['teal', 'blue', 'red']);
+            const color = faker.random.arrayElement(['teal', 'blue', 'red']);
+            const focusColor = faker.random.arrayElement(['teal', 'blue', 'red']);
 
             const wrapper = component({
-                propsData: { defaultInputClass, textColor, borderColor, focusBorderColor }
+                propsData: { defaultInputClass, color, 'focus:color': focusColor }
             });
 
             expect((wrapper.vm as any).inputClasses)
                 .to.includes(defaultInputClass)
-                .and.includes(`text-${textColor}`)
-                .and.includes(`border-${borderColor}`)
-                .and.includes(`focus:border-${focusBorderColor}`);
+                .and.includes(`border-${color}`)
+                .and.includes(`focus:border-${focusColor}`);
         });
+
         it('should inputClasses have error classes when errorMessage is not null', () => {
+            const errorColor = faker.random.arrayElement(['red-500', 'red-600', 'red-700']);
             const wrapper = component({
+                propsData: { 'error:color': errorColor },
                 data: function () {
                     return { errorMessage: faker.random.words() };
                 }
             });
 
             expect((wrapper.vm as any).inputClasses)
-                .to.includes('border-red-500')
-                .and.includes('text-red-500');
+                .to.includes(`border-${errorColor}`)
+                .and.includes(`text-${errorColor}`);
+        });
+
+        it('should labelClasses have same classes in defaultLabelClasses and color', () => {
+            const defaultLabelClass = faker.random.words(5);
+            const color = faker.random.arrayElement(['teal', 'blue', 'red']);
+            const focusColor = faker.random.arrayElement(['teal', 'blue', 'red']);
+            const wrapper = component({
+                propsData: {
+                    defaultLabelClass, color, 'focus:color': focusColor
+                }
+            });
+
+            expect((wrapper.vm as any).labelClasses)
+                .to.includes(defaultLabelClass)
+                .and.includes(`text-${color}`);
+        });
+
+        it('should labelClasses have error classes when errorMessage is not null', () => {
+            const errorColor = faker.random.arrayElement(['red-500', 'red-600', 'red-700']);
+            const wrapper = component({
+                propsData: { 'error:color': errorColor },
+                data: function () {
+                    return { errorMessage: faker.random.words() };
+                }
+            });
+
+            expect((wrapper.vm as any).labelClasses).to.includes(`text-${errorColor}`);
         });
     });
 
