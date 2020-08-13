@@ -5,7 +5,7 @@
 <script>
 export default {
     data: () => ({
-        componentNames: { name: 'w-text-field', merge: ['w-input'], excludeProps: ['component'] }
+        componentNames: 'w-text-field'
     })
 };
 </script>

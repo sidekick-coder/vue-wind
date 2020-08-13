@@ -1,7 +1,7 @@
 <template>
   <div v-on="$listeners">
     <div>
-      <label v-if="label" :class="[defaultLabelClass, errorMessage ? 'text-red-500' : '']">
+      <label v-if="label" :class="labelClasses">
         {{label}}
         <component
             :is='component'
@@ -33,11 +33,7 @@
 import Vue from 'vue';
 
 import WTransitionSlideDown from '../w-transition/slide-down.vue';
-import { Props, Computed, Methods } from './types';
-
-interface Data {
-  errorMessage: string | null;
-}
+import { Props, Computed, Methods, Data } from './types';
 
 export default Vue.extend<Data, Methods, Computed, Props>({
     name: 'WInput',
@@ -49,11 +45,6 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             type: [String, Number],
             required: false,
             default: ''
-        },
-        component: {
-            type: String,
-            required: false,
-            default: 'input'
         },
         label: {
             type: String,
@@ -73,24 +64,35 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             default: () => [
                 'appearance-none focus:outline-none',
                 'shadow rounded w-full leading-tight',
+                'transition-border-color duration-200',
                 'py-2 px-3',
                 'border'
             ]
         },
-        textColor: {
-            type: String,
-            required: false,
-            default: 'gray-700'
-        },
-        borderColor: {
+        color: {
             type: String,
             required: false,
             default: 'gray-300'
         },
-        focusBorderColor: {
+        textColor: {
             type: String,
             required: false,
-            default: 'teal-500'
+            default: 'gray-800'
+        },
+        'focus:color': {
+            type: String,
+            required: false,
+            default: 'blue-500'
+        },
+        'focus:textColor': {
+            type: String,
+            required: false,
+            default: 'gray-800'
+        },
+        'error:color': {
+            type: String,
+            required: false,
+            default: 'red-500'
         },
         rules: {
             type: Array,
@@ -116,7 +118,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
     data () {
         return {
-            errorMessage: null
+            errorMessage: null,
+            component: 'input'
         };
     },
     computed: {
@@ -133,12 +136,32 @@ export default Vue.extend<Data, Methods, Computed, Props>({
             const defaultClasses = Array.isArray(this.defaultInputClass) ? this.defaultInputClass : [this.defaultInputClass];
 
             if (this.errorMessage) {
-                classes.push('border-red-500', 'text-red-500');
+                classes.push(
+                    `border-${this['error:color']}`,
+                    `text-${this['error:color']}`
+                );
             } else {
                 classes.push(
-                    `border-${this.borderColor}`,
+                    `border-${this.color}`,
                     `text-${this.textColor}`,
-                    `focus:border-${this.focusBorderColor}`
+                    `focus:border-${this['focus:color']}`,
+                    `focus:text-${this['focus:textColor']}`
+                );
+            }
+
+            return classes.concat(defaultClasses);
+        },
+        labelClasses () {
+            const classes = [];
+            const defaultClasses = Array.isArray(this.defaultLabelClass) ? this.defaultLabelClass : [this.defaultLabelClass];
+
+            if (this.errorMessage) {
+                classes.push(
+                    `text-${this['error:color']}`
+                );
+            } else {
+                classes.push(
+                    `text-${this.color}`
                 );
             }
 

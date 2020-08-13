@@ -20,7 +20,7 @@ export default {
         }
     },
     mounted () {
-        const inputNames = ['WInput'];
+        const inputNames = ['WInput', 'WTextField', 'WTextarea'];
         this.inputs = this.$children
             .filter(child => inputNames.includes(child.$options.name));
     },

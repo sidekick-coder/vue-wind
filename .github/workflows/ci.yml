@@ -1,4 +1,4 @@
-name: Project ci
+name: Ci
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: install_dependences
+      - name: install_dependencies
         run: npm install
 
       - name: lint
