@@ -116,11 +116,11 @@ export default defineComponent({
 ## Colors
 <component-code-view>
 <div class='grid md:grid-cols-5 gap-2'>
-    <w-text-field value='Input Teal' border-color='teal-500' text-color='teal-500' />
-    <w-text-field value='Input Blue' border-color='blue-500' text-color='blue-500' />
-    <w-text-field value='Input Red' border-color='red-500' text-color='red-500' />
-    <w-text-field value='Input Yellow' border-color='yellow-500' text-color='yellow-500' />
-    <w-text-field value='Input Purple' border-color='purple-500' text-color='purple-500' />
+    <w-text-field label='Teal' color='teal-400' focus:color='teal-500' />
+    <w-text-field label='Blue' color='blue-400' focus:color='blue-500' />
+    <w-text-field label='Red' color='red-400' focus:color='red-500' />
+    <w-text-field label='Yellow' color='yellow-400' focus:color='yellow-500' />
+    <w-text-field label='purple' color='purple-400' focus:color='purple-500' />
 </div>
 
 ::: slot template
@@ -128,11 +128,38 @@ export default defineComponent({
 ```vue
 <template>
     <div class='grid md:grid-cols-5 gap-2'>
-        <w-text-field value='Input Teal' border-color='teal-500' text-color='teal-500' />
-        <w-text-field value='Input Blue' border-color='blue-500' text-color='blue-500' />
-        <w-text-field value='Input Red' border-color='red-500' text-color='red-500' />
-        <w-text-field value='Input Yellow' border-color='yellow-500' text-color='yellow-500' />
-        <w-text-field value='Input Purple' border-color='purple-500' text-color='purple-500' />
+        <w-text-field label='Teal' color='teal-400' focus:color='teal-500' />
+        <w-text-field label='Blue' color='blue-400' focus:color='blue-500' />
+        <w-text-field label='Red' color='red-400' focus:color='red-500' />
+        <w-text-field label='Yellow' color='yellow-400' focus:color='yellow-500' />
+        <w-text-field label='purple' color='purple-400' focus:color='purple-500' />
+    </div>
+</template>
+```
+
+:::
+</component-code-view>
+
+## Focus Colors
+<component-code-view>
+<div class='grid md:grid-cols-5 gap-2'>
+    <w-text-field label='Focus teal' focus:color='teal-500' />
+    <w-text-field label='Focus blue' focus:color='blue-500' />
+    <w-text-field label='Focus red' focus:color='red-500' />
+    <w-text-field label='Focus yellow' focus:color='yellow-500' />
+    <w-text-field label='Focus purple' focus:color='purple-500' />
+</div>
+
+::: slot template
+
+```vue
+<template>
+    <div class='grid md:grid-cols-5 gap-2'>
+        <w-text-field label='Focus teal' focus:color='teal-500' />
+        <w-text-field label='Focus blue' focus:color='blue-500' />
+        <w-text-field label='Focus red' focus:color='red-500' />
+        <w-text-field label='Focus yellow' focus:color='yellow-500' />
+        <w-text-field label='Focus purple' focus:color='purple-500' />
     </div>
 </template>
 ```
