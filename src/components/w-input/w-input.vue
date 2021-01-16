@@ -9,7 +9,17 @@
             :class="['mt-2', inputClasses]"
             :value='inputModel'
             @input="e => inputModel = e.target.value"
-        />
+        >
+            <template v-if="childrens.length">
+                <component
+                    v-for="(child, index) in childrens"
+                    :is="child.component"
+                    :key="index"
+                    v-bind="child.attrs"
+                    v-text="child.content"
+                />
+            </template>
+        </component>
       </label>
       <component
         v-else
@@ -18,7 +28,17 @@
         :class="inputClasses"
         :value='inputModel'
         @input="e => inputModel = e.target.value"
-        />
+        >
+             <template v-if="childrens.length">
+                <component
+                    v-for="(child, index) in childrens"
+                    :is="child.component"
+                    :key="index || child.key"
+                    v-bind="child.attrs"
+                    v-text="child.content"
+                />
+            </template>
+        </component>
     </div>
     <w-transition-slide-down>
       <div
@@ -66,7 +86,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
                 'shadow rounded w-full leading-tight',
                 'transition-border-color duration-200',
                 'py-2 px-3',
-                'border'
+                'border',
+                'bg-white'
             ]
         },
         color: {
@@ -119,7 +140,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     data () {
         return {
             errorMessage: null,
-            component: 'input'
+            component: 'input',
+            childrens: []
         };
     },
     computed: {
