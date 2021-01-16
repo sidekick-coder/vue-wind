@@ -10,9 +10,9 @@
             :value='inputModel'
             @input="e => inputModel = e.target.value"
         >
-            <template v-if="childrens.length">
+            <template v-if="children.length">
                 <component
-                    v-for="(child, index) in childrens"
+                    v-for="(child, index) in children"
                     :is="child.component"
                     :key="index"
                     v-bind="child.attrs"
@@ -29,9 +29,9 @@
         :value='inputModel'
         @input="e => inputModel = e.target.value"
         >
-             <template v-if="childrens.length">
+             <template v-if="children.length">
                 <component
-                    v-for="(child, index) in childrens"
+                    v-for="(child, index) in children"
                     :is="child.component"
                     :key="index || child.key"
                     v-bind="child.attrs"
@@ -141,7 +141,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         return {
             errorMessage: null,
             component: 'input',
-            childrens: []
+            children: []
         };
     },
     computed: {

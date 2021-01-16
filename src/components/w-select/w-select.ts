@@ -1,6 +1,6 @@
 import WInput from '../w-input';
 
-export default WInput.extend({
+export default WInput.extend<any, any, any, any>({
     name: 'WSelect',
     props: {
         items: {
@@ -14,7 +14,7 @@ export default WInput.extend({
         };
     },
     created () {
-        this.childrens = this.items.map(item => ({
+        this.children = this.items.map((item: any) => ({
             component: 'option',
             content: item,
             attrs: {
