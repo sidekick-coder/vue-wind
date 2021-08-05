@@ -6,6 +6,9 @@
 
 ![Circle ci](https://github.com/htron-dev/vue-wind/workflows/Project%20ci/badge.svg) ![version](https://badge.fury.io/js/vue-wind.svg) 
 
+## :warning: Not supported anymore
+check others solutions:
+- https://github.com/tailwindlabs/headlessui
 
 # Getting stated
 
