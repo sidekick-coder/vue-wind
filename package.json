@@ -20,6 +20,8 @@
         "url": "https://github.com/htron-dev/vue-wind/issues"
     },
     "homepage": "https://htron-dev.github.io/vue-wind",
-    "devDependencies": {},
+    "devDependencies": {
+        "vite": "^2.8.4"
+    },
     "dependencies": {}
 }
