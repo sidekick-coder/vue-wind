@@ -2,8 +2,12 @@ import { Plugin } from "vue";
 import { getComponents } from "./get-components";
 
 const plugin: Plugin = {
-    install() {
-        console.log("plugin installed", console.log(getComponents()));
+    install(app) {
+        const components = getComponents();
+
+        Object.entries(components).forEach(([name, component]) => {
+            app.component(name, component);
+        });
     },
 };
 

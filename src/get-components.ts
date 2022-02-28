@@ -1,12 +1,16 @@
+import { startCase } from "lodash";
+
 export function getComponents() {
-    const files = import.meta.glob("./components/**/*.vue");
+    const files = import.meta.globEager("./components/**/*.vue");
 
     const components: Record<string, any> = {};
 
     Object.entries(files).forEach(([filename, component]) => {
-        const name = filename.replace(/^.*[\\\/]/, "").replace(".vue", "");
+        const name = startCase(
+            filename.replace(/^.*[\\\/]/, "").replace(".vue", "")
+        ).replace(/ /g, "");
 
-        components[name] = component;
+        components[name] = component.default;
     });
 
     return components;
