@@ -11,7 +11,7 @@ const props = defineProps({
     },
     width: {
         type: String,
-        default: "300px",
+        default: "[300px]",
     },
 });
 
@@ -41,9 +41,7 @@ function setSizes() {
 function setClasses() {
     const builder = useClassBuilder();
 
-    builder
-        .add(`w-[${props.width}]`, `h-[${height.value}]`)
-        .add("overflow-auto");
+    builder.add(`w-${props.width}`, `h-[${height.value}]`).add("overflow-auto");
 
     classes.value = builder.classes;
 }
