@@ -1,7 +1,17 @@
-import { describe, it, assert } from "vitest";
-import { mount } from "@vue/test-utils";
+import { describe, it, assert, afterEach, beforeEach } from "vitest";
+import { mount, VueWrapper } from "@vue/test-utils";
 
 import WCard from "./w-card.vue";
+
+let wrapper: VueWrapper;
+
+beforeEach(() => {
+    wrapper = mount(WCard);
+});
+
+afterEach(() => {
+    wrapper.unmount();
+});
 
 describe("w-card", () => {
     it("should render the content", () => {

@@ -1,18 +1,24 @@
 import { describe, it, assert, vi, afterEach } from "vitest";
 import { nextTick } from "vue";
-import { mount } from "@vue/test-utils";
+import { mount, VueWrapper } from "@vue/test-utils";
 
 import WLayout from "@/components/w-layout/w-layout.vue";
 import WToolbar from "@/components/w-toolbar/w-toolbar.vue";
 import WDrawer from "./w-drawer.vue";
 
-describe("w-drawer", () => {
-    afterEach(() => {
-        vi.resetAllMocks();
-    });
+let wrapper: VueWrapper;
 
+afterEach(() => {
+    vi.resetAllMocks();
+
+    if (wrapper) {
+        wrapper.unmount();
+    }
+});
+
+describe("w-drawer", () => {
     it("should set width class using component prop", async () => {
-        const wrapper = mount(WDrawer, {
+        wrapper = mount(WDrawer, {
             props: {
                 width: "[200px]",
             },
@@ -27,7 +33,7 @@ describe("w-drawer", () => {
             template: `<w-layout> <w-drawer layout />  </w-layout>`,
         };
 
-        const wrapper = mount(component);
+        wrapper = mount(component);
 
         await nextTick();
 
@@ -50,7 +56,7 @@ describe("w-drawer", () => {
                 </w-layout>`,
         };
 
-        const wrapper = mount(component);
+        wrapper = mount(component);
         const drawer = wrapper.findComponent(WDrawer);
         const toolbar = wrapper.findComponent(WToolbar);
 

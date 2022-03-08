@@ -1,23 +1,29 @@
 import { describe, it, assert, vi, afterEach } from "vitest";
 import { nextTick } from "vue";
-import { mount } from "@vue/test-utils";
+import { mount, VueWrapper } from "@vue/test-utils";
 
 import WLayout from "@/components/w-layout/w-layout.vue";
 import WToolbar from "@/components/w-toolbar/w-toolbar.vue";
 import WContent from "./w-content.vue";
 
-describe("w-content", () => {
-    afterEach(() => {
-        vi.resetAllMocks();
-    });
+let wrapper: VueWrapper;
 
+afterEach(() => {
+    vi.resetAllMocks();
+
+    if (wrapper) {
+        wrapper.unmount();
+    }
+});
+
+describe("w-content", () => {
     it("should the height be 100% when toolbarRef not exist", async () => {
         const component = {
             components: { WContent, WLayout },
             template: `<w-layout> <w-content layout></w-content>  </w-layout>`,
         };
 
-        const wrapper = mount(component);
+        wrapper = mount(component);
 
         await nextTick();
 
@@ -40,7 +46,7 @@ describe("w-content", () => {
                 </w-layout>`,
         };
 
-        const wrapper = mount(component);
+        wrapper = mount(component);
         const content = wrapper.findComponent(WContent);
         const toolbar = wrapper.findComponent(WToolbar);
 

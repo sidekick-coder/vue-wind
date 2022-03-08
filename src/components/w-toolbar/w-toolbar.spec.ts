@@ -1,11 +1,19 @@
-import { assert, describe, it } from "vitest";
-import { mount } from "@vue/test-utils";
+import { afterEach, assert, describe, it } from "vitest";
+import { mount, VueWrapper } from "@vue/test-utils";
 
 import WToolbar from "./w-toolbar.vue";
 
+let wrapper: VueWrapper;
+
+afterEach(() => {
+    if (wrapper) {
+        wrapper.unmount();
+    }
+});
+
 describe("w-toolbar", () => {
     it("should set height class using component prop", () => {
-        const wrapper = mount(WToolbar, {
+        wrapper = mount(WToolbar, {
             props: {
                 height: "[200px]",
             },
@@ -15,7 +23,7 @@ describe("w-toolbar", () => {
     });
 
     it("should set color class using component prop", () => {
-        const wrapper = mount(WToolbar, {
+        wrapper = mount(WToolbar, {
             props: {
                 color: "[#eee]",
             },
