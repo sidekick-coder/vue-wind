@@ -78,4 +78,14 @@ describe("w-card", () => {
 
         assert.include(wrapper.attributes("class"), "min-h-[500px]");
     });
+
+    it("should set card color", () => {
+        wrapper = mount(WCard, {
+            props: {
+                color: "[#eee]",
+            },
+        });
+
+        assert.include(wrapper.attributes("class"), "bg-[#eee]");
+    });
 });

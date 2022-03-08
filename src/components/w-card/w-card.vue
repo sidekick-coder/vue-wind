@@ -18,6 +18,10 @@ const props = defineProps({
         type: String,
         default: null,
     },
+    color: {
+        type: String,
+        default: "white",
+    },
 });
 
 const builder = useClassBuilder();
@@ -25,6 +29,8 @@ const builder = useClassBuilder();
 builder.add("shadow-md rounded");
 
 builder.add(`w-${props.width}`);
+
+builder.add(`bg-${props.color}`);
 
 if (props.maxWidth) {
     builder.add(`max-w-${props.maxWidth}`);
