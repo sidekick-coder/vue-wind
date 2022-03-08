@@ -37,7 +37,7 @@ describe("w-card", () => {
         assert.notInclude(wrapper.attributes("class"), "max-w");
     });
 
-    it("should use max-width class based in prop value", () => {
+    it("should have max-width class", () => {
         wrapper = mount(WCard, {
             props: {
                 maxWidth: "[500px]",
@@ -45,5 +45,37 @@ describe("w-card", () => {
         });
 
         assert.include(wrapper.attributes("class"), "max-w-[500px]");
+    });
+
+    it("should not set height by default", () => {
+        wrapper = mount(WCard);
+
+        assert.notInclude(wrapper.attributes("class"), "h-");
+    });
+
+    it("should set height", () => {
+        wrapper = mount(WCard, {
+            props: {
+                height: "[500px]",
+            },
+        });
+
+        assert.include(wrapper.attributes("class"), "h-[500px]");
+    });
+
+    it("should not set min-height by default", () => {
+        wrapper = mount(WCard);
+
+        assert.notInclude(wrapper.attributes("class"), "min-h");
+    });
+
+    it("should set min-height", () => {
+        wrapper = mount(WCard, {
+            props: {
+                minHeight: "[500px]",
+            },
+        });
+
+        assert.include(wrapper.attributes("class"), "min-h-[500px]");
     });
 });
