@@ -24,8 +24,6 @@ const builder = useClassBuilder();
 
 builder.add("shadow-md rounded");
 
-builder.add("bg-white dark:bg-gray-800");
-
 builder.add(`w-${props.width}`);
 
 if (props.maxWidth) {
