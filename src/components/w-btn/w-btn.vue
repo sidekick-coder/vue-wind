@@ -22,7 +22,7 @@ const props = defineProps({
 
 const builder = useClassBuilder();
 
-builder.add(`px-4 py-2 drop-shadow rounded font-bold`);
+builder.add(`px-4 py-2 drop-shadow rounded font-medium`);
 
 builder.add(`bg-${props.color}`, `text-${props.textColor}`);
 
