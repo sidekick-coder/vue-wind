@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref, watch, onUnmounted } from "vue";
+import { PropType, ref, watch, onUnmounted, useAttrs } from "vue";
 import { useVModel } from "@vueuse/core";
 import { useClassBuilder } from "@/composable/class-builder";
 import { useForm } from "../w-form/composable";
@@ -24,6 +24,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
+
+const attrs = useAttrs();
 
 const model = useVModel(props, "modelValue", emit);
 
@@ -79,9 +81,15 @@ onUnmounted(() => {
         form.inputs.value.splice(form.inputs.value.indexOf(validateModel), 1);
     }
 });
+
+function getId() {
+    return (attrs.id as string) || undefined;
+}
 </script>
 <template>
-    <label :class="classes.label.build()" v-if="label">{{ label }}</label>
+    <label :for="getId()" :class="classes.label.build()" v-if="label">
+        {{ label }}
+    </label>
 
     <input v-model="model" v-bind="$attrs" :class="classes.input.build()" />
 

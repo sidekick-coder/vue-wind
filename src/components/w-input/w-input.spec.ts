@@ -168,4 +168,31 @@ describe("w-input", () => {
 
         expect(inputs.value.length).toBe(0);
     });
+
+    it("should <label> element do not have for attribute when id is not defined", () => {
+        wrapper = mount(WInput, {
+            props: {
+                label: "Test",
+            },
+        });
+
+        const label = wrapper.find("label");
+
+        expect(label.attributes("for")).toBeUndefined();
+    });
+
+    it("should <label> element have for attribute when id is defined", () => {
+        wrapper = mount(WInput, {
+            props: {
+                label: "Test",
+            },
+            attrs: {
+                id: "test-id",
+            },
+        });
+
+        const label = wrapper.find("label");
+
+        expect(label.attributes("for")).toBe("test-id");
+    });
 });
