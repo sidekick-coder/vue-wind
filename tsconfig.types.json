@@ -4,8 +4,11 @@
         "moduleResolution": "node",
         "rootDir": "./src",
         "outDir": "types",
+        "declaration": true,
+        "emitDeclarationOnly": true,
         "noEmit": false,
         "skipLibCheck": true
     },
-    "exclude": ["./vite.config.ts", "./node_modules"]
+    "include": ["src/**/*.ts", "src/**/*.vue"],
+    "exclude": ["./vite.config.ts", "./node_modules", "./src/**/*.spec.ts"]
 }
