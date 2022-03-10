@@ -1,5 +1,3 @@
-import { HtmlHTMLAttributes, StyleValue } from "vue";
-
 class StyleBuilder {
     public styles: any = {};
 

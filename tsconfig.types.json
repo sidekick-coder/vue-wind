@@ -3,7 +3,9 @@
     "compilerOptions": {
         "moduleResolution": "node",
         "rootDir": "./src",
-        "noEmit": false
+        "outDir": "types",
+        "noEmit": false,
+        "skipLibCheck": true
     },
-    "exclude": ["./vite.config.ts", "node_modules"]
+    "exclude": ["./vite.config.ts", "./node_modules"]
 }

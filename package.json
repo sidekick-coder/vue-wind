@@ -13,8 +13,7 @@
         "build": "vite build",
         "build:types": "tsc -p ./tsconfig.types.json",
         "test": "vitest",
-        "coverage": "vitest run --coverage",
-        "prepublish": "npm run test && npm run build && npm run build:types"
+        "coverage": "vitest run --coverage"
     },
     "repository": {
         "type": "git",

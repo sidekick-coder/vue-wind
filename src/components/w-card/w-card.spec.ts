@@ -2,7 +2,6 @@ import { describe, it, assert, afterEach } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 
 import WCard from "./w-card.vue";
-import { nextTick } from "process";
 
 let wrapper: VueWrapper;
 
