@@ -1,4 +1,4 @@
-import { afterEach, describe, it, assert, expect } from "vitest";
+import { afterEach, describe, it, assert, expect, vi } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import { ComponentPublicInstance } from "vue";
 
@@ -59,5 +59,32 @@ describe("w-form", () => {
         await wrapper.find("form").trigger("submit");
 
         expect(wForm.emitted().submit).toBeUndefined();
+    });
+
+    it("should validate all child w-inputs", async () => {
+        const component = {
+            components: { WForm, WInput },
+            template: `
+                <w-form>
+                    <w-input v-model="modelValue" :rules='[required]' />
+                    <w-input v-model="modelValue" :rules='[required]' />
+                    <w-input v-model="modelValue" :rules='[required]' />
+                </w-form>
+            `,
+            data() {
+                return {
+                    modelValue: "",
+                    required: (v: string) => !!v || "Required",
+                };
+            },
+        };
+
+        wrapper = mount(component);
+
+        await wrapper.find("form").trigger("submit");
+
+        const messages = wrapper.findAll("small");
+
+        expect(messages.length).toBe(3);
     });
 });

@@ -6,7 +6,9 @@ const form = provideForm();
 const emit = defineEmits(["submit"]);
 
 function submit() {
-    const valid = form.inputs.value.every((validate) => validate() === true);
+    const validateAll = form.inputs.value.map((validate) => validate());
+
+    const valid = validateAll.every((v) => v === true);
 
     if (!valid) {
         return;
