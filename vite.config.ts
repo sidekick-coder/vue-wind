@@ -12,7 +12,7 @@ export default defineConfig({
             entry: path.resolve(__dirname, "src", "index.ts"),
             name: "vue-wind",
             fileName: (format) => `index.${format}.js`,
-            formats: ["es"],
+            formats: ["es", "umd"],
         },
         rollupOptions: {
             external: ["vue"],
