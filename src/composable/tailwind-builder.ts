@@ -1,5 +1,4 @@
-import { defineProps as baseDefineProps } from "vue";
-
+import { camelCase } from "lodash";
 interface Option {
     prop: string;
     class: string;
@@ -8,26 +7,11 @@ interface Option {
 
 export class TailwindBuilder {
     public options: Option[] = [];
+    public staticClasses: string[] = [];
 
-    public add(
-        prop: Option["prop"],
-        className: Option["class"],
-        defaultValue?: Option["default"]
-    ) {
-        this.options.push({
-            prop,
-            class: className,
-            default: defaultValue,
-        });
+    constructor(public prefix?: string) {}
 
-        return this;
-    }
-
-    public make(props: Record<string, Option["default"]>) {
-        return this.options.map((option) => option.class + props[option.prop]);
-    }
-
-    public optionsToVueProps() {
+    public get props() {
         return this.options.reduce(
             (result, option) => ({
                 ...result,
@@ -40,16 +24,33 @@ export class TailwindBuilder {
         );
     }
 
-    public withProps<T = {}>(defineProps: typeof baseDefineProps, props?: T) {
-        const allProps = {
-            ...this.optionsToVueProps(),
-            ...props,
-        };
+    public add(
+        prop: Option["prop"],
+        className: Option["class"],
+        defaultValue?: Option["default"]
+    ) {
+        this.options.push({
+            prop: this.prefix ? camelCase(`${this.prefix} ${prop}`) : prop,
+            class: className,
+            default: defaultValue,
+        });
 
-        return defineProps<typeof allProps>(allProps);
+        return this;
+    }
+
+    public addStatic(...classNames: string[]) {
+        this.staticClasses.push(...classNames);
+        return this;
+    }
+
+    public make(props: Record<string, any> = {}) {
+        return this.options
+            .filter((option) => props[option.prop] || option.default)
+            .map((option) => option.class + props[option.prop])
+            .concat(this.staticClasses);
     }
 }
 
-export function useTailwindBuilder() {
-    return new TailwindBuilder();
+export function useTailwindBuilder(prefix?: string) {
+    return new TailwindBuilder(prefix);
 }
