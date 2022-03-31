@@ -11,4 +11,6 @@ const plugin: Plugin = {
     },
 };
 
+export * from "./tailwind-transform";
+
 export default plugin;
