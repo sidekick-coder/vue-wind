@@ -1,33 +1,30 @@
-<script setup lang="ts">
-import { useClassBuilder } from "@/composable/class-builder";
+<script lang="ts">
 import { useLayout } from "@/components/w-layout/composable";
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
+import { computed } from "@vue/reactivity";
 
-const props = defineProps({
-    layout: {
-        type: Boolean,
-        default: false,
-    },
-    height: {
-        type: String,
-        default: "12",
-    },
-    color: {
-        type: String,
-        default: "blue-500",
-    },
-});
+const builder = useTailwindBuilder();
 
-const classes = useClassBuilder();
+builder
+    .add("height", "h-", "12")
+    .add("color", "bg-", "gray-500")
+    .addStatic("w-full")
+    .addStatic("px-2")
+    .addStatic("flex items-center");
+
+export default {
+    props: builder.props,
+};
+</script>
+<script setup lang="ts">
+const props = defineProps();
+
+const classes = computed(() => builder.make(props));
+
 const { toolbarRef } = useLayout();
-
-classes
-    .add("w-full", `h-${props.height}`)
-    .add("px-2")
-    .add("flex items-center")
-    .add(`bg-${props.color}`);
 </script>
 <template>
-    <div ref="toolbarRef" :class="classes.build()">
+    <div ref="toolbarRef" :class="classes">
         <slot></slot>
     </div>
 </template>

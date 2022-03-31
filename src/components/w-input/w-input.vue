@@ -1,9 +1,37 @@
-<script setup lang="ts">
-import { PropType, ref, watch, onUnmounted, useAttrs } from "vue";
+<script lang="ts">
+import { computed, PropType, ref, watch, onUnmounted, useAttrs } from "vue";
 import { useVModel } from "@vueuse/core";
-import { useClassBuilder } from "@/composable/class-builder";
-import { useForm } from "../w-form/composable";
+import { useForm } from "@/components/w-form/composable";
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
 
+const inputBuilder = useTailwindBuilder("input");
+const labelBuilder = useTailwindBuilder("label");
+const smallBuilder = useTailwindBuilder("small");
+
+inputBuilder
+    .addStatic("w-full", "py-3", "px-4")
+    .addStatic("focus:outline-none", "focus:border-yellow-400", "outline-none")
+    .addStatic("border", "rounded", "border-gray-300")
+    .addStatic("bg-gray-200", "focus:bg-white")
+    .addStatic("text-gray-400", "font-regular", "text-sm")
+    .addStatic("drop-shadow-sm")
+    .addStatic("transition-all");
+
+labelBuilder
+    .addStatic("block")
+    .addStatic("text-gray-500", "text-sm", "font-bold", "mb-3");
+
+smallBuilder.addStatic("text-xs", "mt-4", "block", "text-red-500");
+
+export default {
+    props: {
+        ...inputBuilder.props,
+        ...labelBuilder.props,
+        ...smallBuilder.props,
+    },
+};
+</script>
+<script setup lang="ts">
 interface ValidationRule {
     (value: string): boolean | string;
 }
@@ -31,24 +59,11 @@ const model = useVModel(props, "modelValue", emit);
 
 const messages = ref<string[]>([]);
 
-const classes = {
-    label: useClassBuilder(),
-    input: useClassBuilder(),
-    small: useClassBuilder(),
-};
-
-classes.input
-    .add("w-full", "py-3", "px-4")
-    .add("focus:outline-none", "outline-none")
-    .add("border", "rounded", "border-gray-300", "focus:border-yellow-400")
-    .add("bg-gray-200", "focus:bg-white")
-    .add("text-gray-400", "font-regular", "text-sm")
-    .add("drop-shadow-sm")
-    .add("transition-all");
-
-classes.label.add("block").add("text-gray-500", "text-sm", "font-bold", "mb-3");
-
-classes.small.add("text-xs", "mt-4", "block", "text-red-500");
+const classes = computed(() => ({
+    input: inputBuilder.make(),
+    label: labelBuilder.make(),
+    small: smallBuilder.make(),
+}));
 
 function validate(value: string) {
     messages.value = [];
@@ -87,14 +102,14 @@ function getId() {
 }
 </script>
 <template>
-    <label :for="getId()" :class="classes.label.build()" v-if="label">
+    <label :for="getId()" :class="classes.label" v-if="label">
         {{ label }}
     </label>
 
-    <input v-model="model" v-bind="$attrs" :class="classes.input.build()" />
+    <input v-model="model" v-bind="$attrs" :class="classes.input" />
 
     <small
-        :class="classes.small.build()"
+        :class="classes.small"
         v-for="message in messages.slice(0, 1)"
         :key="message"
     >

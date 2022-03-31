@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useClassBuilder } from "@/composable/class-builder";
 import { useCssHelper } from "@/composable/css-helper";
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
+import { computed } from "@vue/reactivity";
 import { ref, nextTick } from "vue";
 import { useLayout } from "../w-layout/composable";
 
@@ -14,16 +15,19 @@ const props = defineProps({
 const { contentRef, toolbarRef } = useLayout();
 const cssHelper = useCssHelper();
 
-const classes = ref<string[]>([]);
 const height = ref("100%");
 
-function setClasses() {
-    const builder = useClassBuilder();
+const builder = useTailwindBuilder();
 
-    builder.add("overflow-auto").add(`h-[${height.value}]`).add("flex-1");
+builder.add("height", "h-");
 
-    classes.value = builder.classes;
-}
+builder.addStatic("overflow-auto");
+
+const classes = computed(() =>
+    builder.make({
+        height: `[${height.value}]`,
+    })
+);
 
 function setSizes() {
     height.value = "100%";
@@ -36,7 +40,6 @@ function setSizes() {
 }
 
 nextTick(setSizes);
-nextTick(setClasses);
 </script>
 <template>
     <div ref="contentRef" :class="classes">

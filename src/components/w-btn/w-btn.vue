@@ -1,37 +1,28 @@
-<script setup lang="ts">
-import { useClassBuilder } from "@/composable/class-builder";
+<script lang="ts">
+import { computed } from "vue";
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
 
-const props = defineProps({
-    color: {
-        type: String,
-        default: "gray-500",
-    },
-    textColor: {
-        type: String,
-        default: "white",
-    },
-    width: {
-        type: String,
-        default: "auto",
-    },
-    textSize: {
-        type: String,
-        default: "base",
-    },
-});
+const builder = useTailwindBuilder();
 
-const builder = useClassBuilder();
+builder
+    .add("color", "bg-", "gray-500")
+    .add("textColor", "text-", "white")
+    .add("textSize", "text-", "base")
+    .add("width", "w-", "full");
 
-builder.add(`px-4 py-2 drop-shadow rounded font-medium`);
-
-builder.add(`bg-${props.color}`, `text-${props.textColor}`);
-
-builder.add(`text-${props.textSize}`);
-
-builder.add(`w-${props.width}`);
+export default {
+    props: builder.props,
+};
 </script>
+
+<script setup lang="ts">
+const props = defineProps();
+
+const classes = computed(() => builder.make(props));
+</script>
+
 <template>
-    <button :class="builder.build()">
+    <button :class="classes">
         <slot />
     </button>
 </template>

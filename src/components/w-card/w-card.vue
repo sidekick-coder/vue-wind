@@ -1,52 +1,28 @@
+<script lang="ts">
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
+import { computed } from "vue";
+const builder = useTailwindBuilder();
+
+builder
+    .add("width", "w-", "full")
+    .add("maxWidth", "max-w-")
+    .add("height", "h-")
+    .add("minHeight", "min-h-")
+    .add("maxHeight", "max-h-")
+    .add("color", "bg-", "white");
+
+export default {
+    props: builder.props,
+};
+</script>
 <script setup lang="ts">
-import { useClassBuilder } from "@/composable/class-builder";
+const props = defineProps();
 
-const props = defineProps({
-    width: {
-        type: String,
-        default: "full",
-    },
-    maxWidth: {
-        type: String,
-        default: null,
-    },
-    height: {
-        type: String,
-        default: null,
-    },
-    minHeight: {
-        type: String,
-        default: null,
-    },
-    color: {
-        type: String,
-        default: "white",
-    },
-});
-
-const builder = useClassBuilder();
-
-builder.add("shadow-md rounded");
-
-builder.add(`w-${props.width}`);
-
-builder.add(`bg-${props.color}`);
-
-if (props.maxWidth) {
-    builder.add(`max-w-${props.maxWidth}`);
-}
-
-if (props.height) {
-    builder.add(`h-${props.height}`);
-}
-
-if (props.minHeight) {
-    builder.add(`min-h-${props.minHeight}`);
-}
+const classes = computed(() => builder.make(props));
 </script>
 
 <template>
-    <div :class="builder.build()">
+    <div :class="classes">
         <slot></slot>
     </div>
 </template>

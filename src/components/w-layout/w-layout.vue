@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useClassBuilder } from "@/composable/class-builder";
+import { useTailwindBuilder } from "@/composable/tailwind-builder";
 import { provideLayout } from "./composable";
 
-const builder = useClassBuilder();
+const builder = useTailwindBuilder();
 
 const { toolbarRef, drawerRef, contentRef } = provideLayout();
 
@@ -12,11 +12,11 @@ defineExpose({
     contentRef,
 });
 
-builder.add("h-screen w-screen flex flex-wrap");
+builder.addStatic("h-screen w-screen flex flex-wrap");
 </script>
 
 <template>
-    <div :class="builder.classes">
+    <div :class="builder.make()">
         <slot />
     </div>
 </template>
