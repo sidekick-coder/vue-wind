@@ -8,7 +8,8 @@ builder
     .add("color", "bg-", "gray-500")
     .add("textColor", "text-", "white")
     .add("textSize", "text-", "base")
-    .add("width", "w-", "full");
+    .add("width", "w-", "full")
+    .addStatic("px-4 py-2 drop-shadow rounded font-medium");
 
 export default {
     props: builder.props,

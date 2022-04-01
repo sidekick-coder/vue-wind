@@ -1,5 +1,6 @@
 import { Plugin } from "vue";
 import { getComponents } from "./get-components";
+import { VWindTransformer } from "./tailwind-transform";
 
 const plugin: Plugin = {
     install(app) {
@@ -11,6 +12,8 @@ const plugin: Plugin = {
     },
 };
 
-export * from "./tailwind-transform";
+export function useVueWind() {
+    return plugin;
+}
 
-export default plugin;
+export const transformer = VWindTransformer;
