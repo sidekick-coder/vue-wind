@@ -10,10 +10,12 @@
         }
     },
     "scripts": {
-        "build": "vite build",
+        "build": "npm run clean && vite build && npm run build:types",
         "build:types": "vue-tsc -p ./tsconfig.types.json",
         "test": "vitest",
-        "coverage": "vitest run --coverage"
+        "coverage": "vitest run --coverage",
+        "prepublish": "npm run test && npm run build",
+        "clean": "rm -rf dist && rm -rf types"
     },
     "repository": {
         "type": "git",
