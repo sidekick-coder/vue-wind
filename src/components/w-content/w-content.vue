@@ -21,7 +21,7 @@ const builder = useTailwindBuilder();
 
 builder.add("height", "h-");
 
-builder.addStatic("overflow-auto");
+builder.addStatic("overflow-auto", "flex-1");
 
 const classes = computed(() =>
     builder.make({
