@@ -11,6 +11,7 @@
     },
     "scripts": {
         "build": "npm run clean && vite build && npm run build:types",
+        "build:lib": "vite build",
         "build:types": "vue-tsc -p ./tsconfig.types.json",
         "test": "vitest",
         "coverage": "vitest run --coverage",
