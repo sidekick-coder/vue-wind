@@ -10,7 +10,7 @@ const smallBuilder = useTailwindBuilder("small");
 
 inputBuilder
     .addStatic("w-full", "py-3", "px-4")
-    .addStatic("focus:outline-none", "focus:border-yellow-400", "outline-none")
+    .addStatic("focus:outline-none", "focus:border-teal-500", "outline-none")
     .addStatic("border", "rounded", "border-gray-300")
     .addStatic("bg-gray-200", "focus:bg-white")
     .addStatic("text-gray-400", "font-regular", "text-sm")
