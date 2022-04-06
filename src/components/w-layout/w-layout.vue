@@ -12,7 +12,7 @@ defineExpose({
     contentRef,
 });
 
-builder.addStatic("h-screen w-screen flex flex-wrap");
+builder.addStatic("h-screen w-screen overflow-hidden flex flex-wrap");
 </script>
 
 <template>
