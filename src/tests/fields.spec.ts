@@ -221,4 +221,16 @@ describe.each(cases)("General: $name", ({ component, elementName }) => {
 
         expect(field.classes()).toContain("focus:border-red-500");
     });
+
+    it(`should ${elementName} have placeholder`, () => {
+        wrapper = mount(component, {
+            attrs: {
+                placeholder: "Test placeholder",
+            },
+        });
+
+        const field = wrapper.find<HTMLInputElement>(elementName);
+
+        expect(field.attributes("placeholder")).toBe("Test placeholder");
+    });
 });

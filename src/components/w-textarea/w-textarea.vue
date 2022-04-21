@@ -85,11 +85,11 @@ const classes = computed(() => ({
 }));
 </script>
 <template>
-    <label :class="classes.label" :for="($attrs.id as string)" v-if="label">{{
-        label
-    }}</label>
+    <label :class="classes.label" :for="($attrs.id as string)" v-if="label">
+        {{ label }}
+    </label>
 
-    <textarea v-model="model" :class="classes.textarea" />
+    <textarea v-bind="$attrs" v-model="model" :class="classes.textarea" />
 
     <small
         :class="classes.small"
