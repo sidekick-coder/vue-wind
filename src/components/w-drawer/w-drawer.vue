@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import { ref, nextTick, computed } from "vue";
 import { useLayout } from "@/components/w-layout/composable";
 import { useCssHelper } from "@/composable/css-helper";
@@ -8,19 +8,15 @@ const builder = useTailwindBuilder();
 
 builder.addStatic("overflow-auto").add("width", "w-", "[300px]");
 
-export default {
-    props: {
-        ...builder.props,
-        layout: {
-            type: Boolean,
-            default: false,
-        },
+const props = defineProps({
+    layout: {
+        type: Boolean,
+        default: false,
     },
-};
-</script>
-<script setup lang="ts">
-const props = withDefaults(defineProps(), {
-    layout: false,
+    width: {
+        type: String,
+        default: "[300px]",
+    },
 });
 
 const { drawerRef, toolbarRef } = useLayout();

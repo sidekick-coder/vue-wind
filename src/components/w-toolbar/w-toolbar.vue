@@ -1,7 +1,19 @@
-<script lang="ts">
+<script setup lang="ts">
 import { useLayout } from "@/components/w-layout/composable";
 import { useTailwindBuilder } from "@/composable/tailwind-builder";
 import { computed } from "@vue/reactivity";
+
+const props = defineProps({
+    height: {
+        type: String,
+        default: "12",
+    },
+    color: {
+        type: String,
+        default: "gray-500",
+    },
+});
+const { toolbarRef } = useLayout();
 
 const builder = useTailwindBuilder();
 
@@ -12,17 +24,9 @@ builder
     .addStatic("px-2")
     .addStatic("flex items-center");
 
-export default {
-    props: builder.props,
-};
-</script>
-<script setup lang="ts">
-const props = defineProps();
-
 const classes = computed(() => builder.make(props));
-
-const { toolbarRef } = useLayout();
 </script>
+
 <template>
     <div ref="toolbarRef" :class="classes">
         <slot></slot>

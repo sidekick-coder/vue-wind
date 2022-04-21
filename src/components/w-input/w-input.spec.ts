@@ -195,4 +195,16 @@ describe("w-input", () => {
 
         expect(label.attributes("for")).toBe("test-id");
     });
+
+    it("should focus border color be prop color", () => {
+        wrapper = mount(WInput, {
+            props: {
+                color: "red",
+            },
+        });
+
+        const input = wrapper.find("input");
+
+        expect(input.classes()).toContain("focus:border-red");
+    });
 });

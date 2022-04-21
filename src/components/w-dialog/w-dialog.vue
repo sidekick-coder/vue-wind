@@ -19,7 +19,6 @@ export default {
             type: Boolean,
             required: false,
         },
-        ...builder.props,
     },
 };
 </script>

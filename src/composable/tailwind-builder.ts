@@ -1,6 +1,5 @@
-import { camelCase } from "lodash";
 interface Option {
-    prop: string;
+    name: string;
     class: string;
     default?: string | number;
 }
@@ -9,28 +8,15 @@ export class TailwindBuilder {
     public options: Option[] = [];
     public staticClasses: string[] = [];
 
-    constructor(public prefix?: string) {}
-
-    public get props() {
-        return this.options.reduce(
-            (result, option) => ({
-                ...result,
-                [option.prop]: {
-                    type: [String, Number],
-                    default: option.default,
-                },
-            }),
-            {}
-        );
-    }
+    constructor() {}
 
     public add(
-        prop: Option["prop"],
+        name: Option["name"],
         className: Option["class"],
         defaultValue?: Option["default"]
     ) {
         this.options.push({
-            prop: this.prefix ? camelCase(`${this.prefix} ${prop}`) : prop,
+            name,
             class: className,
             default: defaultValue,
         });
@@ -45,12 +31,12 @@ export class TailwindBuilder {
 
     public make(props: Record<string, any> = {}) {
         return this.options
-            .filter((option) => props[option.prop] || option.default)
-            .map((option) => option.class + props[option.prop])
+            .filter((option) => props[option.name] || option.default)
+            .map((option) => option.class + props[option.name])
             .concat(this.staticClasses);
     }
 }
 
-export function useTailwindBuilder(prefix?: string) {
-    return new TailwindBuilder(prefix);
+export function useTailwindBuilder() {
+    return new TailwindBuilder();
 }

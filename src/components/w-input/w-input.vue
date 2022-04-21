@@ -1,37 +1,9 @@
-<script lang="ts">
+<script setup lang="ts">
 import { computed, PropType, ref, watch, onUnmounted, useAttrs } from "vue";
 import { useVModel } from "@vueuse/core";
 import { useForm } from "@/components/w-form/composable";
 import { useTailwindBuilder } from "@/composable/tailwind-builder";
 
-const inputBuilder = useTailwindBuilder("input");
-const labelBuilder = useTailwindBuilder("label");
-const smallBuilder = useTailwindBuilder("small");
-
-inputBuilder
-    .addStatic("w-full", "py-3", "px-4")
-    .addStatic("focus:outline-none", "focus:border-teal-500", "outline-none")
-    .addStatic("border", "rounded", "border-gray-300")
-    .addStatic("bg-gray-200", "focus:bg-white")
-    .addStatic("text-gray-400", "font-regular", "text-sm")
-    .addStatic("drop-shadow-sm")
-    .addStatic("transition-all");
-
-labelBuilder
-    .addStatic("block")
-    .addStatic("text-gray-500", "text-sm", "font-bold", "mb-3");
-
-smallBuilder.addStatic("text-xs", "mt-4", "block", "text-red-500");
-
-export default {
-    props: {
-        ...inputBuilder.props,
-        ...labelBuilder.props,
-        ...smallBuilder.props,
-    },
-};
-</script>
-<script setup lang="ts">
 interface ValidationRule {
     (value: string): boolean | string;
 }
@@ -49,18 +21,42 @@ const props = defineProps({
         type: Array as PropType<ValidationRule[]>,
         default: () => [],
     },
+    color: {
+        type: String,
+        default: "teal-500",
+    },
 });
 
 const emit = defineEmits(["update:modelValue"]);
 
 const attrs = useAttrs();
 
+const inputBuilder = useTailwindBuilder();
+const labelBuilder = useTailwindBuilder();
+const smallBuilder = useTailwindBuilder();
+
+inputBuilder
+    .add("color", "focus:border-")
+    .addStatic("w-full", "py-3", "px-4")
+    .addStatic("focus:outline-none", "outline-none")
+    .addStatic("border", "rounded", "border-gray-300")
+    .addStatic("bg-gray-200", "focus:bg-white")
+    .addStatic("text-gray-400", "font-regular", "text-sm")
+    .addStatic("drop-shadow-sm")
+    .addStatic("transition-all");
+
+labelBuilder
+    .addStatic("block")
+    .addStatic("text-gray-500", "text-sm", "font-bold", "mb-3");
+
+smallBuilder.addStatic("text-xs", "mt-4", "block", "text-red-500");
+
 const model = useVModel(props, "modelValue", emit);
 
 const messages = ref<string[]>([]);
 
 const classes = computed(() => ({
-    input: inputBuilder.make(),
+    input: inputBuilder.make({ color: props.color }),
     label: labelBuilder.make(),
     small: smallBuilder.make(),
 }));
