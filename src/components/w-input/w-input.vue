@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed, PropType, ref, watch, onUnmounted, useAttrs } from "vue";
+import { computed, PropType, watch, onUnmounted, useAttrs } from "vue";
 import { useVModel } from "@vueuse/core";
 import { useForm } from "@/components/w-form/composable";
 import { useTailwindBuilder } from "@/composable/tailwind-builder";
-
-interface ValidationRule {
-    (value: string): boolean | string;
-}
+import { ValidationRule, useValidation } from "@/composable/validation";
 
 const props = defineProps({
     modelValue: {
@@ -53,27 +50,13 @@ smallBuilder.addStatic("text-xs", "mt-4", "block", "text-red-500");
 
 const model = useVModel(props, "modelValue", emit);
 
-const messages = ref<string[]>([]);
-
 const classes = computed(() => ({
     input: inputBuilder.make({ color: props.color }),
     label: labelBuilder.make(),
     small: smallBuilder.make(),
 }));
 
-function validate(value: string) {
-    messages.value = [];
-
-    props.rules.map((rule) => {
-        const message = rule(value);
-
-        if (typeof message === "string") {
-            messages.value.push(message);
-        }
-    });
-
-    return messages.value.length === 0;
-}
+const { messages, validate } = useValidation(props.rules);
 
 function validateModel() {
     return validate(props.modelValue);
