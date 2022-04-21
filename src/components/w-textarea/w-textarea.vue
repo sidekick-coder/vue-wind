@@ -24,7 +24,7 @@ const props = defineProps({
     },
     minHeight: {
         type: String,
-        default: "auto",
+        default: "4",
     },
 });
 
@@ -54,12 +54,24 @@ onUnmounted(() => {
 
 const builder = {
     textarea: useTailwindBuilder(),
+    label: useTailwindBuilder(),
     small: useTailwindBuilder(),
 };
 
+builder.label
+    .addStatic("block")
+    .addStatic("text-gray-500", "text-sm", "font-bold", "mb-3");
+
 builder.textarea
     .add("color", "focus:border-", "teal-500")
-    .add("minHeight", "min-h-");
+    .add("minHeight", "min-h-")
+    .addStatic("w-full", "py-3", "px-4")
+    .addStatic("focus:outline-none", "outline-none")
+    .addStatic("border", "rounded", "border-gray-300")
+    .addStatic("bg-gray-200", "focus:bg-white")
+    .addStatic("text-gray-400", "font-regular", "text-sm")
+    .addStatic("drop-shadow-sm")
+    .addStatic("transition-all");
 
 builder.small.addStatic("text-xs", "mt-4", "block", "text-red-500");
 
@@ -69,10 +81,13 @@ const classes = computed(() => ({
         minHeight: props.minHeight,
     }),
     small: builder.small.make(),
+    label: builder.label.make(),
 }));
 </script>
 <template>
-    <label :for="($attrs.id as string)" v-if="label">{{ label }}</label>
+    <label :class="classes.label" :for="($attrs.id as string)" v-if="label">{{
+        label
+    }}</label>
 
     <textarea v-model="model" :class="classes.textarea" />
 
