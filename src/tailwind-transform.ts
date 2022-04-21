@@ -5,6 +5,8 @@ export function VWindTransformer(content: string) {
         height: ["h"],
         "max-width": ["max-w"],
         "max-height": ["max-h"],
+        "min-height": ["min-h"],
+        "min-width": ["min-w"],
     };
 
     const safelist = content
