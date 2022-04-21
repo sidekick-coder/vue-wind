@@ -1,9 +1,23 @@
-import { mount, VueWrapper } from "@vue/test-utils";
 import { afterEach, describe, expect, it } from "vitest";
+import { mount, VueWrapper } from "@vue/test-utils";
 import { ComponentPublicInstance, nextTick, ref } from "vue";
-import { formKey } from "../w-form/composable";
 
-import WInput from "./w-input.vue";
+import WInput from "@/components/w-input/w-input.vue";
+import WTextarea from "@/components/w-textarea/w-textarea.vue";
+import { formKey } from "@/components/w-form/composable";
+
+const cases = [
+    {
+        name: "WInput",
+        component: WInput,
+        elementName: "input",
+    },
+    {
+        name: "WTextarea",
+        component: WTextarea,
+        elementName: "textarea",
+    },
+];
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof WInput>>;
 
@@ -11,15 +25,15 @@ afterEach(() => {
     wrapper?.unmount();
 });
 
-describe("w-input", () => {
-    it("should a <input> element", () => {
-        wrapper = mount(WInput);
+describe.each(cases)("General: $name", ({ component, elementName }) => {
+    it(`should render ${elementName} element`, () => {
+        wrapper = mount(component);
 
-        expect(wrapper.find("input").exists()).toBeTruthy();
+        expect(wrapper.find(elementName).exists()).toBeTruthy();
     });
 
-    it("should set input label", () => {
-        wrapper = mount(WInput, {
+    it("should set label", () => {
+        wrapper = mount(component, {
             props: {
                 label: "Hello World",
             },
@@ -30,24 +44,24 @@ describe("w-input", () => {
         expect(label.text()).toContain("Hello World");
     });
 
-    it("should <input> value starts with model-value", () => {
-        wrapper = mount(WInput, {
+    it(`should ${elementName} value starts with model-value`, () => {
+        wrapper = mount(component, {
             props: {
                 modelValue: "Hello World",
             },
         });
 
-        const input = wrapper.find("input");
+        const field = wrapper.find<HTMLInputElement>(elementName);
 
-        expect(input.element.value).toBe("Hello World");
+        expect(field.element.value).toBe("Hello World");
     });
 
-    it("should <input> update value according with model-value", async () => {
-        wrapper = mount(WInput);
+    it(`should ${elementName} update value according with model-value`, async () => {
+        wrapper = mount(component);
 
-        const input = wrapper.find("input");
+        const field = wrapper.find<HTMLInputElement>(elementName);
 
-        expect(input.element.value).toBe("");
+        expect(field.element.value).toBe("");
 
         wrapper.setProps({
             modelValue: "Update input",
@@ -55,21 +69,21 @@ describe("w-input", () => {
 
         await nextTick();
 
-        expect(input.element.value).toBe("Update input");
+        expect(field.element.value).toBe("Update input");
     });
 
-    it("should emit event update:model-value when changing <input> element value", () => {
-        wrapper = mount(WInput);
+    it(`should emit event update:model-value when changing ${elementName} element value`, () => {
+        wrapper = mount(component);
 
-        const input = wrapper.find("input");
+        const field = wrapper.find<HTMLInputElement>(elementName);
 
-        input.setValue("Update input");
+        field.setValue("Update input");
 
         expect(wrapper.emitted("update:modelValue")).toBeTruthy();
     });
 
-    it("should validate() function use rules props to validate the <input> value", () => {
-        wrapper = mount(WInput, {
+    it("should validate() function use rules props to validate the model", () => {
+        wrapper = mount(component, {
             props: {
                 rules: [(v: string) => !!v || "This field is required"],
             },
@@ -80,8 +94,8 @@ describe("w-input", () => {
         expect(result).toBe(false);
     });
 
-    it("should show error message with validation fail", async () => {
-        wrapper = mount(WInput, {
+    it("should show error message when validation failed", async () => {
+        wrapper = mount(component, {
             props: {
                 rules: [(v: string) => !!v || "This field is required"],
             },
@@ -100,7 +114,7 @@ describe("w-input", () => {
     it("should error message be hidden when validation is fixed", async () => {
         let modelValue = "Hello World";
 
-        wrapper = mount(WInput, {
+        wrapper = mount(component, {
             props: {
                 rules: [(v: string) => !!v || "This field is required"],
                 modelValue,
@@ -122,7 +136,7 @@ describe("w-input", () => {
     });
 
     it("should show only one message per time", async () => {
-        wrapper = mount(WInput);
+        wrapper = mount(component);
 
         wrapper.vm.messages = ["message 1", "message 2"];
 
@@ -136,7 +150,7 @@ describe("w-input", () => {
     it("should add validate function to parent form if is available", async () => {
         const inputs = ref([]);
 
-        wrapper = mount(WInput, {
+        wrapper = mount(component, {
             global: {
                 provide: {
                     [formKey as symbol]: {
@@ -152,7 +166,7 @@ describe("w-input", () => {
     it("should remove validate function is component is unmounted", () => {
         const inputs = ref([]);
 
-        wrapper = mount(WInput, {
+        wrapper = mount(component, {
             global: {
                 provide: {
                     [formKey as symbol]: {
@@ -169,8 +183,8 @@ describe("w-input", () => {
         expect(inputs.value.length).toBe(0);
     });
 
-    it("should <label> element do not have for attribute when id is not defined", () => {
-        wrapper = mount(WInput, {
+    it("should <label> element do not have 'for' attribute when id is not defined", () => {
+        wrapper = mount(component, {
             props: {
                 label: "Test",
             },
@@ -182,7 +196,7 @@ describe("w-input", () => {
     });
 
     it("should <label> element have for attribute when id is defined", () => {
-        wrapper = mount(WInput, {
+        wrapper = mount(component, {
             props: {
                 label: "Test",
             },
@@ -196,15 +210,15 @@ describe("w-input", () => {
         expect(label.attributes("for")).toBe("test-id");
     });
 
-    it("should focus border color be prop color", () => {
-        wrapper = mount(WInput, {
+    it(`should ${elementName} focus border color be prop color`, () => {
+        wrapper = mount(component, {
             props: {
-                color: "red",
+                color: "red-500",
             },
         });
 
-        const input = wrapper.find("input");
+        const field = wrapper.find<HTMLInputElement>(elementName);
 
-        expect(input.classes()).toContain("focus:border-red");
+        expect(field.classes()).toContain("focus:border-red-500");
     });
 });

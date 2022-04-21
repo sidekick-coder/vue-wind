@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, PropType, watch, onUnmounted, useAttrs } from "vue";
+import { computed, PropType, watch, onUnmounted } from "vue";
 import { useVModel } from "@vueuse/core";
 import { useForm } from "@/components/w-form/composable";
 import { useTailwindBuilder } from "@/composable/tailwind-builder";
@@ -25,8 +25,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
-
-const attrs = useAttrs();
 
 const inputBuilder = useTailwindBuilder();
 const labelBuilder = useTailwindBuilder();
@@ -75,13 +73,9 @@ onUnmounted(() => {
         form.inputs.value.splice(form.inputs.value.indexOf(validateModel), 1);
     }
 });
-
-function getId() {
-    return (attrs.id as string) || undefined;
-}
 </script>
 <template>
-    <label :for="getId()" :class="classes.label" v-if="label">
+    <label :for="($attrs.id as string)" :class="classes.label" v-if="label">
         {{ label }}
     </label>
 
