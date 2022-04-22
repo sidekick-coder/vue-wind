@@ -1,6 +1,6 @@
 import { afterEach, describe, it, assert, expect, vi } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
-import { ComponentPublicInstance } from "vue";
+import { ComponentPublicInstance, nextTick } from "vue";
 
 import WForm from "./w-form.vue";
 import WInput from "@/components/w-input/w-input.vue";
@@ -86,5 +86,38 @@ describe("w-form", () => {
         const messages = wrapper.findAll("small");
 
         expect(messages.length).toBe(3);
+    });
+
+    it("should reset validation of all child w-inputs", async () => {
+        const component = {
+            components: { WForm, WInput },
+            template: `
+                <w-form>
+                    <w-input v-model="modelValue" :rules='[required]' />
+                    <w-input v-model="modelValue" :rules='[required]' />
+                    <w-input v-model="modelValue" :rules='[required]' />
+                </w-form>
+            `,
+            data() {
+                return {
+                    modelValue: "",
+                    required: (v: string) => !!v || "Required",
+                };
+            },
+        };
+
+        wrapper = mount(component);
+
+        const wForm = wrapper.findComponent(WForm);
+
+        await wrapper.find("form").trigger("submit");
+
+        expect(wrapper.findAll("small").length).toBe(3);
+
+        wForm.vm.resetValidation();
+
+        await nextTick();
+
+        expect(wrapper.findAll("small").length).toBe(0);
     });
 });

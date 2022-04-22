@@ -54,10 +54,14 @@ const classes = computed(() => ({
     small: smallBuilder.make(),
 }));
 
-const { messages, validate } = useValidation(props.rules);
+const { messages, validate, reset } = useValidation(props.rules);
 
 function validateModel() {
     return validate(props.modelValue);
+}
+
+function resetValidation() {
+    reset();
 }
 
 watch(() => props.modelValue, validate);
@@ -65,13 +69,16 @@ watch(() => props.modelValue, validate);
 const form = useForm();
 
 if (form) {
-    form?.inputs.value.push(validateModel);
+    form.inputs.value.push(validateModel);
+    form.resets.value.push(resetValidation);
 }
 
 onUnmounted(() => {
-    if (form) {
-        form.inputs.value.splice(form.inputs.value.indexOf(validateModel), 1);
+    if (!form) {
+        return;
     }
+    form.inputs.value.splice(form.inputs.value.indexOf(validateModel), 1);
+    form.resets.value.splice(form.resets.value.indexOf(resetValidation), 1);
 });
 </script>
 <template>

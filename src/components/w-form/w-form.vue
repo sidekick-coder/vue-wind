@@ -16,6 +16,15 @@ function submit() {
 
     emit("submit");
 }
+
+function resetValidation() {
+    form.resets.value.forEach((reset) => reset());
+}
+
+defineExpose({
+    submit,
+    resetValidation,
+});
 </script>
 <template>
     <form @submit.prevent="submit">

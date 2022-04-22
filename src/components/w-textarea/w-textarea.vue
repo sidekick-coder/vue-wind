@@ -32,10 +32,14 @@ const emit = defineEmits(["update:modelValue"]);
 
 const model = useVModel(props, "modelValue", emit);
 
-const { messages, validate } = useValidation(props.rules);
+const { messages, validate, reset } = useValidation(props.rules);
 
 function validateModel() {
     return validate(model.value);
+}
+
+function resetValidation() {
+    reset();
 }
 
 watch(() => props.modelValue, validate);
@@ -44,11 +48,13 @@ const form = useForm();
 
 if (form) {
     form?.inputs.value.push(validateModel);
+    form?.resets.value.push(resetValidation);
 }
 
 onUnmounted(() => {
     if (form) {
         form.inputs.value.splice(form.inputs.value.indexOf(validateModel), 1);
+        form.resets.value.splice(form.resets.value.indexOf(resetValidation), 1);
     }
 });
 

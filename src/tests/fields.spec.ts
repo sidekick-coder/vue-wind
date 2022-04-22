@@ -148,39 +148,41 @@ describe.each(cases)("General: $name", ({ component, elementName }) => {
     });
 
     it("should add validate function to parent form if is available", async () => {
-        const inputs = ref([]);
+        const form = {
+            inputs: ref([]),
+            resets: ref([]),
+        };
 
         wrapper = mount(component, {
             global: {
                 provide: {
-                    [formKey as symbol]: {
-                        inputs: inputs,
-                    },
+                    [formKey as any]: form,
                 },
             },
         });
 
-        expect(inputs.value.length).toBe(1);
+        expect(form.inputs.value.length).toBe(1);
     });
 
     it("should remove validate function is component is unmounted", () => {
-        const inputs = ref([]);
+        const form = {
+            inputs: ref([]),
+            resets: ref([]),
+        };
 
         wrapper = mount(component, {
             global: {
                 provide: {
-                    [formKey as symbol]: {
-                        inputs: inputs,
-                    },
+                    [formKey as any]: form,
                 },
             },
         });
 
-        expect(inputs.value.length).toBe(1);
+        expect(form.inputs.value.length).toBe(1);
 
         wrapper.unmount();
 
-        expect(inputs.value.length).toBe(0);
+        expect(form.inputs.value.length).toBe(0);
     });
 
     it("should <label> element do not have 'for' attribute when id is not defined", () => {
@@ -232,5 +234,25 @@ describe.each(cases)("General: $name", ({ component, elementName }) => {
         const field = wrapper.find<HTMLInputElement>(elementName);
 
         expect(field.attributes("placeholder")).toBe("Test placeholder");
+    });
+
+    it(`should hide error message when reset validation`, async () => {
+        wrapper = mount(component, {
+            props: {
+                rules: [(v: string) => !!v || "This field is required"],
+            },
+        });
+
+        wrapper.vm.validate("");
+
+        await nextTick();
+
+        expect(wrapper.find("small").exists()).toBeTruthy();
+
+        wrapper.vm.resetValidation();
+
+        await nextTick();
+
+        expect(wrapper.find("small").exists()).toBeFalsy();
     });
 });

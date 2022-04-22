@@ -24,8 +24,13 @@ export function useValidation(rules: ValidationRule[]) {
         return messages.value.length === 0;
     }
 
+    function reset() {
+        messages.value = [];
+    }
+
     return {
         messages,
         validate,
+        reset,
     };
 }
