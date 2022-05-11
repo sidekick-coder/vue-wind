@@ -17,8 +17,8 @@
         "coverage": "vitest run --coverage",
         "prepublishOnly": "npm run test && npm run build",
         "clean": "rm -rf dist && rm -rf types",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "docs": "start-storybook -p 6006",
+        "docs:build": "build-storybook"
     },
     "repository": {
         "type": "git",
