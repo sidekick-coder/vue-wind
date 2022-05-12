@@ -16,7 +16,7 @@ import { computed } from "vue";
 const props = defineProps({
     color: {
         type: String,
-        default: "gray-500",
+        default: "white",
     },
     width: {
         type: String,

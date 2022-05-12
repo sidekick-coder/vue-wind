@@ -40,12 +40,15 @@ export class Builder {
         return this;
     }
 
-    public make(props: Record<string, any> = {}) {
+    public makeArray(props: Record<string, any> = {}) {
         return this.options
             .filter((option) => props[option.name] || option.default)
             .map((option) => [option.class, props[option.name]].join("-"))
-            .concat(this.staticClasses)
-            .join(" ");
+            .concat(this.staticClasses);
+    }
+
+    public make(props: Record<string, any> = {}) {
+        return this.makeArray(props).join(" ");
     }
 }
 
