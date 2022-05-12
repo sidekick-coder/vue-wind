@@ -14,16 +14,16 @@ const cases = [
     ['<w-card color="yellow" ></w-card>', "bg-yellow"],
     ["<w-dialog></w-dialog>", "hidden"],
     ["<w-dialog></w-dialog>", "bg-black/75"],
+    [
+        "<w-dialog /><w-input color='primary'></w-input>",
+        "focus:border-primary hidden",
+    ],
 ];
 
 it.each(cases)("should transform tailwind classes %s", (input, output) => {
     const transformed = VWindTransformer(input);
 
-    expect(transformed).toContain(output);
-});
+    const classes = output.split(" ");
 
-it("should transform tailwind classes", () => {
-    const transformed = VWindTransformer("<w-btn color='primary'></w-btn>");
-
-    expect(transformed).toContain("bg-primary");
+    classes.forEach((className) => expect(transformed).toContain(className));
 });

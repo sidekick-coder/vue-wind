@@ -6,7 +6,9 @@ export function VWindTransformer(content: string) {
         make: file.builder ? file.builder.make.bind(file.builder) : () => "",
     }));
 
-    const results = /<w-[^>]+>/.exec(content.trim().replace(/\n/g, " "));
+    const results = Array.from(content.matchAll(/<w-[^>]+>/gi)).map(
+        (match) => match[0]
+    );
 
     if (!results) {
         return "";
