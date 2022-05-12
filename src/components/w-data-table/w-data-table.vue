@@ -2,7 +2,7 @@
 import { useBuilder } from "@/composable/tailwind";
 import { PropType, defineComponent, computed } from "vue";
 
-interface Column {
+interface TableColumn {
     label: string;
     field: string;
 }
@@ -15,7 +15,7 @@ export default defineComponent({
     props: {
         ...builder.props,
         columns: {
-            type: Array as PropType<Column[]>,
+            type: Array as PropType<TableColumn[]>,
             default: () => [],
         },
         items: {
