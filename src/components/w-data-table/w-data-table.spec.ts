@@ -26,9 +26,10 @@ it("should render columns", () => {
 
     expect(wrapper.findAll("thead th").length).toBe(columns.length);
 
-    columns.forEach((column) => {
-        expect(wrapper.html()).toContain(`<th>${column.label}</th>`);
-    });
+    const th = wrapper.findAll("thead th");
+
+    expect(th.at(0)?.text()).toBe(columns[0].label);
+    expect(th.at(1)?.text()).toBe(columns[1].label);
 });
 
 it("should render a <tr> for each item", () => {
@@ -57,9 +58,13 @@ it("should render a items fields based on columns prop", () => {
         props: { items, columns },
     });
 
-    items.forEach((item) =>
-        columns.forEach((column) => {
-            expect(wrapper.html()).toContain(`<td>${item[column.field]}</td>`);
-        })
+    const td = wrapper.findAll("tbody tr td");
+    const values = items
+        .map((item) => [item[columns[0].field], item[columns[1].field]])
+        .flat()
+        .map((value) => value.toString());
+
+    values.forEach((value) =>
+        expect(td.at(values.indexOf(value))?.text()).toBe(value)
     );
 });
