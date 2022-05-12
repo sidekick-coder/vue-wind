@@ -1,24 +1,38 @@
-<script setup lang="ts">
-import { PropType } from "vue";
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
+import { PropType, defineComponent, computed } from "vue";
 
 interface Column {
     label: string;
     field: string;
 }
 
-defineProps({
-    columns: {
-        type: Array as PropType<Column[]>,
-        default: () => [],
+export const builder = useBuilder();
+
+builder.static("w-full border drop-shadow").option("color", "bg", "white");
+
+export default defineComponent({
+    props: {
+        ...builder.props,
+        columns: {
+            type: Array as PropType<Column[]>,
+            default: () => [],
+        },
+        items: {
+            type: Array as PropType<any[]>,
+            default: () => [],
+        },
     },
-    items: {
-        type: Array as PropType<any[]>,
-        default: () => [],
+    setup(props) {
+        return {
+            classes: computed(() => builder.make(props)),
+        };
     },
 });
 </script>
+
 <template>
-    <table class="w-full border drop-shadow bg-white">
+    <table :class="classes">
         <thead>
             <tr>
                 <th v-for="column in columns" class="bg-gray-100 p-2 text-left">

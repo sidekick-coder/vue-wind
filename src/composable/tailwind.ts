@@ -8,6 +8,19 @@ export class Builder {
     public options: Option[] = [];
     public staticClasses: string[] = [];
 
+    public get props() {
+        return this.options.reduce(
+            (acc, option) => ({
+                ...acc,
+                [option.name]: {
+                    type: String,
+                    default: option.default,
+                },
+            }),
+            {}
+        );
+    }
+
     public option(
         name: Option["name"],
         className: Option["class"],

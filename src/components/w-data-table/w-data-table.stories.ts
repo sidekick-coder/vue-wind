@@ -4,21 +4,27 @@ export default {
     title: "Components/WDataTable",
     component: WDataTable,
     argTypes: {
+        color: { control: "text", table: { category: "props" } },
         columns: {
             expanded: false,
-            defaultValue: [
-                { label: "Name", field: "name" },
-                { label: "Age", field: "age" },
-            ],
+            defaultValue: [],
         },
         items: {
             expanded: false,
-            defaultValue: [
-                { name: "John", age: 30 },
-                { name: "Jane", age: 25 },
-                { name: "Joe", age: 35 },
-            ],
+            defaultValue: [],
         },
+    },
+    args: {
+        color: "white",
+        columns: [
+            { label: "Name", field: "name" },
+            { label: "Age", field: "age" },
+        ],
+        items: [
+            { name: "John", age: 30 },
+            { name: "Jane", age: 25 },
+            { name: "Joe", age: 35 },
+        ],
     },
 };
 
