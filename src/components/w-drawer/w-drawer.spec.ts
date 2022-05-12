@@ -39,7 +39,7 @@ describe("w-drawer", () => {
 
         const drawer = wrapper.findComponent(WDrawer);
 
-        assert.include(drawer.attributes("class"), "h-[100%]");
+        assert.include(drawer.attributes("style"), "height: 100%");
     });
 
     it("should height be screen height - toolbar height when toolbarRef is defined", async () => {
@@ -68,6 +68,6 @@ describe("w-drawer", () => {
         await nextTick();
         await nextTick();
 
-        assert.include(drawer.attributes("class"), "h-[950px]");
+        assert.include(drawer.attributes("style"), "height: 950px");
     });
 });

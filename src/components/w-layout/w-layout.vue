@@ -1,9 +1,10 @@
-<script lang="ts" setup>
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
 import { provideLayout } from "./composable";
 
-const builder = useTailwindBuilder();
-
+export const builder = useBuilder();
+</script>
+<script lang="ts" setup>
 const { toolbarRef, drawerRef, contentRef } = provideLayout();
 
 defineExpose({
@@ -12,7 +13,7 @@ defineExpose({
     contentRef,
 });
 
-builder.addStatic("h-screen w-screen overflow-hidden flex flex-wrap");
+builder.static("h-screen w-screen overflow-hidden flex flex-wrap");
 </script>
 
 <template>

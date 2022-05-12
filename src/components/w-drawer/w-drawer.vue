@@ -1,13 +1,14 @@
-<script setup lang="ts">
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
 import { ref, nextTick, computed } from "vue";
 import { useLayout } from "@/components/w-layout/composable";
 import { useCssHelper } from "@/composable/css-helper";
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
 
-const builder = useTailwindBuilder();
+export const builder = useBuilder();
 
-builder.addStatic("overflow-auto").add("width", "w-", "[300px]");
-
+builder.static("overflow-auto").option("width", "w", "[300px]");
+</script>
+<script setup lang="ts">
 const props = defineProps({
     layout: {
         type: Boolean,
@@ -29,7 +30,8 @@ const screen = computed(() => ({
     height: document.body.clientHeight,
 }));
 
-const classes = computed(() => [...builder.make(props), `h-[${height.value}]`]);
+const classes = computed(() => builder.make(props));
+const style = computed(() => `height: ${height.value};`);
 
 function setSizes() {
     height.value = "100%";
@@ -44,7 +46,7 @@ function setSizes() {
 nextTick(setSizes);
 </script>
 <template>
-    <div ref="drawerRef" :class="classes">
+    <div ref="drawerRef" :class="classes" :style="style">
         <slot />
     </div>
 </template>

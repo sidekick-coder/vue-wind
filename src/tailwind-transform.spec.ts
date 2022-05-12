@@ -1,10 +1,23 @@
 import { expect, it } from "vitest";
 import { VWindTransformer } from "./tailwind-transform";
 
-it("should transform tailwind classes", () => {
-    const transformed = VWindTransformer("<w-input color='primary'></w-input>");
+const cases = [
+    ["<w-input></w-input>", ""],
+    ["<w-input color='primary'></w-input>", "focus:border-primary"],
+    ['<w-input color="primary"></w-input>', "focus:border-primary"],
+    ['<div><w-input color="primary"></w-input></div>', "focus:border-primary"],
+    [
+        '<div><w-input \n\n\n color="primary"></w-input></div>',
+        "focus:border-primary",
+    ],
+    ['<w-btn color="yellow" ></w-btn>', "bg-yellow"],
+    ['<w-card color="yellow" ></w-card>', "bg-yellow"],
+];
 
-    expect(transformed).toContain("focus:border-primary");
+it.each(cases)("should transform tailwind classes %s", (input, output) => {
+    const transformed = VWindTransformer(input);
+
+    expect(transformed).toContain(output);
 });
 
 it("should transform tailwind classes", () => {

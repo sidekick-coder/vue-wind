@@ -1,5 +1,16 @@
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
+
+export const builder = useBuilder();
+builder
+    .option("color", "bg", "white")
+    .option("width", "w", "full")
+    .option("maxWidth", "max-w")
+    .option("height", "h")
+    .option("minHeight", "min-h")
+    .option("maxHeight", "max-h");
+</script>
 <script setup lang="ts">
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
 import { computed } from "vue";
 
 const props = defineProps({
@@ -28,16 +39,6 @@ const props = defineProps({
         default: null,
     },
 });
-
-const builder = useTailwindBuilder();
-
-builder
-    .add("color", "bg-", "white")
-    .add("width", "w-", "full")
-    .add("maxWidth", "max-w-")
-    .add("height", "h-")
-    .add("minHeight", "min-h-")
-    .add("maxHeight", "max-h-");
 
 const classes = computed(() => builder.make(props));
 </script>

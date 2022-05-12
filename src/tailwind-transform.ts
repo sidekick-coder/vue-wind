@@ -1,24 +1,33 @@
+const files = import.meta.globEager("./components/**/*.vue");
+
 export function VWindTransformer(content: string) {
-    const windAttr: Record<string, string[]> = {
-        color: ["bg", "focus:border"],
-        width: ["w"],
-        height: ["h"],
-        "max-width": ["max-w"],
-        "max-height": ["max-h"],
-        "min-height": ["min-h"],
-        "min-width": ["min-w"],
-    };
+    const builders = Object.entries(files).map(([path, file]) => ({
+        name: path.split("/").pop()?.replace(".vue", ""),
+        make: file.builder ? file.builder.make.bind(file.builder) : () => "",
+    }));
 
-    const safelist = content
-        .split(" ")
-        .filter((item) => /(.*)\=["'](.*)["']/.test(item))
-        .map((item) => item.replace(/["']/g, "").split("="))
-        .filter((item) => Object.keys(windAttr).includes(item[0]))
-        .map(([key, value]) =>
-            windAttr[key].map((name) => `// ${name}-${value}`)
-        )
-        .reduce((acc, cur) => acc.concat(cur), [])
-        .join("\n");
+    const results = /<w-[^>]+>/.exec(content.trim().replace(/\n/g, " "));
 
-    return safelist;
+    if (!results) {
+        return "";
+    }
+
+    const safelist = results
+        .map((r) => r.replace(/<|>/g, ""))
+        .map((result: string) => {
+            const name = result.split(" ")[0];
+            const builder = builders.find((builder) => builder.name === name);
+
+            const attrs = result
+                .replace(/'|"/g, "")
+                .split(" ")
+                .filter((attr) => attr !== "")
+                .slice(1)
+                .map((a) => a.trim().split("="))
+                .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+            return builder?.make(attrs) || "";
+        });
+
+    return safelist.join(" ");
 }

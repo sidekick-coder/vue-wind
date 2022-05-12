@@ -1,3 +1,17 @@
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
+export const builder = useBuilder();
+
+builder
+    .option("color", "focus:border")
+    .static("w-full", "py-3", "px-4")
+    .static("focus:outline-none", "outline-none")
+    .static("border", "rounded", "border-gray-300")
+    .static("bg-gray-200", "focus:bg-white")
+    .static("text-gray-400", "font-regular", "text-sm")
+    .static("drop-shadow-sm")
+    .static("transition-all");
+</script>
 <script setup lang="ts">
 import { computed, PropType, watch, onUnmounted } from "vue";
 import { useVModel } from "@vueuse/core";
@@ -26,19 +40,8 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const inputBuilder = useTailwindBuilder();
 const labelBuilder = useTailwindBuilder();
 const smallBuilder = useTailwindBuilder();
-
-inputBuilder
-    .add("color", "focus:border-")
-    .addStatic("w-full", "py-3", "px-4")
-    .addStatic("focus:outline-none", "outline-none")
-    .addStatic("border", "rounded", "border-gray-300")
-    .addStatic("bg-gray-200", "focus:bg-white")
-    .addStatic("text-gray-400", "font-regular", "text-sm")
-    .addStatic("drop-shadow-sm")
-    .addStatic("transition-all");
 
 labelBuilder
     .addStatic("block")
@@ -49,7 +52,7 @@ smallBuilder.addStatic("text-xs", "mt-4", "block", "text-red-500");
 const model = useVModel(props, "modelValue", emit);
 
 const classes = computed(() => ({
-    input: inputBuilder.make({ color: props.color }),
+    input: builder.make({ color: props.color }),
     label: labelBuilder.make(),
     small: smallBuilder.make(),
 }));

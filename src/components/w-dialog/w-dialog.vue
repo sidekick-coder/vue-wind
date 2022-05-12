@@ -1,33 +1,25 @@
 <script lang="ts">
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
+import { useBuilder } from "@/composable/tailwind";
 import { useVModel } from "@vueuse/core";
 import { computed } from "vue";
 
-const builder = useTailwindBuilder();
+export const builder = useBuilder();
 
 builder
-    .addStatic("bg-black/75")
-    .addStatic("fixed")
-    .addStatic("inset-0", "z-20")
-    .addStatic("h-full", "w-full")
-    .addStatic("flex", "items-center", "justify-center");
-
-export default {
-    props: {
-        modelValue: {
-            default: false,
-            type: Boolean,
-            required: false,
-        },
-    },
-};
+    .static("bg-black/75")
+    .static("fixed")
+    .static("inset-0", "z-20")
+    .static("h-full", "w-full")
+    .static("flex", "items-center", "justify-center");
 </script>
 <script lang="ts" setup>
-interface Props {
-    modelValue: boolean;
-}
-
-const props = defineProps<Props>();
+const props = defineProps({
+    modelValue: {
+        default: false,
+        type: Boolean,
+        required: false,
+    },
+});
 
 const emit = defineEmits(["update:modelValue"]);
 

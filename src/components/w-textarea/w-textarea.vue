@@ -1,5 +1,29 @@
+<script lang="ts">
+import { useBuilder } from "@/composable/tailwind";
+
+export const builder = useBuilder();
+
+builder
+    .option("color", "focus:border", "teal-500")
+    .option("minHeight", "min-h")
+    .static("w-full", "py-3", "px-4")
+    .static("focus:outline-none", "outline-none")
+    .static("border", "rounded", "border-gray-300")
+    .static("bg-gray-200", "focus:bg-white")
+    .static("text-gray-400", "font-regular", "text-sm")
+    .static("drop-shadow-sm")
+    .static("transition-all");
+
+const labelBuilder = useBuilder();
+const smallBuilder = useBuilder();
+
+labelBuilder
+    .static("block")
+    .static("text-gray-500", "text-sm", "font-bold", "mb-3");
+
+smallBuilder.static("text-xs", "mt-4", "block", "text-red-500");
+</script>
 <script setup lang="ts">
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
 import { useValidation, ValidationRule } from "@/composable/validation";
 import { useVModel } from "@vueuse/core";
 import { computed, onUnmounted, PropType, watch } from "vue";
@@ -58,36 +82,13 @@ onUnmounted(() => {
     }
 });
 
-const builder = {
-    textarea: useTailwindBuilder(),
-    label: useTailwindBuilder(),
-    small: useTailwindBuilder(),
-};
-
-builder.label
-    .addStatic("block")
-    .addStatic("text-gray-500", "text-sm", "font-bold", "mb-3");
-
-builder.textarea
-    .add("color", "focus:border-", "teal-500")
-    .add("minHeight", "min-h-")
-    .addStatic("w-full", "py-3", "px-4")
-    .addStatic("focus:outline-none", "outline-none")
-    .addStatic("border", "rounded", "border-gray-300")
-    .addStatic("bg-gray-200", "focus:bg-white")
-    .addStatic("text-gray-400", "font-regular", "text-sm")
-    .addStatic("drop-shadow-sm")
-    .addStatic("transition-all");
-
-builder.small.addStatic("text-xs", "mt-4", "block", "text-red-500");
-
 const classes = computed(() => ({
-    textarea: builder.textarea.make({
+    textarea: builder.make({
         color: props.color,
         minHeight: props.minHeight,
     }),
-    small: builder.small.make(),
-    label: builder.label.make(),
+    small: smallBuilder.make(),
+    label: labelBuilder.make(),
 }));
 </script>
 <template>
