@@ -10,7 +10,8 @@ builder
     .static("fixed")
     .static("inset-0", "z-20")
     .static("h-full", "w-full")
-    .static("flex", "items-center", "justify-center");
+    .static("flex", "items-center", "justify-center")
+    .toggle("hidden", "hidden");
 
 export default defineComponent({
     props: {
@@ -23,12 +24,14 @@ export default defineComponent({
     },
     emits: ["update:modelValue"],
     setup(props, { emit }) {
-        const classes = computed(() => [
-            ...builder.makeArray(props),
-            model.value ? "" : "hidden",
-        ]);
-
         const model = useVModel(props, "modelValue", emit);
+
+        const classes = computed(() =>
+            builder.make({
+                ...props,
+                hidden: !model.value,
+            })
+        );
 
         return { classes, model };
     },

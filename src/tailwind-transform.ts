@@ -26,7 +26,7 @@ export function VWindTransformer(content: string) {
                 .map((a) => a.trim().split("="))
                 .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
-            return builder?.make(attrs) || "";
+            return builder?.make(attrs, true) || "";
         });
 
     return safelist.join(" ");
