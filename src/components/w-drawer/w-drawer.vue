@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useBuilder } from "@/composable/tailwind";
-import { ref, computed, defineComponent, onMounted, watch } from "vue";
+import { ref, computed, defineComponent, onMounted } from "vue";
 import { useLayoutItem } from "@/components/w-layout/composable";
 import { uniqueId } from "lodash";
 
