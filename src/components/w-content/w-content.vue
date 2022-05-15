@@ -1,48 +1,76 @@
-<script setup lang="ts">
-import { useCssHelper } from "@/composable/css-helper";
-import { useTailwindBuilder } from "@/composable/tailwind-builder";
+<script lang="ts">
+// import { useCssHelper } from "@/composable/css-helper";
+import { useBuilder } from "@/composable/tailwind";
 import { computed } from "@vue/reactivity";
-import { ref, nextTick } from "vue";
-import { useLayout } from "../w-layout/composable";
+import { uniqueId } from "lodash";
+import { ref, nextTick, defineComponent, onMounted } from "vue";
+import { LayoutItem, useLayoutItem } from "../w-layout/composable";
 
-const props = defineProps({
-    layout: {
-        type: Boolean,
-        default: false,
+export const builder = useBuilder();
+
+builder.static("overflow-auto");
+
+export default defineComponent({
+    props: {
+        ...builder.props,
+        layoutId: {
+            type: String,
+            default: uniqueId(),
+        },
+        layout: {
+            type: Boolean,
+            default: false,
+        },
+        layoutIgnore: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    setup(props) {
+        const root = ref();
+        // const cssHelper = useCssHelper();
+
+        const height = ref("100%");
+        const width = ref("100%");
+
+        function resize(items: LayoutItem[]) {
+            const offsetWidth = items
+                .filter((i) => i.type === "drawer")
+                .filter((i) => !props.layoutIgnore.includes(i.id))
+                .map((i) => i.width)
+                .reduce((a, b) => a + b, 0);
+
+            const offsetHeight = items
+                .filter((i) => i.type === "toolbar")
+                .map((i) => i.height)
+                .reduce((a, b) => a + b, 0);
+
+            width.value = `calc(100% - ${offsetWidth}px)`;
+            height.value = `calc(100% - ${offsetHeight}px)`;
+        }
+
+        onMounted(() => {
+            useLayoutItem(props.layoutId, root.value, "content", resize);
+        });
+
+        const classes = computed(() => builder.make(props));
+
+        const style = computed(() => ({
+            height: height.value,
+            width: width.value,
+        }));
+
+        function setSizes() {
+            height.value = "100%";
+        }
+
+        nextTick(setSizes);
+        return { root, classes, style };
     },
 });
-
-const { contentRef, toolbarRef } = useLayout();
-const cssHelper = useCssHelper();
-
-const height = ref("100%");
-
-const builder = useTailwindBuilder();
-
-builder.add("height", "h-");
-
-builder.addStatic("overflow-auto", "flex-1");
-
-const classes = computed(() =>
-    builder.make({
-        height: `[${height.value}]`,
-    })
-);
-
-function setSizes() {
-    height.value = "100%";
-
-    if (props.layout && toolbarRef.value) {
-        height.value = cssHelper.toMeasure(
-            document.body.clientHeight - toolbarRef.value.clientHeight
-        );
-    }
-}
-
-nextTick(setSizes);
 </script>
 <template>
-    <div ref="contentRef" :class="classes">
+    <div ref="root" :class="classes" :style="style">
         <slot />
     </div>
 </template>

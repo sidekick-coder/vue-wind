@@ -14,7 +14,7 @@ afterEach(() => {
     }
 });
 
-describe("w-layout", () => {
+describe.skip("w-layout", () => {
     it("should have provided child component refs", async () => {
         wrapper = mount(WLayout);
 

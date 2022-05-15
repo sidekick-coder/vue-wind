@@ -86,6 +86,8 @@ export class Builder {
             class: className,
             isToggle: true,
         });
+
+        return this;
     }
 }
 

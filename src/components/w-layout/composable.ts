@@ -1,31 +1,83 @@
-import { ref, provide, inject, InjectionKey, Ref } from "vue";
+import { debounce, uniqueId } from "lodash";
+import { ref, provide, inject, InjectionKey, Ref, watch } from "vue";
 
-type LayoutRef = Ref<HTMLElement | null>;
+export interface LayoutItem {
+    id: string;
+    ref: HTMLElement;
+    width: number;
+    height: number;
+    type: "toolbar" | "drawer" | "content";
+    onUpdate?: (items: LayoutItem[]) => void;
+}
 
-const toolbarKey: InjectionKey<LayoutRef> = Symbol("layout:toolbar");
-const drawerKey: InjectionKey<LayoutRef> = Symbol("layout:drawer");
-const contentKey: InjectionKey<LayoutRef> = Symbol("layout:content");
+const layoutKey: InjectionKey<ReturnType<typeof provideLayout>> =
+    Symbol("layout");
 
 export function provideLayout() {
-    const toolbarRef: LayoutRef = ref(null);
-    const drawerRef: LayoutRef = ref(null);
-    const contentRef: LayoutRef = ref(null);
+    const items = ref<LayoutItem[]>([]);
 
-    provide(toolbarKey, toolbarRef);
-    provide(drawerKey, drawerRef);
-    provide(contentKey, contentRef);
+    const update = (ignoreId?: string) => {
+        items.value
+            .filter((i) => i.id !== ignoreId)
+            .forEach((item) => item.onUpdate?.(items.value));
+    };
+
+    provide(layoutKey, {
+        items,
+        update,
+    });
 
     return {
-        toolbarRef,
-        drawerRef,
-        contentRef,
+        items,
+        update,
     };
 }
 
 export function useLayout() {
-    return {
-        toolbarRef: inject(toolbarKey, ref(null)),
-        drawerRef: inject(drawerKey, ref(null)),
-        contentRef: inject(contentKey, ref(null)),
+    return inject(layoutKey, {
+        items: ref([]),
+        update: () => {},
+    });
+}
+
+export function useLayoutItem(
+    id: string,
+    el: HTMLElement,
+    type: LayoutItem["type"],
+    onUpdate?: LayoutItem["onUpdate"]
+) {
+    const { items, update } = useLayout();
+
+    const item = {
+        id,
+        ref: el,
+        width: el.clientWidth,
+        height: el.clientHeight,
+        type,
+        onUpdate,
     };
+
+    useResize(el, (width, heigh) => {
+        update(item.id);
+
+        const search = items.value.find((i) => i.id === item.id);
+
+        if (!search) return;
+
+        search.width = width;
+        search.height = heigh;
+    });
+
+    items.value.push(item);
+
+    return { item, update };
+}
+
+export function useResize(
+    el: HTMLElement,
+    cb: (width: number, height: number) => void
+) {
+    const resize = () => cb(el.offsetWidth, el.offsetHeight);
+
+    return new ResizeObserver(resize).observe(el);
 }
