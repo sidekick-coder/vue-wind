@@ -1,9 +1,8 @@
 <script lang="ts">
-// import { useCssHelper } from "@/composable/css-helper";
 import { useBuilder } from "@/composable/tailwind";
 import { computed } from "@vue/reactivity";
 import { uniqueId } from "lodash";
-import { ref, nextTick, defineComponent, onMounted } from "vue";
+import { ref, defineComponent, onMounted } from "vue";
 import { LayoutItem, useLayoutItem } from "../w-layout/composable";
 
 export const builder = useBuilder();
@@ -28,7 +27,6 @@ export default defineComponent({
     },
     setup(props) {
         const root = ref();
-        // const cssHelper = useCssHelper();
 
         const height = ref("100%");
         const width = ref("100%");
@@ -60,11 +58,6 @@ export default defineComponent({
             width: width.value,
         }));
 
-        function setSizes() {
-            height.value = "100%";
-        }
-
-        nextTick(setSizes);
         return { root, classes, style };
     },
 });
