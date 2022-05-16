@@ -1,3 +1,4 @@
+import { throttle } from "lodash";
 import { ref, provide, inject, InjectionKey } from "vue";
 
 export interface LayoutItem {
@@ -76,7 +77,10 @@ export function useResize(
     el: HTMLElement,
     cb: (width: number, height: number) => void
 ) {
-    const resize = () => cb(el.offsetWidth, el.offsetHeight);
+    const resize = throttle(() => cb(el.offsetWidth, el.offsetHeight), 100);
+
+    el.addEventListener("resize", resize);
+    window.addEventListener("resize", resize);
 
     return new ResizeObserver(resize).observe(el);
 }
