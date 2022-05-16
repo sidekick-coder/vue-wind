@@ -18,7 +18,8 @@
         "prepublishOnly": "npm run test && npm run build",
         "clean": "rm -rf dist && rm -rf types",
         "docs": "start-storybook -p 6006",
-        "docs:build": "build-storybook"
+        "docs:build": "build-storybook",
+        "docs:preview": "npx http-server storybook-static"
     },
     "repository": {
         "type": "git",
