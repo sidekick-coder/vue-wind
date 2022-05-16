@@ -56,17 +56,14 @@ export default defineComponent({
         });
 
         const classes = computed(() => builder.make(props));
-        const style = computed(() => ({
-            width: width.value,
-        }));
 
-        return { root, classes, style };
+        return { root, classes, width };
     },
 });
 </script>
 
 <template>
-    <div ref="root" :class="classes" :style="style">
+    <div ref="root" :class="classes" :style="`width: ${width}`">
         <slot></slot>
     </div>
 </template>
