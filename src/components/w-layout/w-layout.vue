@@ -7,7 +7,7 @@ import { provideLayout } from "./composable";
 export const builder = useBuilder();
 
 builder
-    .static("overflow-hidden flex flex-wrap")
+    .static("overflow-hidden flex flex-wrap relative")
     .toggle("useScreen", "h-screen w-screen")
     .toggle("usePercentage", "h-full w-full");
 
@@ -20,11 +20,7 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const { update } = provideLayout();
-
-        setTimeout(() => {
-            update();
-        }, 500);
+        provideLayout();
 
         const classes = computed(() =>
             builder.make({
@@ -44,8 +40,3 @@ export default defineComponent({
         <slot />
     </div>
 </template>
-<style>
-* {
-    scrollbar-width: none;
-}
-</style>

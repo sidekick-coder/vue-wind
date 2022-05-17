@@ -7,7 +7,8 @@ export interface LayoutItem {
     width: number;
     height: number;
     type: "toolbar" | "drawer" | "content";
-    onUpdate?: (items: LayoutItem[]) => void;
+    isVisible: () => boolean;
+    offsetType: "left" | "right" | "top" | "bottom" | "none";
 }
 
 const layoutKey: InjectionKey<ReturnType<typeof provideLayout>> =
@@ -16,50 +17,25 @@ const layoutKey: InjectionKey<ReturnType<typeof provideLayout>> =
 export function provideLayout() {
     const items = ref<LayoutItem[]>([]);
 
-    const update = (ignoreId?: string) => {
-        items.value
-            .filter((i) => i.id !== ignoreId)
-            .forEach((item) => item.onUpdate?.(items.value));
-    };
-
     provide(layoutKey, {
         items,
-        update,
     });
 
     return {
         items,
-        update,
     };
 }
 
 export function useLayout() {
     return inject(layoutKey, {
         items: ref([]),
-        update: () => {},
     });
 }
 
-export function useLayoutItem(
-    id: string,
-    el: HTMLElement,
-    type: LayoutItem["type"],
-    onUpdate?: LayoutItem["onUpdate"]
-) {
-    const { items, update } = useLayout();
+export function useLayoutItem(item: LayoutItem) {
+    const { items } = useLayout();
 
-    const item = {
-        id,
-        ref: el,
-        width: el.clientWidth,
-        height: el.clientHeight,
-        type,
-        onUpdate,
-    };
-
-    useResize(el, (width, heigh) => {
-        update(item.id);
-
+    useResize(item.ref, (width, heigh) => {
         const search = items.value.find((i) => i.id === item.id);
 
         if (!search) return;
@@ -70,7 +46,7 @@ export function useLayoutItem(
 
     items.value.push(item);
 
-    return { item, update };
+    return { item };
 }
 
 export function useResize(
@@ -79,8 +55,8 @@ export function useResize(
 ) {
     const resize = throttle(() => cb(el.offsetWidth, el.offsetHeight), 100);
 
-    el.addEventListener("resize", resize);
     window.addEventListener("resize", resize);
+    el.addEventListener("resize", resize);
 
     return new ResizeObserver(resize).observe(el);
 }

@@ -5,30 +5,11 @@ import WContent from "./../w-content/w-content.vue";
 
 export default {
     title: "Components/WLayout",
-    component: WLayout,
-    argTypes: {
-        leftDrawerWidth: {
-            name: "width",
-            table: {
-                category: "left-drawer",
-            },
-            control: {
-                type: "text",
-            },
+    parameters: {
+        previewTabs: {
+            "storybook/docs/panel": { hidden: true },
         },
-        rightDrawerWidth: {
-            name: "width",
-            table: {
-                category: "right-drawer",
-            },
-            control: {
-                type: "text",
-            },
-        },
-    },
-    args: {
-        leftDrawerWidth: "[300px]",
-        rightDrawerWidth: "[300px]",
+        viewMode: "canvas",
     },
 };
 
@@ -42,7 +23,7 @@ const Template = (args: any) => ({
     },
     template: `
         <w-layout>
-            <w-drawer layout-id='left' :width='args.leftDrawerWidth' layout class='bg-sky-500' >
+            <w-drawer class='bg-sky-500' >
                 Left Drawer
 
                 <p class='whitespace-pre-line' >{{lorem}}</p>
@@ -51,15 +32,17 @@ const Template = (args: any) => ({
             <w-content>
                 
                 <w-layout use-percentage>
-                    <w-toolbar color='red-500' layout-ignore='["right"]' >
+                    <w-toolbar color='red-500' layout-ignore='right' >
                         Toolbar
                     </w-toolbar>
                     
                     <w-content class='bg-gray-500' >
-                        <p class='whitespace-pre-line' >{{lorem}}</p>
+                        <div class="overflow-auto h-full">
+                         <p class='whitespace-pre-line' >{{lorem}}</p>
+                        </div>
                     </w-content>
 
-                    <w-drawer layout-id='right' :width='args.rightDrawerWidth' layout class='bg-sky-500' >
+                    <w-drawer right layout-id='right' :width='args.rightDrawerWidth' class='bg-sky-500' >
                         Right Drawer
 
                         <p class='whitespace-pre-line' >{{lorem}}</p>

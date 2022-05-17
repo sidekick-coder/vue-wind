@@ -1,16 +1,18 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 
-import { useLayoutItem, LayoutItem } from "@/components/w-layout/composable";
+import { useLayoutItem, useLayout } from "@/components/w-layout/composable";
 import { useBuilder } from "@/composable/tailwind";
 import { uniqueId } from "lodash";
 
 export const builder = useBuilder();
 
 builder
+    .option("width", "w", "full")
     .option("height", "h", "12")
     .option("color", "bg", "gray-500")
     .static("px-2")
+    .static("absolute top-0 left-0")
     .static("flex items-center");
 
 export default defineComponent({
@@ -18,7 +20,7 @@ export default defineComponent({
         ...builder.props,
         layoutId: {
             type: String,
-            default: uniqueId(),
+            default: () => uniqueId(),
         },
         layoutIgnore: {
             type: Array,
@@ -39,31 +41,55 @@ export default defineComponent({
     },
     setup(props) {
         const root = ref();
-        const width = ref("100%");
 
-        function resize(items: LayoutItem[]) {
-            const offsetWidth = items
-                .filter((i) => i.type === "drawer")
+        const { items } = useLayout();
+
+        const paddingLeft = computed(() =>
+            items.value
                 .filter((i) => !props.layoutIgnore.includes(i.id))
-                .map((i) => i.width)
-                .reduce((a, b) => a + b, 0);
+                .filter((item) => item.type === "drawer")
+                .filter((item) => item.offsetType === "left")
+                .filter((item) => item.isVisible())
+                .reduce((acc, item) => acc + item.width, 0)
+        );
 
-            width.value = `calc(100% - ${offsetWidth}px)`;
-        }
+        const paddingRight = computed(() =>
+            items.value
+                .filter((i) => !props.layoutIgnore.includes(i.id))
+                .filter((item) => item.type === "drawer")
+                .filter((item) => item.offsetType === "right")
+                .filter((item) => item.isVisible())
+                .reduce((acc, item) => acc + item.width, 0)
+        );
 
         onMounted(() => {
-            useLayoutItem(props.layoutId, root.value, "toolbar", resize);
+            useLayoutItem({
+                id: props.layoutId,
+                ref: root.value,
+                height: 0,
+                width: 0,
+                isVisible: () => true,
+                offsetType: "top",
+                type: "toolbar",
+            });
         });
 
         const classes = computed(() => builder.make(props));
 
-        return { root, classes, width };
+        return { root, classes, paddingLeft, paddingRight };
     },
 });
 </script>
 
 <template>
-    <div ref="root" :class="classes" :style="`width: ${width}`">
+    <head
+        ref="root"
+        :class="classes"
+        :style="{
+            'padding-left': `${paddingLeft}px`,
+            'padding-right': `${paddingRight}px`,
+        }"
+    >
         <slot></slot>
-    </div>
+    </head>
 </template>
