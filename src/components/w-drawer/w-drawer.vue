@@ -9,7 +9,7 @@ export const builder = useBuilder();
 
 builder
     .static("absolute")
-    .static("overflow-auto")
+    .static("overflow-hidden")
     .static("top-0")
     .static("transition-transform")
     .option("h", "h", "full")
@@ -86,9 +86,9 @@ export default defineComponent({
     <aside
         ref="root"
         :class="classes"
-        :style="`transform: ${transform}; padding-top: ${paddingTop}`"
+        :style="{ paddingTop: `${paddingTop}px`, transform }"
     >
-        <div class="h-full w-full" v-bind="$attrs">
+        <div class="h-full w-full overflow-auto" v-bind="$attrs">
             <slot />
         </div>
     </aside>
