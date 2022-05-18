@@ -83,7 +83,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div
+    <aside
         ref="root"
         :class="classes"
         :style="`transform: ${transform}; padding-top: ${paddingTop}`"
@@ -91,5 +91,5 @@ export default defineComponent({
         <div class="h-full w-full" v-bind="$attrs">
             <slot />
         </div>
-    </div>
+    </aside>
 </template>
