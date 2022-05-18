@@ -1,7 +1,6 @@
 <script lang="ts">
 import { useBuilder } from "@/composable/tailwind";
-import { computed } from "@vue/reactivity";
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { provideLayout } from "./composable";
 
 export const builder = useBuilder();

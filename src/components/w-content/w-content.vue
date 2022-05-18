@@ -1,8 +1,7 @@
 <script lang="ts">
 import { useBuilder } from "@/composable/tailwind";
-import { computed } from "@vue/reactivity";
 import { uniqueId } from "lodash";
-import { ref, defineComponent, onMounted } from "vue";
+import { ref, defineComponent, onMounted, computed } from "vue";
 import { useLayout, useLayoutItem } from "../w-layout/composable";
 
 export const builder = useBuilder();

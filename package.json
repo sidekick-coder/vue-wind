@@ -5,8 +5,8 @@
     "types": "types",
     "exports": {
         ".": {
-            "import": "./dist/index.es.js",
-            "require": "./dist/index.umd.js"
+            "import": "./dist/vue-wind.es.js",
+            "require": "./dist/vue-wind.umd.js"
         }
     },
     "scripts": {
