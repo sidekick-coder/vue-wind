@@ -86,7 +86,7 @@ export default defineComponent({
     <div
         ref="root"
         :class="classes"
-        :style="{ transform, 'padding-top': `${paddingTop}px` }"
+        :style="`transform: ${transform}; padding-top: ${paddingTop}`"
     >
         <div class="h-full w-full" v-bind="$attrs">
             <slot />

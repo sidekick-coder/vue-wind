@@ -85,10 +85,7 @@ export default defineComponent({
     <head
         ref="root"
         :class="classes"
-        :style="{
-            'padding-left': `${paddingLeft}px`,
-            'padding-right': `${paddingRight}px`,
-        }"
+        :style="`padding-left: ${paddingLeft}px; padding-right: ${paddingRight}px`"
     >
         <slot></slot>
     </head>

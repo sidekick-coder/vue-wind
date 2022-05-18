@@ -67,7 +67,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div ref="root" :class="classes" :style="{ padding }">
+    <div ref="root" :class="classes" :style="`padding: ${padding}`">
         <slot />
     </div>
 </template>
