@@ -55,7 +55,9 @@ export class Builder {
         const propOptions = this._options
             .filter((option) => option.isProp)
             .filter((option) => props[option.name] || option.default)
-            .map((option) => [option.class, props[option.name]].join("-"));
+            .map((option) =>
+                [option.class, props[option.name] || option.default].join("-")
+            );
 
         const toggleOptions = this._options
             .filter((option) => option.isToggle)

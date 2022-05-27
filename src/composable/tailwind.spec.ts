@@ -37,3 +37,11 @@ it("should all methods return all classes including child builders", () => {
 
     expect(classes).toEqual("main-color-blue text-red");
 });
+
+it.only("should all method include child defaults", () => {
+    builder.child("label").option("color", "text", "red");
+
+    const classes = builder.all();
+
+    expect(classes).includes("text-red");
+});
