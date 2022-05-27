@@ -1,39 +1,27 @@
 <script lang="ts">
+import { computed, defineComponent } from "vue";
+import { useBuilder } from "@/composable/tailwind";
+
 export const builder = useBuilder();
 
 builder
-    .option("color", "bg")
-    .option("textColor", "text")
-    .option("textSize", "text")
-    .option("width", "w")
+    .option("color", "bg", "gray-500")
+    .option("textColor", "text", "white")
+    .option("textSize", "text", "base")
+    .option("width", "w", "full")
     .static("disabled:opacity-75")
     .static("px-4 py-2 drop-shadow rounded font-medium");
-</script>
 
-<script setup lang="ts">
-import { computed } from "vue";
-import { useBuilder } from "@/composable/tailwind";
+export default defineComponent({
+    props: {
+        ...builder.props,
+    },
+    setup(props) {
+        const classes = computed(() => builder.make(props));
 
-const props = defineProps({
-    color: {
-        type: String,
-        default: "gray-500",
-    },
-    textColor: {
-        type: String,
-        default: "white",
-    },
-    textSize: {
-        type: String,
-        default: "base",
-    },
-    width: {
-        type: String,
-        default: "full",
+        return { classes };
     },
 });
-
-const classes = computed(() => builder.make(props));
 </script>
 
 <template>
