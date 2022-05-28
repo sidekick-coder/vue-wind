@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useBuilder } from "@/composable/tailwind";
-import { onKeyStroke } from "@vueuse/core";
+import { onKeyStroke, useVModel } from "@vueuse/core";
 import { defineComponent, computed, ref, onMounted } from "vue";
 
 interface TableColumn {
@@ -50,8 +50,18 @@ export default defineComponent({
             type: Function as () => Record<string, any>,
             default: () => ({}),
         },
+        // selected item
+        item: {
+            type: Object as any,
+            default: null,
+        },
+        // selected column
+        column: {
+            type: Object as any,
+            default: null,
+        },
     },
-    emits: ["focusItemCell", "focusItemRow", "selectItemRow", "selectItemCell"],
+    emits: ["focusItemCell", "focusItemRow", "update:item", "update:column"],
     setup(props, { emit }) {
         const tableRef = ref<HTMLTableElement>();
 
@@ -62,6 +72,9 @@ export default defineComponent({
 
         const rows = ref<HTMLElement[]>([]);
         const cells = ref<HTMLElement[]>([]);
+
+        const item = useVModel(props, "item", emit);
+        const column = useVModel(props, "column", emit);
 
         const cellsMatrix = computed(() => {
             const matrix: HTMLElement[][] = [];
@@ -92,7 +105,7 @@ export default defineComponent({
             const move: any = {
                 "Ctrl ArrowUp": () => (p.y = Math.max(0, p.y - 1)),
                 "Ctrl ArrowDown": () => (p.y = Math.min(p.y + 1, maxY - 1)),
-                "Ctrl Enter": () => emit("selectItemRow", props.items[p.y]),
+                "Ctrl Enter": () => (item.value = props.items[p.y]),
             };
 
             if (!move[key]) return;
@@ -115,11 +128,7 @@ export default defineComponent({
                 ArrowDown: () => (p.y = Math.min(p.y + 1, maxY - 1)),
                 ArrowLeft: () => (p.x = Math.max(0, p.x - 1)),
                 ArrowRight: () => (p.x = Math.min(p.x + 1, maxX - 1)),
-                Enter: () =>
-                    emit("selectItemCell", {
-                        item: props.items[p.y],
-                        column: props.columns[p.x],
-                    }),
+                Enter: () => (column.value = props.columns[p.x]),
             };
 
             if (!move[key]) return;

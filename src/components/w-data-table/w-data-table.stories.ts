@@ -30,11 +30,11 @@ export default {
         onFocusItemRow: {
             action: "focusItemRow",
         },
-        onSelectItemCell: {
-            action: "selectItemCell",
+        "onUpdate:item": {
+            action: "update:item",
         },
-        onSelectItemRow: {
-            action: "selectItemRow",
+        "onUpdate:column": {
+            action: "update:column",
         },
     },
     args: {
