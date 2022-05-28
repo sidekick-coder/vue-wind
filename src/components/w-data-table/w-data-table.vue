@@ -61,7 +61,7 @@ export default defineComponent({
             default: null,
         },
     },
-    emits: ["focusItemCell", "focusItemRow", "update:item", "update:column"],
+    emits: ["update:item", "update:column"],
     setup(props, { emit }) {
         const tableRef = ref<HTMLTableElement>();
 
@@ -141,47 +141,17 @@ export default defineComponent({
         }
 
         function onFocusItemRow(y: number) {
-            const item = props.items[y];
+            const row = props.items[y];
 
-            emit("focusItemRow", {
-                y,
-                item,
-            });
+            item.value = row;
         }
 
         function onFocusItemCell(y: number, x: number) {
-            const item = props.items[y];
+            const row = props.items[y];
+            const cell = props.columns[x];
 
-            emit("focusItemCell", {
-                x,
-                y,
-                item,
-                column: props.columns[x],
-            });
-        }
-
-        function onCLickItemRow(y: number) {
-            const row = rows.value[y];
-
-            position.value.y = y;
-
-            row.focus();
-        }
-
-        function onClickItemCell(e: MouseEvent, y: number, x: number) {
-            e.preventDefault();
-
-            if (e.ctrlKey) {
-                onCLickItemRow(y);
-                return;
-            }
-
-            const cell = cellsMatrix.value[y][x];
-
-            position.value.x = x;
-            position.value.y = y;
-
-            cell.focus();
+            item.value = row;
+            column.value = cell;
         }
 
         function setNavigationEvents() {
@@ -194,7 +164,6 @@ export default defineComponent({
                 "ArrowDown",
                 "ArrowLeft",
                 "ArrowRight",
-                "Enter",
             ];
 
             cellKeys.forEach((key) => {
@@ -229,9 +198,7 @@ export default defineComponent({
             cellsMatrix,
             cells,
             onFocusItemRow,
-            onCLickItemRow,
             onFocusItemCell,
-            onClickItemCell,
         };
     },
 });
@@ -268,7 +235,6 @@ export default defineComponent({
                     :key="x"
                     ref="cells"
                     @focus="onFocusItemCell(y, x)"
-                    @mousedown="(e) => onClickItemCell(e, y, x)"
                 >
                     {{ item[column.field] }}
                 </td>

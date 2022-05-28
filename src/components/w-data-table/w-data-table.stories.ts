@@ -24,12 +24,6 @@ export default {
         items: {
             expanded: false,
         },
-        onFocusItemCell: {
-            action: "focusItemCell",
-        },
-        onFocusItemRow: {
-            action: "focusItemRow",
-        },
         "onUpdate:item": {
             action: "update:item",
         },
