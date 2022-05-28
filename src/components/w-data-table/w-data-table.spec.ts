@@ -108,3 +108,120 @@ it("should render body-append slot", () => {
 
     expect(wrapper.find(".body-append").text()).toBe("replace-body-append");
 });
+
+it("should cells tabindex=0 when enable-navigation prop is true", () => {
+    expect.assertions(3);
+    const columns = [{ name: "name", label: "Name", field: "name" }];
+    const items = [{ name: "John" }, { name: "Jane" }, { name: "Joe" }];
+
+    wrapper = mount(WDataTable, {
+        props: { columns, items, enableNavigation: true },
+    });
+
+    const td = wrapper.findAll("tbody tr td");
+
+    td.forEach((cell) => {
+        expect(cell.attributes("tabindex")).toBe("0");
+    });
+});
+
+it("should cells tabindex be undefined when enable-navigation prop is false", () => {
+    expect.assertions(3);
+    const columns = [{ name: "name", label: "Name", field: "name" }];
+    const items = [{ name: "John" }, { name: "Jane" }, { name: "Joe" }];
+
+    wrapper = mount(WDataTable, {
+        props: { columns, items, enableNavigation: false },
+    });
+
+    const td = wrapper.findAll("tbody tr td");
+
+    td.forEach((cell) => {
+        expect(cell.attributes("tabindex")).toBe(undefined);
+    });
+});
+
+const cases = [
+    ["ArrowUp", [0, 0]],
+    ["ArrowDown", [1, 0]],
+    ["ArrowLeft", [0, 0]],
+    ["ArrowRight", [0, 1]],
+];
+
+it.each(cases)("should %s key navigate to cell %j", async (key, cors) => {
+    const [y, x] = cors as [number, number];
+
+    const columns = [
+        { name: "name", label: "Name", field: "name" },
+        { name: "age", label: "Age", field: "age" },
+        { name: "city", label: "City", field: "city" },
+    ];
+
+    const items = [
+        { name: "John", age: 30, city: "London" },
+        { name: "Jane", age: 25, city: "Paris" },
+        { name: "Joe", age: 35, city: "New York" },
+    ];
+
+    const expectedItem = items[y];
+    const expectedColumn = columns[x];
+
+    let receivedItem: any;
+    let receivedColumn: any;
+
+    wrapper = mount(WDataTable, {
+        attachTo: document.body,
+        props: {
+            columns,
+            items,
+            enableNavigation: true,
+            item: receivedItem,
+            column: receivedColumn,
+            "onUpdate:item": (item: any) => (receivedItem = item),
+            "onUpdate:column": (column: any) => (receivedColumn = column),
+        },
+    });
+
+    const table = wrapper.find("table");
+    const event = new KeyboardEvent("keydown", { key: key as string });
+
+    table.element.dispatchEvent(event);
+
+    await wrapper.vm.$nextTick();
+
+    expect(receivedItem).toEqual(expectedItem);
+    expect(receivedColumn).toEqual(expectedColumn);
+});
+
+it("should when navigating focus in navigation-cell-selector prop when is defined", async () => {
+    const columns = [
+        { name: "name", label: "Name", field: "name" },
+        { name: "age", label: "Age", field: "age" },
+        { name: "city", label: "City", field: "city" },
+    ];
+
+    const items = [{ name: "John", age: 30, city: "London" }];
+
+    wrapper = mount(WDataTable, {
+        attachTo: document.body,
+        props: {
+            columns,
+            items,
+            enableNavigation: true,
+            navigationCellSelector: ".navigation-cell",
+        },
+        slots: {
+            "item-name": '<div class="navigation-cell">item-name</div>',
+        },
+    });
+
+    const table = wrapper.find("table");
+    const event = new KeyboardEvent("keydown", { key: "ArrowDown" });
+    const cell = wrapper.find(".navigation-cell");
+
+    table.element.dispatchEvent(event);
+
+    await wrapper.vm.$nextTick();
+
+    expect(document.activeElement).toBe(cell.element);
+});

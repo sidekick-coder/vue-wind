@@ -44,10 +44,6 @@ export default defineComponent({
             type: Array as () => any[],
             default: () => [],
         },
-        enableKeyboardNavigation: {
-            type: Boolean,
-            default: () => false,
-        },
         tdAttrs: {
             type: Function as () => Record<string, any>,
             default: () => ({}),
@@ -60,6 +56,14 @@ export default defineComponent({
         // selected column
         column: {
             type: Object as any,
+            default: null,
+        },
+        enableNavigation: {
+            type: Boolean,
+            default: () => false,
+        },
+        navigationCellSelector: {
+            type: String,
             default: null,
         },
     },
@@ -149,11 +153,16 @@ export default defineComponent({
         }
 
         function onFocusItemCell(y: number, x: number) {
-            const row = props.items[y];
-            const cell = props.columns[x];
+            item.value = props.items[y];
+            column.value = props.columns[x];
 
-            item.value = row;
-            column.value = cell;
+            if (!props.navigationCellSelector) return;
+
+            const cell = cellsMatrix.value[y][x];
+
+            cell.querySelector<HTMLElement>(
+                props.navigationCellSelector
+            )?.focus();
         }
 
         function onCLickItemRow(y: number) {
@@ -165,6 +174,8 @@ export default defineComponent({
         }
 
         function onClickItemCell(e: MouseEvent, y: number, x: number) {
+            if (!props.enableNavigation) return;
+
             e.preventDefault();
 
             if (e.ctrlKey) {
@@ -212,7 +223,7 @@ export default defineComponent({
             });
         }
 
-        if (props.enableKeyboardNavigation) {
+        if (props.enableNavigation) {
             onMounted(setNavigationEvents);
         }
 
@@ -236,7 +247,7 @@ export default defineComponent({
     <table
         ref="tableRef"
         :class="classes.main"
-        :tabindex="enableKeyboardNavigation ? '0' : undefined"
+        :tabindex="enableNavigation ? '0' : undefined"
     >
         <thead>
             <tr>
@@ -251,7 +262,7 @@ export default defineComponent({
                 v-for="(item, y) in items"
                 :key="y"
                 ref="rows"
-                :tabindex="enableKeyboardNavigation ? '0' : undefined"
+                :tabindex="enableNavigation ? '0' : undefined"
                 :class="classes.tr"
                 @focus="onFocusItemRow(y)"
             >
@@ -265,11 +276,11 @@ export default defineComponent({
                         v-bind="tdAttrs"
                         v-for="(column, x) in columns"
                         :key="x"
-                        :tabindex="enableKeyboardNavigation ? '0' : undefined"
+                        :tabindex="enableNavigation ? '0' : undefined"
                         :class="classes.td"
                         ref="cells"
                         @focus="onFocusItemCell(y, x)"
-                        @mousedown="(e) => onClickItemCell(e, y, x)"
+                        @mousedown="onClickItemCell($event, y, x)"
                     >
                         <slot
                             :name="`item-${column.name}`"

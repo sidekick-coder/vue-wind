@@ -38,7 +38,7 @@ export default {
     },
     args: {
         focusColor: "gray-200",
-        enableKeyboardNavigation: false,
+        enableNavigation: false,
         columns: columns,
         items: items,
     },
@@ -53,12 +53,6 @@ const Template = (args: any) => ({
 });
 
 export const Default = Template.bind({});
-
-export const Navigation: any = Template.bind({});
-
-Navigation.args = {
-    enableKeyboardNavigation: true,
-};
 
 export const Slots = (args: any) => ({
     components: { WDataTable },
@@ -89,6 +83,37 @@ export const Slots = (args: any) => ({
                 <tr class='bg-sky-500 text-center text-white' >
                     <td :colspan='columns.length' >Append Body</td>
                 </tr>
+            </template>
+
+        </w-data-table>
+    `,
+});
+
+export const Navigation: any = Template.bind({});
+
+Navigation.args = {
+    enableNavigation: true,
+};
+
+export const NavigationWithCustomSelector = (args: any) => ({
+    components: { WDataTable },
+    setup() {
+        return args;
+    },
+    template: `
+        <w-data-table
+            :items='items'
+            :columns='columns'
+            focus-color='none'
+            :enable-navigation='true'
+            navigation-cell-selector=".focus-me"
+        >
+            
+            <template v-for='col in columns' #[\`item-\${col.name}\`]="{ item }" :key="col.name"  >
+                <input
+                    class='focus-me focus:bg-teal-500/10 border border-transparent focus:border-teal-500 focus:outline-none'
+                    :value='item[col.field]'
+                />
             </template>
 
         </w-data-table>
