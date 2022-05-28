@@ -1,4 +1,5 @@
 // .storybook/preview.js
+import "./styles.css";
 
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 

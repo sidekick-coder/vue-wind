@@ -1,8 +1,8 @@
 import { Builder } from "./composable/tailwind";
 
-const files = import.meta.globEager("./components/**/*.vue");
-
 export function VWindTransformer(content: string) {
+    const files = import.meta.globEager("./components/**/*.vue");
+
     const builders = Object.entries(files).map(([path, file]) => ({
         name: path.split("/").pop()?.replace(".vue", ""),
         instance: file.builder ? (file.builder as Builder) : undefined,

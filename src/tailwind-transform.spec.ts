@@ -19,15 +19,23 @@ const cases = [
         "focus:border-primary hidden",
     ],
     [
-        `<div>
-            <w-data-table
-                v-model:item="selected"
-                :columns="head"
-                :items="items"
-                enable-keyboard-navigation
-                @keydown.enter="duplicate"
-            />
-        </div>
+        `
+        <script setup lang="ts">
+            const test = ref();
+        </script>
+
+        <template>
+            <div>
+                <w-data-table
+                    v-model:item="selected"
+                    :columns="head"
+                    :items="items"
+                    enable-keyboard-navigation
+                    @keydown.enter="duplicate"
+                />
+            </div>
+        </template>
+
       `,
         "focus:bg-gray-100",
     ],

@@ -43,7 +43,7 @@ const Template = (args: any) => ({
     setup() {
         return { args };
     },
-    template: '<WDataTable v-bind="args" />',
+    template: '<w-data-table v-bind="args" />',
 });
 
 export const Default = Template.bind({});
