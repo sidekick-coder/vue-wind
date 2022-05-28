@@ -4,6 +4,7 @@ import { onKeyStroke, useVModel } from "@vueuse/core";
 import { defineComponent, computed, ref, onMounted } from "vue";
 
 interface TableColumn {
+    name: string;
     label: string;
     field: string;
 }
@@ -33,6 +34,7 @@ builder
 export default defineComponent({
     props: {
         ...builder.props,
+        ...builder.child("tr").props,
         ...builder.child("td").props,
         columns: {
             type: Array as () => TableColumn[],
@@ -253,19 +255,35 @@ export default defineComponent({
                 :class="classes.tr"
                 @focus="onFocusItemRow(y)"
             >
-                <td
-                    v-bind="tdAttrs"
-                    v-for="(column, x) in columns"
-                    :tabindex="enableKeyboardNavigation ? '0' : undefined"
-                    :class="classes.td"
-                    :key="x"
-                    ref="cells"
-                    @focus="onFocusItemCell(y, x)"
-                    @mousedown="(e) => onClickItemCell(e, y, x)"
+                <slot
+                    name="item"
+                    :item="item"
+                    :columns="columns"
+                    :select="() => onFocusItemRow(y)"
                 >
-                    {{ item[column.field] }}
-                </td>
+                    <td
+                        v-bind="tdAttrs"
+                        v-for="(column, x) in columns"
+                        :key="x"
+                        :tabindex="enableKeyboardNavigation ? '0' : undefined"
+                        :class="classes.td"
+                        ref="cells"
+                        @focus="onFocusItemCell(y, x)"
+                        @mousedown="(e) => onClickItemCell(e, y, x)"
+                    >
+                        <slot
+                            :name="`item-${column.name}`"
+                            :column="column"
+                            :item="item"
+                            :select="() => onFocusItemCell(y, x)"
+                        >
+                            {{ item[column.field] }}
+                        </slot>
+                    </td>
+                </slot>
             </tr>
+
+            <slot name="body-append" />
         </tbody>
     </table>
 </template>

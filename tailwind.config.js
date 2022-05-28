@@ -11,5 +11,14 @@ module.exports = {
             },
         },
     },
+    safelist: [
+        {
+            pattern: /bg-*/,
+            variants: ["focus"],
+        },
+        {
+            pattern: /text-*/,
+        },
+    ],
     plugins: [],
 };

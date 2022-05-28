@@ -68,3 +68,43 @@ it("should render a items fields based on columns prop", () => {
         expect(td.at(values.indexOf(value))?.text()).toBe(value)
     );
 });
+
+it("should render item slot", () => {
+    const items = [{ name: "John" }, { name: "Jane" }, { name: "Joe" }];
+
+    wrapper = mount(WDataTable, {
+        props: { items },
+        slots: {
+            item: '<div class="item">replace-item</div>',
+        },
+    });
+
+    expect(wrapper.findAll(".item").length).toBe(items.length);
+});
+
+it("should render item-[columnName] slot", () => {
+    const columns = [{ name: "name", label: "Name", field: "name" }];
+
+    const items = [{ name: "John" }, { name: "Jane" }, { name: "Joe" }];
+
+    wrapper = mount(WDataTable, {
+        props: { items, columns },
+        slots: {
+            "item-name": '<div class="item-name">replace-item-name</div>',
+        },
+    });
+
+    const td = wrapper.findAll("tbody tr td");
+
+    expect(td.at(0)?.text()).toBe("replace-item-name");
+});
+
+it("should render body-append slot", () => {
+    wrapper = mount(WDataTable, {
+        slots: {
+            "body-append": '<div class="body-append">replace-body-append</div>',
+        },
+    });
+
+    expect(wrapper.find(".body-append").text()).toBe("replace-body-append");
+});
