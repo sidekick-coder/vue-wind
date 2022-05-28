@@ -1,30 +1,46 @@
 import WDataTable from "./w-data-table.vue";
 
+const columns = Array.from({ length: 5 }, (_, k) => ({
+    field: `Column ${k}`,
+    label: `Column ${k}`,
+}));
+
+const items = Array.from({ length: 20 }, (v, k) =>
+    columns.reduce(
+        (acc, column) => ({
+            ...acc,
+            [column.field]: `Item ${k}`,
+        }),
+        {}
+    )
+);
+
 export default {
     title: "Components/WDataTable",
-    component: WDataTable,
     argTypes: {
-        color: { control: "text", table: { category: "props" } },
         columns: {
             expanded: false,
-            defaultValue: [],
         },
         items: {
             expanded: false,
-            defaultValue: [],
+        },
+        onFocusItemCell: {
+            action: "focusItemCell",
+        },
+        onFocusItemRow: {
+            action: "focusItemRow",
+        },
+        onSelectItemCell: {
+            action: "selectItemCell",
+        },
+        onSelectItemRow: {
+            action: "selectItemRow",
         },
     },
     args: {
-        color: "white",
-        columns: [
-            { label: "Name", field: "name" },
-            { label: "Age", field: "age" },
-        ],
-        items: [
-            { name: "John", age: 30 },
-            { name: "Jane", age: 25 },
-            { name: "Joe", age: 35 },
-        ],
+        enableKeyboardNavigation: false,
+        columns: columns,
+        items: items,
     },
 };
 
@@ -37,3 +53,9 @@ const Template = (args: any) => ({
 });
 
 export const Default = Template.bind({});
+
+export const KeyBoardNavigation: any = Template.bind({});
+
+KeyBoardNavigation.args = {
+    enableKeyboardNavigation: true,
+};
