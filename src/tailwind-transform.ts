@@ -1,4 +1,5 @@
 import { Builder } from "./composable/tailwind";
+import { camelCase } from "lodash";
 
 export function VWindTransformer(content: string) {
     const files = import.meta.globEager("./components/**/*.vue");
@@ -17,21 +18,27 @@ export function VWindTransformer(content: string) {
     }
 
     const safelist = results
-        .map((r) => r.replace(/<|>/g, ""))
+        .map((r) => r.replace(/<|>|\//g, ""))
         .map((r) => r.replace(/\n/g, ""))
         .map((result: string) => {
             const name = result.split(" ")[0];
             const builder = builders.find((builder) => builder.name === name);
 
             const attrs = result
-                .replace(/'|"/g, "")
+                .replace(/'|"|:|v-bind/g, "")
                 .split(" ")
                 .filter((attr) => attr !== "")
                 .slice(1)
                 .map((a) => a.trim().split("="))
-                .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+                .reduce(
+                    (acc, [key, value]) => ({
+                        ...acc,
+                        [camelCase(key)]: value,
+                    }),
+                    {}
+                );
 
-            return builder?.instance?.all(attrs, true) || "";
+            return builder?.instance?.all(attrs) || "";
         });
 
     return safelist.join(" ");

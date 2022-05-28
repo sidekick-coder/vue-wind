@@ -26,14 +26,9 @@ it("should add a child class builder", () => {
 it("should all methods return all classes including child builders", () => {
     builder.option("color", "main-color");
 
-    builder.child("label").option("color", "text");
+    builder.child("label").option("labelColor", "text");
 
-    const classes = builder.all(
-        { color: "blue" },
-        {
-            label: { color: "red" },
-        }
-    );
+    const classes = builder.all({ color: "blue", labelColor: "red" });
 
     expect(classes).toEqual("main-color-blue text-red");
 });

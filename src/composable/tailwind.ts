@@ -102,15 +102,15 @@ export class Builder {
      * @props Object with main props
      * @childProps Object with props for child builders Ex. { label: { color: "red" }, small: { fontSize: "sm" } }
      */
-    public all(props: any = {}, childProps: any = {}) {
+    public all(props: any = {}) {
         const classes = this.makeArray(props);
 
         const toggles = this._options
             .filter((option) => option.isToggle)
             .map((o) => o.class);
 
-        const child = Array.from(this._child.entries())
-            .map(([name, builder]) => builder.makeArray(childProps[name]))
+        const child = Array.from(this._child.values())
+            .map((builder) => builder.makeArray(props))
             .reduce((acc, childClasses) => acc.concat(childClasses), []);
 
         return classes.concat(toggles).concat(child).join(" ");

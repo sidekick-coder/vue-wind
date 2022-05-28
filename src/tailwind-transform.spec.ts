@@ -50,9 +50,13 @@ const cases = [
         </w-drawer>`,
         "right-0",
     ],
+    [
+        '<w-data-table :items="items" :columns="columns" focus-color="test"  />',
+        "focus:bg-test",
+    ],
 ];
 
-it.each(cases)("should transform tailwind classes %s", (input, output) => {
+it.each(cases)("should transform tailwind classes", (input, output) => {
     const transformed = VWindTransformer(input);
 
     const classes = output.split(" ");
