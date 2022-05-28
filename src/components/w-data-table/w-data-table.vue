@@ -154,6 +154,30 @@ export default defineComponent({
             column.value = cell;
         }
 
+        function onCLickItemRow(y: number) {
+            const row = rows.value[y];
+
+            position.value.y = y;
+
+            row.focus();
+        }
+
+        function onClickItemCell(e: MouseEvent, y: number, x: number) {
+            e.preventDefault();
+
+            if (e.ctrlKey) {
+                onCLickItemRow(y);
+                return;
+            }
+
+            const cell = cellsMatrix.value[y][x];
+
+            position.value.x = x;
+            position.value.y = y;
+
+            cell.focus();
+        }
+
         function setNavigationEvents() {
             if (!tableRef.value) {
                 console.error("Error loading events");
@@ -198,7 +222,9 @@ export default defineComponent({
             cellsMatrix,
             cells,
             onFocusItemRow,
+            onCLickItemRow,
             onFocusItemCell,
+            onClickItemCell,
         };
     },
 });
@@ -235,6 +261,7 @@ export default defineComponent({
                     :key="x"
                     ref="cells"
                     @focus="onFocusItemCell(y, x)"
+                    @mousedown="(e) => onClickItemCell(e, y, x)"
                 >
                     {{ item[column.field] }}
                 </td>
