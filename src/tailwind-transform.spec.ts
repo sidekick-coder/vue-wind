@@ -18,6 +18,30 @@ const cases = [
         "<w-dialog /><w-input color='primary'></w-input>",
         "focus:border-primary hidden",
     ],
+    [
+        `<div>
+            <w-data-table
+                v-model:item="selected"
+                :columns="head"
+                :items="items"
+                enable-keyboard-navigation
+                @keydown.enter="duplicate"
+            />
+        </div>
+      `,
+        "focus:bg-gray-100",
+    ],
+    [
+        `<w-drawer
+            v-model="layoutStore.right"
+            layout-id="right"
+            class="border-l bg-white"
+            width="[300px]"
+            right
+        >
+        </w-drawer>`,
+        "right-0",
+    ],
 ];
 
 it.each(cases)("should transform tailwind classes %s", (input, output) => {

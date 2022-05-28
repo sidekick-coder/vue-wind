@@ -18,6 +18,7 @@ export function VWindTransformer(content: string) {
 
     const safelist = results
         .map((r) => r.replace(/<|>/g, ""))
+        .map((r) => r.replace(/\n/g, ""))
         .map((result: string) => {
             const name = result.split(" ")[0];
             const builder = builders.find((builder) => builder.name === name);
