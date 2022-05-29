@@ -22,7 +22,13 @@ export class Builder {
                 };
             });
 
-        return props;
+        return {
+            ...props,
+            modify: {
+                type: Function,
+                default: null,
+            },
+        };
     }
 
     public option(
@@ -41,17 +47,30 @@ export class Builder {
     }
 
     public static(...classNames: string[]) {
-        const options = classNames.map((className) => ({
-            name: "",
-            class: className,
-        }));
+        const options = classNames
+            .map((c) => c.split(" "))
+            .flat()
+            .map((className) => ({
+                name: className,
+                class: className,
+            }));
 
         this._options.push(...options);
 
         return this;
     }
 
+    public remove(name: string) {
+        this._options = this._options.filter((option) => option.name !== name);
+
+        return this;
+    }
+
     public makeArray(props: any = {}) {
+        if (props.modify) {
+            props.modify(this);
+        }
+
         const propOptions = this._options
             .filter((option) => option.isProp)
             .filter((option) => props[option.name] || option.default)
@@ -114,6 +133,12 @@ export class Builder {
             .reduce((acc, childClasses) => acc.concat(childClasses), []);
 
         return classes.concat(toggles).concat(child).join(" ");
+    }
+
+    public modify(fn: (builder: Builder) => void) {
+        fn(this);
+
+        return this;
     }
 }
 

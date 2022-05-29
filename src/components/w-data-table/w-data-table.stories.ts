@@ -1,3 +1,4 @@
+import { Builder } from "@/composable/tailwind";
 import WDataTable from "./w-data-table.vue";
 
 const columns = Array.from({ length: 4 }, (_, k) => ({
@@ -19,28 +20,40 @@ const items = Array.from({ length: 10 }, (v, k) =>
 export default {
     title: "Components/WDataTable",
     argTypes: {
+        columns: {
+            table: { category: "props" },
+        },
+        items: {
+            table: { category: "props" },
+        },
         focusColor: {
+            table: { category: "props" },
             control: { type: "inline-radio" },
             options: ["gray-200", "teal-200", "red-200", "blue-200"],
         },
-        columns: {
-            expanded: false,
+        enableNavigation: {
+            table: { category: "props" },
+            control: false,
         },
-        items: {
-            expanded: false,
+        navigationCellSelector: {
+            table: { category: "props" },
+            control: false,
         },
         "onUpdate:item": {
+            table: { category: "events" },
+            control: false,
             action: "update:item",
         },
         "onUpdate:column": {
+            table: { category: "events" },
             action: "update:column",
         },
     },
     args: {
-        focusColor: "gray-200",
-        enableNavigation: false,
         columns: columns,
         items: items,
+        focusColor: "gray-200",
+        enableNavigation: false,
     },
 };
 
@@ -52,7 +65,11 @@ const Template = (args: any) => ({
     template: '<w-data-table v-bind="args" />',
 });
 
-export const Default = Template.bind({});
+export const Default: any = Template.bind({});
+
+Default.parameters = {
+    controls: { exclude: ["focusColor", "enableNavigation"] },
+};
 
 export const Slots = (args: any) => ({
     components: { WDataTable },
@@ -89,6 +106,10 @@ export const Slots = (args: any) => ({
     `,
 });
 
+Slots.parameters = {
+    controls: { exclude: ["focusColor", "enableNavigation"] },
+};
+
 export const Navigation: any = Template.bind({});
 
 Navigation.args = {
@@ -98,7 +119,22 @@ Navigation.args = {
 export const NavigationWithCustomSelector = (args: any) => ({
     components: { WDataTable },
     setup() {
-        return args;
+        function modify(b: Builder) {
+            b.child("td").remove("p-2").remove("border-b").static("p-0");
+        }
+        const classes = new Builder()
+            .static("focus-me")
+            .static(
+                "focus:bg-teal-500/10 focus:border-teal-500 focus:outline-none"
+            )
+            .static("border border-transparent border-b-gray-200")
+            .static("p-2 w-full");
+
+        return {
+            ...args,
+            modify,
+            classes: classes.make(),
+        };
     },
     template: `
         <w-data-table
@@ -107,11 +143,12 @@ export const NavigationWithCustomSelector = (args: any) => ({
             focus-color='none'
             :enable-navigation='true'
             navigation-cell-selector=".focus-me"
+            :modify="modify" 
         >
             
             <template v-for='col in columns' #[\`item-\${col.name}\`]="{ item }" :key="col.name"  >
                 <input
-                    class='focus-me focus:bg-teal-500/10 border border-transparent focus:border-teal-500 focus:outline-none'
+                    :class='classes'
                     :value='item[col.field]'
                 />
             </template>
@@ -119,3 +156,12 @@ export const NavigationWithCustomSelector = (args: any) => ({
         </w-data-table>
     `,
 });
+
+NavigationWithCustomSelector.args = {
+    enableNavigation: true,
+    navigationCellSelector: ".focus-me",
+};
+
+NavigationWithCustomSelector.parameters = {
+    controls: { exclude: ["focusColor"] },
+};
