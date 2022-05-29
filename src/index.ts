@@ -1,4 +1,5 @@
 import { Plugin } from "vue";
+import { useBuilder as composable } from "./composable/tailwind";
 import { getComponents } from "./get-components";
 import { VWindTransformer } from "./tailwind-transform";
 
@@ -17,3 +18,5 @@ export function useVueWind() {
 }
 
 export const transformer = VWindTransformer;
+
+export const useBuilder = composable;

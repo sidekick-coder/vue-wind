@@ -32,6 +32,16 @@ it("should render columns", () => {
     expect(th.at(1)?.text()).toBe(columns[1].label);
 });
 
+it("should columns th have style defined", () => {
+    const columns = [{ label: "Name", style: "width: 30px;" }];
+
+    wrapper = mount(WDataTable, {
+        props: { columns },
+    });
+
+    expect(wrapper.find("thead th").attributes("style")).toBe(columns[0].style);
+});
+
 it("should render a <tr> for each item", () => {
     const items = [{ name: "John" }, { name: "Jane" }, { name: "Joe" }];
 

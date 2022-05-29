@@ -7,6 +7,7 @@ interface TableColumn {
     name: string;
     label: string;
     field: string;
+    style?: string;
 }
 
 export const builder = useBuilder();
@@ -251,8 +252,13 @@ export default defineComponent({
     >
         <thead>
             <tr>
-                <th v-for="column in columns" :class="classes.th">
-                    {{ column.label }}
+                <th
+                    v-for="c in columns"
+                    :class="classes.th"
+                    :style="c.style"
+                    :key="c.name"
+                >
+                    {{ c.label }}
                 </th>
             </tr>
         </thead>
