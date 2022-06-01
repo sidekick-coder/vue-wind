@@ -67,7 +67,7 @@ export class Builder {
     }
 
     public makeArray(props: any = {}) {
-        if (props.modify) {
+        if (props.modify && typeof props.modify === "function") {
             props.modify(this);
         }
 
