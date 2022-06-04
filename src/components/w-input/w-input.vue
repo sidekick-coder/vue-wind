@@ -89,7 +89,11 @@ export default defineComponent({
 });
 </script>
 <template>
-    <label :for="($attrs.id as string)" :class="classes.label" v-if="label">
+    <label
+        :for="$attrs.id ? String($attrs.id) : undefined"
+        :class="classes.label"
+        v-if="label"
+    >
         {{ label }}
     </label>
 

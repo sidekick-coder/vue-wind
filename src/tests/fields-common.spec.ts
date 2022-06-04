@@ -4,9 +4,10 @@ import { ComponentPublicInstance, nextTick, ref } from "vue";
 
 import WInput from "@/components/w-input/w-input.vue";
 import WTextarea from "@/components/w-textarea/w-textarea.vue";
+import WSelect from "@/components/w-select/w-select.vue";
 import { formKey } from "@/components/w-form/composable";
 
-const cases = [
+const general = [
     {
         name: "WInput",
         component: WInput,
@@ -17,6 +18,11 @@ const cases = [
         component: WTextarea,
         elementName: "textarea",
     },
+    {
+        name: "WSelect",
+        component: WSelect,
+        elementName: "select",
+    },
 ];
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof WInput>>;
@@ -25,7 +31,7 @@ afterEach(() => {
     wrapper?.unmount();
 });
 
-describe.each(cases)("General: $name", ({ component, elementName }) => {
+describe.each(general)("General: $name", ({ component, elementName }) => {
     it(`should render ${elementName} element`, () => {
         wrapper = mount(component);
 
@@ -42,44 +48,6 @@ describe.each(cases)("General: $name", ({ component, elementName }) => {
         const label = wrapper.find("label");
 
         expect(label.text()).toContain("Hello World");
-    });
-
-    it(`should ${elementName} value starts with model-value`, () => {
-        wrapper = mount(component, {
-            props: {
-                modelValue: "Hello World",
-            },
-        });
-
-        const field = wrapper.find<HTMLInputElement>(elementName);
-
-        expect(field.element.value).toBe("Hello World");
-    });
-
-    it(`should ${elementName} update value according with model-value`, async () => {
-        wrapper = mount(component);
-
-        const field = wrapper.find<HTMLInputElement>(elementName);
-
-        expect(field.element.value).toBe("");
-
-        wrapper.setProps({
-            modelValue: "Update input",
-        });
-
-        await nextTick();
-
-        expect(field.element.value).toBe("Update input");
-    });
-
-    it(`should emit event update:model-value when changing ${elementName} element value`, () => {
-        wrapper = mount(component);
-
-        const field = wrapper.find<HTMLInputElement>(elementName);
-
-        field.setValue("Update input");
-
-        expect(wrapper.emitted("update:modelValue")).toBeTruthy();
     });
 
     it("should validate() function use rules props to validate the model", () => {

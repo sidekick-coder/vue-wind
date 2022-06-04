@@ -1,33 +1,34 @@
+import { afterEach, expect, it } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
-import { afterEach, describe, expect, it } from "vitest";
-import { ComponentPublicInstance, nextTick } from "vue";
+import { ComponentPublicInstance, nextTick, ref } from "vue";
+import WInput from "@/components/w-input/w-input.vue";
 
-import WTextarea from "./w-textarea.vue";
-let wrapper: VueWrapper<ComponentPublicInstance<typeof WTextarea>>;
+let wrapper: VueWrapper<ComponentPublicInstance<typeof WInput>>;
 
 afterEach(() => {
     wrapper?.unmount();
 });
+
 it(`should value starts with model-value`, () => {
-    wrapper = mount(WTextarea, {
+    wrapper = mount(WInput, {
         props: {
             modelValue: "Hello World",
         },
     });
 
-    const field = wrapper.find<HTMLInputElement>("textarea");
+    const field = wrapper.find<HTMLInputElement>("input");
 
     expect(field.element.value).toBe("Hello World");
 });
 
 it(`should update value according with model-value`, async () => {
-    wrapper = mount(WTextarea, {
+    wrapper = mount(WInput, {
         props: {
             modelValue: "",
         },
     });
 
-    const field = wrapper.find<HTMLInputElement>("textarea");
+    const field = wrapper.find<HTMLInputElement>("input");
 
     expect(field.element.value).toBe("");
 
@@ -41,23 +42,11 @@ it(`should update value according with model-value`, async () => {
 });
 
 it(`should emit event update:model-value when changing element value`, () => {
-    wrapper = mount(WTextarea);
+    wrapper = mount(WInput);
 
-    const field = wrapper.find<HTMLInputElement>("textarea");
+    const field = wrapper.find<HTMLInputElement>("input");
 
     field.setValue("Update input");
 
     expect(wrapper.emitted("update:modelValue")).toBeTruthy();
-});
-
-it("should set min height", () => {
-    wrapper = mount(WTextarea, {
-        props: {
-            minHeight: "[100px]",
-        },
-    });
-
-    const textarea = wrapper.find("textarea");
-
-    expect(textarea.classes()).toContain("min-h-[100px]");
 });

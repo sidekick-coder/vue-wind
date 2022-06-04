@@ -1,6 +1,6 @@
 import { ref } from "vue";
 export interface ValidationRule {
-    (value: string): boolean | string;
+    (value: any): boolean | string;
 }
 
 export interface CallBack {
@@ -10,7 +10,7 @@ export interface CallBack {
 export function useValidation(rules: ValidationRule[]) {
     const messages = ref<string[]>([]);
 
-    function validate(value: string) {
+    function validate(value: any) {
         messages.value = [];
 
         rules.forEach((rule) => {
