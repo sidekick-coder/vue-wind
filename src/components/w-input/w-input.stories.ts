@@ -21,7 +21,7 @@ const Template = (args: any) => ({
     },
     template: `
         <div class='w-screen h-screen p-10 flex items-center justify-center'>
-            <div>
+            <div class='w-full max-w-md'>
                 <w-input v-bind="args" />
             </div>
         </div>

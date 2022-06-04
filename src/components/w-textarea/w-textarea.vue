@@ -9,7 +9,7 @@ builder
     .static("w-full", "py-3", "px-4")
     .static("focus:outline-none", "outline-none")
     .static("border", "rounded", "border-gray-300")
-    .static("bg-gray-200", "focus:bg-white")
+    .static("placeholder-shown:bg-gray-200", "focus:bg-white")
     .static("text-gray-400", "font-regular", "text-sm")
     .static("drop-shadow-sm")
     .static("transition-all");
