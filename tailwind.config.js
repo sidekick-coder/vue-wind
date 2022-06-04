@@ -14,10 +14,15 @@ module.exports = {
     safelist: [
         {
             pattern: /bg-*/,
-            variants: ["focus"],
+            variants: ["focus", "placeholder-shown"],
         },
         {
             pattern: /text-*/,
+            variants: ["focus", "placeholder-shown"],
+        },
+        {
+            pattern: /border-*/,
+            variants: ["focus", "placeholder-shown"],
         },
     ],
     plugins: [],
