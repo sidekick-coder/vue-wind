@@ -34,7 +34,7 @@ builder
 
 builder
     .child("menu")
-    .static("w-full")
+    .static("w-full z-20")
     .static("absolute mt-[47px] top-0 left-0 drop-shadow-lg");
 
 export default defineComponent({
