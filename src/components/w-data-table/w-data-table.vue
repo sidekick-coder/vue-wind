@@ -1,7 +1,6 @@
 <script lang="ts">
 import { useBuilder } from "@/composable/tailwind";
-import { onKeyStroke, useVModel } from "@vueuse/core";
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, ref } from "vue";
 
 interface TableColumn {
     name: string;
@@ -32,11 +31,19 @@ builder
     .option("borderColor", "border", "gray-200")
     .static("p-2 text-left border-b outline-none");
 
+builder.child("tbody").toggle("loading", "opacity-30");
+
+builder
+    .child("loadingBar")
+    .option("loadingBarColor", "bg", "gray-500")
+    .static("h-1 w-full animate-pulse");
+
 export default defineComponent({
     props: {
         ...builder.props,
         ...builder.child("tr").props,
         ...builder.child("td").props,
+        ...builder.child("loadingBar").props,
         columns: {
             type: Array as () => TableColumn[],
             default: () => [],
@@ -49,27 +56,12 @@ export default defineComponent({
             type: Function as () => Record<string, any>,
             default: () => ({}),
         },
-        // selected item
-        item: {
-            type: Object as any,
-            default: null,
-        },
-        // selected column
-        column: {
-            type: Object as any,
-            default: null,
-        },
-        enableNavigation: {
+        loading: {
             type: Boolean,
-            default: () => false,
-        },
-        navigationCellSelector: {
-            type: String,
-            default: null,
+            default: false,
         },
     },
-    emits: ["update:item", "update:column"],
-    setup(props, { emit }) {
+    setup(props) {
         const tableRef = ref<HTMLTableElement>();
 
         const position = ref({
@@ -80,219 +72,68 @@ export default defineComponent({
         const rows = ref<HTMLElement[]>([]);
         const cells = ref<HTMLElement[]>([]);
 
-        const item = useVModel(props, "item", emit);
-        const column = useVModel(props, "column", emit);
-
-        const cellsMatrix = computed(() => {
-            const matrix: HTMLElement[][] = [];
-
-            cells.value.forEach((cell, index) => {
-                if (index % props.columns.length === 0) {
-                    matrix.push([]);
-                }
-
-                matrix[matrix.length - 1].push(cell);
-            });
-
-            return matrix;
-        });
-
         const classes = computed(() => ({
             main: builder.make(props),
             th: builder.child("th").make(props),
             td: builder.child("td").make(props),
             tr: builder.child("tr").make(props),
+            tbody: builder.child("tbody").make(props),
+            loadingBar: builder.child("loadingBar").make(props),
         }));
-
-        function moveRow(key: string) {
-            const p = position.value;
-
-            const maxY = props.items.length;
-
-            const move: any = {
-                "Ctrl ArrowUp": () => (p.y = Math.max(0, p.y - 1)),
-                "Ctrl ArrowDown": () => (p.y = Math.min(p.y + 1, maxY - 1)),
-                "Ctrl Enter": () => (item.value = props.items[p.y]),
-            };
-
-            if (!move[key]) return;
-
-            move[key]();
-
-            const row = rows.value[p.y];
-
-            row.focus();
-        }
-
-        function moveCell(key: string) {
-            const p = position.value;
-
-            const maxY = props.items.length;
-            const maxX = props.columns.length;
-
-            const move: any = {
-                ArrowUp: () => (p.y = Math.max(0, p.y - 1)),
-                ArrowDown: () => (p.y = Math.min(p.y + 1, maxY - 1)),
-                ArrowLeft: () => (p.x = Math.max(0, p.x - 1)),
-                ArrowRight: () => (p.x = Math.min(p.x + 1, maxX - 1)),
-                Enter: () => (column.value = props.columns[p.x]),
-            };
-
-            if (!move[key]) return;
-
-            move[key]();
-
-            const cell = cellsMatrix.value[p.y][p.x];
-
-            cell.focus();
-        }
-
-        function onFocusItemRow(y: number) {
-            const row = props.items[y];
-
-            item.value = row;
-        }
-
-        function onFocusItemCell(y: number, x: number) {
-            item.value = props.items[y];
-            column.value = props.columns[x];
-
-            if (!props.navigationCellSelector) return;
-
-            const cell = cellsMatrix.value[y][x];
-
-            cell.querySelector<HTMLElement>(
-                props.navigationCellSelector
-            )?.focus();
-        }
-
-        function onCLickItemRow(y: number) {
-            const row = rows.value[y];
-
-            position.value.y = y;
-
-            row.focus();
-        }
-
-        function onClickItemCell(e: MouseEvent, y: number, x: number) {
-            if (!props.enableNavigation) return;
-
-            e.preventDefault();
-
-            if (e.ctrlKey) {
-                onCLickItemRow(y);
-                return;
-            }
-
-            const cell = cellsMatrix.value[y][x];
-
-            position.value.x = x;
-            position.value.y = y;
-
-            cell.focus();
-        }
-
-        function setNavigationEvents() {
-            if (!tableRef.value) {
-                console.error("Error loading events");
-                return;
-            }
-            const cellKeys = [
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight",
-            ];
-
-            cellKeys.forEach((key) => {
-                onKeyStroke(
-                    key,
-                    (e) => {
-                        e.preventDefault();
-                        let name = key;
-
-                        if (e.ctrlKey) {
-                            name = "Ctrl " + name;
-                        }
-
-                        const move = name.includes("Ctrl") ? moveRow : moveCell;
-
-                        move(name);
-                    },
-                    { target: tableRef.value }
-                );
-            });
-        }
-
-        if (props.enableNavigation) {
-            onMounted(setNavigationEvents);
-        }
 
         return {
             rows,
             classes,
             tableRef,
             position,
-            cellsMatrix,
             cells,
-            onFocusItemRow,
-            onCLickItemRow,
-            onFocusItemCell,
-            onClickItemCell,
         };
     },
 });
 </script>
 
 <template>
-    <table
-        ref="tableRef"
-        :class="classes.main"
-        :tabindex="enableNavigation ? '0' : undefined"
-    >
+    <table ref="tableRef" :class="classes.main">
         <thead>
             <tr>
-                <th
-                    v-for="c in columns"
-                    :class="classes.th"
-                    :style="c.style"
-                    :key="c.name"
-                >
-                    {{ c.label }}
-                </th>
+                <slot name="column" :columns="columns">
+                    <th
+                        v-for="c in columns"
+                        :class="classes.th"
+                        :style="c.style"
+                        :key="c.name"
+                    >
+                        <slot :name="`column-${c.name}`" :column="c">
+                            {{ c.label }}
+                        </slot>
+                    </th>
+                </slot>
+            </tr>
+
+            <tr v-if="loading">
+                <td :colspan="columns.length" class="p-0">
+                    <slot name="loading">
+                        <div :class="classes.loadingBar"></div>
+                    </slot>
+                </td>
             </tr>
         </thead>
 
-        <tbody>
-            <tr
-                v-for="(item, y) in items"
-                :key="y"
-                ref="rows"
-                :tabindex="enableNavigation ? '0' : undefined"
-                :class="classes.tr"
-                @focus="onFocusItemRow(y)"
-            >
-                <slot
-                    name="item"
-                    :item="item"
-                    :columns="columns"
-                    :select="() => onFocusItemRow(y)"
-                >
+        <tbody :class="classes.tbody">
+            <slot name="body-prepend" />
+
+            <tr v-for="(item, y) in items" :key="y" :class="classes.tr">
+                <slot name="item" :item="item" :columns="columns">
                     <td
                         v-bind="tdAttrs"
                         v-for="(column, x) in columns"
                         :key="x"
-                        :tabindex="enableNavigation ? '0' : undefined"
                         :class="classes.td"
-                        ref="cells"
-                        @focus="onFocusItemCell(y, x)"
-                        @mousedown="onClickItemCell($event, y, x)"
                     >
                         <slot
                             :name="`item-${column.name}`"
                             :column="column"
                             :item="item"
-                            :select="() => onFocusItemCell(y, x)"
                         >
                             {{ item[column.field] }}
                         </slot>
