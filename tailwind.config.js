@@ -27,6 +27,10 @@ module.exports = {
             pattern: /border-*/,
             variants: ["focus", "placeholder-shown", "hover"],
         },
+        {
+            pattern: /opacity-*/,
+            variants: ["focus", "placeholder-shown", "hover"],
+        },
     ],
     plugins: [],
 };
