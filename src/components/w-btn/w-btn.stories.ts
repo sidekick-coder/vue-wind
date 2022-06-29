@@ -2,16 +2,20 @@ import WBtn from "@/components/w-btn/w-btn.vue";
 
 export default {
     title: "Components/WBtn",
-    component: WBtn,
     argTypes: {
         color: {
             table: { category: "props" },
             control: { type: "inline-radio" },
             options: ["gray-500", "teal-500", "red-500", "blue-500"],
         },
+        loading: {
+            table: { category: "props" },
+            control: { type: "boolean" },
+        },
     },
     args: {
         color: "teal-500",
+        loading: false,
     },
 };
 
@@ -60,7 +64,7 @@ const Template = (args: any) => ({
     },
     template: `
         <div class='flex flex-wrap h-screen w-screen p-5 justify-center'>
-            <div class="w-full mb-2 last:mb-0" v-for="(b, index) in buttons" :key="index">
+            <div class="w-full mb-1 last:mb-0" v-for="(b, index) in buttons" :key="index">
                 <w-btn v-bind="args" :size="b.size" :outlined='b.outlined' >
                     {{ b.label }}
                 </w-btn>

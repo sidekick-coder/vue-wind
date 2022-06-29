@@ -28,6 +28,10 @@ module.exports = {
             variants: ["focus", "placeholder-shown", "hover"],
         },
         {
+            pattern: /fill-*/,
+            variants: ["focus", "placeholder-shown", "hover"],
+        },
+        {
             pattern: /opacity-*/,
             variants: ["focus", "placeholder-shown", "hover"],
         },
