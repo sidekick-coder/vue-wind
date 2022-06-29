@@ -55,14 +55,4 @@ describe("w-btn", () => {
 
         expect(wrapper.attributes("class")).toContain("w-[100px]");
     });
-
-    it("should set text-size", () => {
-        wrapper = mount(WBtn, {
-            props: {
-                textSize: "[3rem]",
-            },
-        });
-
-        expect(wrapper.attributes("class")).toContain("text-[3rem]");
-    });
 });
