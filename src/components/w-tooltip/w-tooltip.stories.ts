@@ -26,10 +26,25 @@ const Template = (args: any) => ({
         return { args };
     },
     template: `
-        <div class='flex h-screen w-screen items-center justify-center'>
+        <div class='h-screen w-screen flex gap-4 items-center justify-center'>
+            
             <w-tooltip v-bind="args">
-                <w-btn>Hover me</w-btn>
+                <w-btn>Left</w-btn>
+            </w-tooltip>       
+        
+        
+            <w-tooltip v-bind="args" position="top">
+                <w-btn>Top</w-btn>
             </w-tooltip>
+            
+            <w-tooltip v-bind="args" position="top">
+                <w-btn>Bottom</w-btn>
+            </w-tooltip>
+            
+            <w-tooltip v-bind="args" position="top">
+                <w-btn>Right</w-btn>
+            </w-tooltip>
+            
         </div>
     `,
 });
