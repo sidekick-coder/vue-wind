@@ -50,6 +50,7 @@ export class Builder {
         const options = classNames
             .map((c) => c.split(" "))
             .flat()
+            .filter((c) => !this._options.some((o) => o.class === c))
             .map((className) => ({
                 name: className,
                 class: className,

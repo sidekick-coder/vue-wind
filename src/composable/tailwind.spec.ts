@@ -84,6 +84,12 @@ it("should return modify method with the props", () => {
     expect(builder.props.modify).toBeDefined();
 });
 
+it("should not add same static classes multiple times", () => {
+    builder.static("123").static("123");
+
+    expect(builder.make()).not.equal("123 123");
+});
+
 const cases = [WDataTable];
 
 it.each(cases)(
