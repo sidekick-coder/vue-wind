@@ -37,6 +37,8 @@ builder
     .static("w-full z-20")
     .static("absolute mt-[47px] top-0 left-0 drop-shadow-lg");
 
+builder.child("small").static("text-xs", "mt-4", "block", "text-red-500");
+
 export default defineComponent({
     props: {
         ...builder.props,
