@@ -51,7 +51,6 @@ export default defineComponent({
             default: () => [],
         },
         modelValue: {
-            type: [String, Object, Array] as any,
             default: "",
         },
         options: {
