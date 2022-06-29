@@ -29,7 +29,7 @@ export default defineComponent({
     props: {
         ...builder.props,
         modelValue: {
-            type: String,
+            type: [String, Number],
             default: "",
         },
         label: {
