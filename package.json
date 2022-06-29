@@ -1,6 +1,6 @@
 {
     "name": "vue-wind",
-    "version": "0.0.44-next",
+    "version": "0.0.45-next",
     "description": "vue components using tailwind styles",
     "types": "types",
     "exports": {
