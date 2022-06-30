@@ -23,20 +23,6 @@ builder
     .static("block")
     .static("text-gray-500", "text-sm", "font-bold", "mb-3");
 
-builder
-    .child("option")
-    .option("color", "hover:bg", "teal-500")
-    .static("text-gray-500 hover:text-white")
-    .static("w-full py-2 px-4")
-    .static("last:rounded-b-lg")
-    .static("cursor-pointer")
-    .static("bg-white");
-
-builder
-    .child("menu")
-    .static("w-full z-20")
-    .static("absolute mt-[47px] top-0 left-0 drop-shadow-lg");
-
 builder.child("small").static("text-xs", "mt-4", "block", "text-red-500");
 
 export default defineComponent({
@@ -80,7 +66,6 @@ export default defineComponent({
             }),
             label: builder.child("label").make(props),
             small: builder.child("small").make(props),
-            option: builder.child("option").make(props),
             menu: builder.child("menu").make(props),
         }));
 
@@ -140,12 +125,6 @@ export default defineComponent({
             model.value = option;
         }
 
-        function toggleMenu() {
-            menu.value = true;
-
-            if (selectRef.value) selectRef.value.focus();
-        }
-
         return {
             menu,
             classes,
@@ -155,7 +134,6 @@ export default defineComponent({
             resetValidation,
             optionsFormatted,
             onChange,
-            toggleMenu,
             selectRef,
         };
     },
@@ -178,7 +156,6 @@ export default defineComponent({
             @change="onChange"
             :class="classes.select"
             v-bind="$attrs"
-            @mousedown.prevent="toggleMenu"
         >
             <option
                 v-for="(option, index) in optionsFormatted"
@@ -186,22 +163,8 @@ export default defineComponent({
                 :value="option.value"
                 :selected="option.value === model"
                 v-text="option.label"
-                class="hidden"
             />
         </select>
-
-        <div :class="classes.menu" v-if="menu">
-            <div
-                v-for="(option, index) in optionsFormatted"
-                :key="index"
-                :class="classes.option"
-                v-text="option.label"
-                @click="
-                    model = option;
-                    menu = false;
-                "
-            />
-        </div>
     </div>
 
     <small
