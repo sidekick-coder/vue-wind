@@ -9,10 +9,36 @@ builder.static("relative");
 builder.child("menu").static(" rounded z-20 absolute w-full overflow-hidden");
 
 export default defineComponent({
-    setup() {
+    props: {
+        modelValue: {
+            type: Boolean,
+            default: null,
+        },
+    },
+    emits: ["update:modelValue"],
+    setup(props, { emit }) {
         const menuRef = ref<HTMLElement>();
         const rootRef = ref<HTMLElement>();
-        const model = ref(false);
+        const innerModel = ref(!!props.modelValue);
+
+        const model = computed<boolean>({
+            get() {
+                if (typeof props.modelValue !== "boolean") {
+                    return innerModel.value;
+                }
+
+                return props.modelValue;
+            },
+            set(value) {
+                if (typeof props.modelValue !== "boolean") {
+                    innerModel.value = value;
+                    return;
+                }
+
+                emit("update:modelValue", value);
+            },
+        });
+
         const close = () => (model.value = false);
 
         const classes = computed(() => ({
@@ -21,7 +47,7 @@ export default defineComponent({
         }));
 
         const listener = (event: any) => {
-            const isClickInside = menuRef.value?.contains(event.target);
+            const isClickInside = rootRef.value?.contains(event.target);
 
             if (isClickInside) return;
 
@@ -36,13 +62,38 @@ export default defineComponent({
             window.addEventListener("mouseup", listener);
         });
 
-        return { rootRef, menuRef, model, classes, close };
+        function onMouseEnter() {
+            if (typeof props.modelValue !== "boolean") {
+                model.value = true;
+            }
+        }
+
+        function onMouseLeave() {
+            if (typeof props.modelValue !== "boolean") {
+                model.value = false;
+            }
+        }
+
+        return {
+            rootRef,
+            menuRef,
+            model,
+            classes,
+            onMouseEnter,
+            onMouseLeave,
+            close,
+        };
     },
 });
 </script>
 
 <template>
-    <div :class="classes.main" @mouseenter="model = true" @mouseleave="close">
+    <div
+        ref="rootRef"
+        :class="classes.main"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+    >
         <slot name="activator" />
 
         <div v-show="model" ref="menuRef" :class="classes.menu" @click="close">
