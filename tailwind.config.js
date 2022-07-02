@@ -15,6 +15,7 @@ module.exports = {
         },
     },
     safelist: [
+        "max-h-[200px]",
         {
             pattern: /bg-*/,
             variants: ["focus", "placeholder-shown", "hover"],

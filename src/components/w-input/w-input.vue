@@ -40,6 +40,10 @@ export default defineComponent({
             type: Array as PropType<ValidationRule[]>,
             default: () => [],
         },
+        placeholder: {
+            type: String,
+            default: " ",
+        },
     },
     emits: ["update:modelValue"],
     setup(props, { emit }) {
@@ -97,7 +101,12 @@ export default defineComponent({
         {{ label }}
     </label>
 
-    <input v-model="model" v-bind="$attrs" :class="classes.input" />
+    <input
+        v-model="model"
+        v-bind="$attrs"
+        :class="classes.input"
+        :placeholder="placeholder"
+    />
 
     <small
         :class="classes.small"
