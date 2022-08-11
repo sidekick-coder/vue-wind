@@ -15,9 +15,6 @@
         "noImplicitReturns": true,
         "skipLibCheck": true,
         "types": ["vite/client"],
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./*"]
-        }
+        "baseUrl": "."
     }
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-import { uniqueId } from "lodash";
+import { useBuilder } from "../../composables/tailwind";
 import { ref, defineComponent, onMounted, computed } from "vue";
 import { useLayout, useLayoutItem } from "../w-layout/composable";
 
@@ -13,7 +12,7 @@ export default defineComponent({
         ...builder.props,
         layoutId: {
             type: String,
-            default: () => uniqueId(),
+            default: () => Date.now().toString(),
         },
         layout: {
             type: Boolean,
