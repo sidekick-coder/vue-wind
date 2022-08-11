@@ -1,5 +1,12 @@
 <template>
-    <div class="w-full h-full flex items-center justify-center" >
-        <h1>Home</h1> 
+    <div class="w-full h-full flex flex-wrap items-center justify-center" >
+
+        <div>
+            <h1 class="mb-4 block">Home</h1> 
+            <div>
+                <w-autocomplete label="test" />
+            </div>
+        </div>
+
     </div>
 </template>

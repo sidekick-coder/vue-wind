@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
+import { useBuilder } from "../../composables/tailwind";
 import { computed, defineComponent, ref, watch } from "vue";
 
 export const builder = useBuilder();

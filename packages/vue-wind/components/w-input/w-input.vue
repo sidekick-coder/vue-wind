@@ -1,10 +1,10 @@
 <script lang="ts">
 import { computed, PropType, watch, onUnmounted, defineComponent } from "vue";
-import { useVModel } from "@vueuse/core";
+import { useVModel } from "../../composables/v-model";
 
-import { useBuilder } from "@/composable/tailwind";
-import { useForm } from "@/components/w-form/composable";
-import { ValidationRule, useValidation } from "@/composable/validation";
+import { useBuilder } from "../../composables/tailwind";
+import { useForm } from "../w-form/composable";
+import { ValidationRule, useValidation } from "../../composables/validation";
 
 export const builder = useBuilder();
 
