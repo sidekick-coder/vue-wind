@@ -4,7 +4,6 @@ import { useValidation, ValidationRule } from "@/composable/validation";
 import { useVModel } from "@vueuse/core";
 import {
     computed,
-    defineAsyncComponent,
     defineComponent,
     onUnmounted,
     ref,
@@ -29,14 +28,6 @@ builder.child("small").static("text-xs", "mt-4", "block", "text-red-500");
 
 export default defineComponent({
     inheritAttrs: false,
-    components: {
-        WInput: defineAsyncComponent(
-            () => import("@/components/w-input/w-input.vue")
-        ),
-        WMenu: defineAsyncComponent(
-            () => import("@/components/w-menu/w-menu.vue")
-        ),
-    },
     props: {
         ...builder.props,
         ...builder.child("list").props,
