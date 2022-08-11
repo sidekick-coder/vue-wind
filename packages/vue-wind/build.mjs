@@ -6,7 +6,7 @@ import lodash from 'lodash'
 import { build } from 'vite';
 import vue from "@vitejs/plugin-vue";
 
-const files = glob.sync('src/components/**/*.vue')
+const files = glob.sync('components/**/*.vue')
 
 const outDir = path.resolve(process.cwd(), 'dist')
 

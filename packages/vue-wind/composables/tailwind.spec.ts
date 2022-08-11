@@ -1,4 +1,4 @@
-import { it, expect, beforeEach, vi } from "vitest";
+import { it, expect, beforeEach } from "vitest";
 import { useBuilder, Builder } from "./tailwind";
 
 import WDataTable from "@/components/w-data-table/w-data-table.vue";
