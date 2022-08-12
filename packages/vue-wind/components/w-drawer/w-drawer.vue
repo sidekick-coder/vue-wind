@@ -1,86 +1,79 @@
 <script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-import { ref, computed, defineComponent, onMounted } from "vue";
-import { useLayout, useLayoutItem } from "@/components/w-layout/composable";
-import { uniqueId } from "lodash";
-import { useVModel } from "@vueuse/core";
+export default defineComponent({ inheritAttrs: false });
+</script>
 
-export const builder = useBuilder();
+<script setup lang="ts">
+import { ref, computed, defineComponent, onMounted } from "vue";
+import { useBuilder } from "../../composables/builder";
+import { useLayout, useLayoutItem } from "../w-layout/composable";
+import { useVModel } from "../../composables/v-model";
+
+const props = defineProps({
+    layoutId: {
+        type: String,
+        default: () => Date.now().toString(),
+    },
+    layout: {
+        type: Boolean,
+        default: false,
+    },
+    modelValue: {
+        type: Boolean,
+        default: true,
+    },
+    right: {
+        type: Boolean,
+        default: false,
+    },
+})
+
+const emit = defineEmits(['update:modelValue']);
+
+const builder = useBuilder();
+const { items } = useLayout();
+
+const root = ref();
 
 builder
-    .static("absolute")
-    .static("overflow-hidden")
-    .static("top-0")
-    .static("transition-transform")
-    .option("h", "h", "full")
-    .option("width", "w", "[300px]")
-    .toggle("right", "right-0")
-    .toggle("left", "left-0");
+    .add("absolute")
+    .add("overflow-hidden")
+    .add("top-0")
+    .add("transition-transform")
+    .add('h-full')
+    .add('w-[300px]')
+    .toggler("right-0", props.right)
+    .toggler("left-0", !props.right)
 
-export default defineComponent({
-    inheritAttrs: false,
-    props: {
-        ...builder.props,
-        layoutId: {
-            type: String,
-            default: () => uniqueId(),
-        },
-        layout: {
-            type: Boolean,
-            default: false,
-        },
-        modelValue: {
-            type: Boolean,
-            default: true,
-        },
-        right: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    emits: ["update:modelValue"],
-    setup(props, { emit }) {
-        const root = ref();
-        const { items } = useLayout();
-
-        onMounted(() => {
-            useLayoutItem({
-                id: props.layoutId,
-                ref: root.value,
-                type: "drawer",
-                height: 0,
-                width: 0,
-                isVisible: () => props.modelValue,
-                offsetType: props.right ? "right" : "left",
-            });
+    onMounted(() => {
+        useLayoutItem({
+            id: props.layoutId,
+            ref: root.value,
+            type: "drawer",
+            height: 0,
+            width: 0,
+            isVisible: () => props.modelValue,
+            offsetType: props.right ? "right" : "left",
         });
+    });
 
-        const paddingTop = computed(() =>
-            items.value
-                .filter((item) => item.type === "toolbar")
-                .filter((item) => item.offsetType === "top")
-                .filter((item) => item.isVisible())
-                .reduce((acc, item) => acc + item.height, 0)
-        );
+    const paddingTop = computed(() =>
+        items.value
+            .filter((item) => item.type === "toolbar")
+            .filter((item) => item.offsetType === "top")
+            .filter((item) => item.isVisible())
+            .reduce((acc, item) => acc + item.height, 0)
+    );
 
-        const model = useVModel(props, "modelValue", emit);
+    const model = useVModel(props, "modelValue", emit);
 
-        const classes = computed(() =>
-            builder.make({
-                ...props,
-                right: props.right,
-                left: !props.right,
-            })
-        );
-        const transform = computed(() => {
-            if (model.value) return "translateX(0)";
+    const classes = computed(() => builder.make());
 
-            return props.right ? "translateX(200%)" : "translateX(-100%)";
-        });
+    const transform = computed(() => {
+        if (model.value) return "translateX(0)";
 
-        return { classes, root, paddingTop, transform };
-    },
-});
+        return props.right ? "translateX(200%)" : "translateX(-100%)";
+    });
+
 </script>
 <template>
     <aside

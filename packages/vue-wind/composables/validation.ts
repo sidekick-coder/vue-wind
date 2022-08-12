@@ -8,29 +8,27 @@ export interface CallBack {
 }
 
 export function useValidation(rules: ValidationRule[]) {
-    const messages = ref<string[]>([]);
+    const state = ref({
+        messages: [] as string[],
+        validate: (_: any) => true as boolean,
+        reset: () => {}
+    });
 
-    function validate(value: any) {
-        messages.value = [];
+    state.value.validate = (value: any) => {
+        state.value.messages = [];
 
         rules.forEach((rule) => {
             const message = rule(value);
 
             if (typeof message === "string") {
-                messages.value.push(message);
+                state.value.messages.push(message);
             }
         });
 
-        return messages.value.length === 0;
+        return state.value.messages.length === 0;
     }
 
-    function reset() {
-        messages.value = [];
-    }
+    state.value.reset = () => state.value.messages = [];
 
-    return {
-        messages,
-        validate,
-        reset,
-    };
+    return state
 }

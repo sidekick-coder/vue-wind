@@ -30,6 +30,12 @@ class Builder {
 
         return this._child.get(name) as Builder;
     }
+
+    public toggler(name: string, value: boolean) {
+        if (value) this.add(name);
+
+        return this;
+    }
 }
 
 export function useBuilder() {

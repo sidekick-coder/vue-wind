@@ -49,7 +49,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const model = useVModel(props, "modelValue", emit);
 
-        const { messages, validate, reset } = useValidation(props.rules);
+        const validation = useValidation(props.rules);
 
         const classes = computed(() => ({
             input: builder.make(props),
@@ -58,14 +58,14 @@ export default defineComponent({
         }));
 
         function validateModel() {
-            return validate(props.modelValue);
+            return validation.value.validate(props.modelValue);
         }
 
         function resetValidation() {
-            reset();
+            validation.value.reset();
         }
 
-        watch(() => props.modelValue, validate);
+        watch(() => props.modelValue, validation.value.validate);
 
         const form = useForm();
 
@@ -88,7 +88,7 @@ export default defineComponent({
             );
         });
 
-        return { classes, model, messages, validate, reset, resetValidation };
+        return { classes, model, validation, resetValidation };
     },
 });
 </script>
@@ -110,7 +110,7 @@ export default defineComponent({
 
     <small
         :class="classes.small"
-        v-for="message in messages.slice(0, 1)"
+        v-for="message in validation.messages.slice(0, 1)"
         :key="message"
     >
         {{ message }}

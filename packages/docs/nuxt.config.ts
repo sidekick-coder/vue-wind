@@ -6,6 +6,9 @@ export default defineNuxtConfig({
         '~/components',
         '../vue-wind/components',
     ],
+    modules: [
+      '@nuxt/content'
+    ],
     build: {
         postcss: {
           postcssOptions: {

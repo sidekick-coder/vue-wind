@@ -93,7 +93,7 @@ function onFocus() {
     model.value = "";
     menu.value = true;
 
-    setTimeout(validation.reset, 50);
+    setTimeout(validation.value.reset, 50);
 }
 
 function onBlur() {
@@ -111,11 +111,11 @@ function validateModel() {
         (o) => o.value === model.value
     );
 
-    return validation.validate(option ? option : "");
+    return validation.value.validate(option ? option : "");
 }
 
 function resetValidation() {
-    validation.reset();
+    validation.value.reset();
 }
 
 if (form) {
