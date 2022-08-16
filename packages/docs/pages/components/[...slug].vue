@@ -1,12 +1,19 @@
 <script setup lang="ts">
 
-definePageMeta({
-    layout: "component",
-})
-
 </script>
 <template>
-  <main>
+  <main class="px-4 py-5 page">
     <ContentDoc />
   </main>
 </template>
+
+<style>
+.page {
+  @apply text-gray-500 w-full h-full overflow-auto;
+}
+
+h1 {
+  @apply font-bold text-xl mb-4;
+
+}
+</style>

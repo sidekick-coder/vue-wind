@@ -9,7 +9,6 @@ builder.static("overflow-hidden w-full h-full");
 
 export default defineComponent({
     props: {
-        ...builder.props,
         layoutId: {
             type: String,
             default: () => Date.now().toString(),
