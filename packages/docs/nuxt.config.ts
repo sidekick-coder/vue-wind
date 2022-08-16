@@ -27,6 +27,11 @@ export default defineNuxtConfig({
       }
     },
     build: {
+      transpile: [
+          '@fortawesome/fontawesome-svg-core',
+          '@fortawesome/free-solid-svg-icons',
+          '@fortawesome/free-brands-svg-icons',
+      ],
         postcss: {
           postcssOptions: {
             plugins: {
@@ -37,6 +42,7 @@ export default defineNuxtConfig({
         },
     },
     css: [
-     "~/assets/tailwind.css"
+     "~/assets/tailwind.css",
+     '@fortawesome/fontawesome-svg-core/styles.css'
     ],
 })

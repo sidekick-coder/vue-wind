@@ -32,7 +32,7 @@ export default defineComponent({
 
 <style>
 .code-container {
-  @apply bg-gray-800 block px-5 py-4 rounded;
+  @apply bg-gray-800 block px-5 py-4;
 }
 
 .code-container code {
@@ -40,7 +40,7 @@ export default defineComponent({
 }
 
 .code-container .line {
-  @apply inline-block w-full min-h-[1.5rem];
+  @apply inline-block w-full min-h-[1rem] text-sm;
 
 }
 

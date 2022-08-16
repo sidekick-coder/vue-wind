@@ -9,7 +9,7 @@
 
 <style>
 .page {
-  @apply text-gray-500 w-full h-full overflow-auto;
+  @apply text-gray-500 w-full h-full overflow-auto max-w-[1200px] mx-auto;
 }
 
 h1 {

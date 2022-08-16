@@ -7,18 +7,13 @@ const brands = [
     { name: 'Amazon' },
     { name: 'Facebook' },
     { name: 'Twitter' },
-    { name: 'Instagram' },
-    { name: 'Youtube' },
-    { name: 'Spotify' },
-    { name: 'Netflix' },
-    { name: 'Twitch' },
-    { name: 'Snapchat' },
-    { name: 'Tumblr' },
-    { name: 'Reddit' },
 ]
 
 const search = ref('')
-const options = brands.filter(({ name }) => name.includes(search.value))
+
+const options = computed(() => brands.filter((option) => 
+    option.name.toLowerCase().includes(search.value.toLowerCase())
+))
 
 </script>
 
@@ -27,6 +22,7 @@ const options = brands.filter(({ name }) => name.includes(search.value))
         v-model:search="search"
         :options="options"
         label="Brand"
+        placeholder="Search for a brand"
         label-key="name"
         value-key="name"
     />
