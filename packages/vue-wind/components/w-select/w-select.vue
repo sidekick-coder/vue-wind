@@ -1,72 +1,64 @@
-<script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-import { useValidation, ValidationRule } from "@/composable/validation";
-import { computed, defineComponent, onUnmounted, ref, watch } from "vue";
+<script setup lang="ts">
+import { computed, onUnmounted, ref, watch } from "vue";
+
+import { useBuilder } from "../../composables/builder";
+import { useValidation, ValidationRule } from "../../composables/validation";
 import { useForm } from "../w-form/composable";
 
-export const builder = useBuilder();
-
-builder
-    .option("color", "focus:border", "teal-500")
-    .static("w-full", "py-3", "px-4")
-    .static("focus:outline-none", "outline-none")
-    .static("border", "rounded", "border-gray-300")
-    .static("focus:bg-white")
-    .static("text-gray-400", "font-regular", "text-sm")
-    .static("drop-shadow-sm")
-    .static("transition-all")
-    .static("relative")
-    .toggle("noSelected", "bg-gray-200");
-
-builder
-    .child("label")
-    .static("block")
-    .static("text-gray-500", "text-sm", "font-bold", "mb-3");
-
-builder.child("small").static("text-xs", "mt-4", "block", "text-red-500");
-
-export default defineComponent({
-    props: {
-        ...builder.props,
-        label: {
-            type: String,
-            default: "",
-        },
-        rules: {
-            type: Array as () => ValidationRule[],
-            default: () => [],
-        },
-        modelValue: {
-            default: "",
-        },
-        options: {
-            type: Array as () => any[],
-            default: () => [],
-        },
-        valueKey: {
-            type: String,
-            default: undefined,
-        },
-        labelKey: {
-            type: String,
-            default: undefined,
-        },
+const props = defineProps({
+     label: {
+        type: String,
+        default: "",
     },
-    emits: ["update:modelValue"],
-    setup(props, { emit }) {
-        const { messages, validate, reset } = useValidation(props.rules);
-        const form = useForm();
+    rules: {
+        type: Array as () => ValidationRule[],
+        default: () => [],
+    },
+    modelValue: {
+        default: "",
+    },
+    options: {
+        type: Array as () => any[],
+        default: () => [],
+    },
+    valueKey: {
+        type: String,
+        default: undefined,
+    },
+    labelKey: {
+        type: String,
+        default: undefined,
+    },
+})
 
-        const menu = ref(false);
+const emit = defineEmits(['update:modelValue'])
+
+const builder = useBuilder();
+const validation = useValidation(props.rules);
+const form = useForm();
+
+builder
+    .add("w-full", "py-3", "px-4")
+    .add("focus:outline-none", "outline-none")
+    .add("border", "rounded", "border-gray-300")
+    .add("focus:bg-white")
+    .add("text-gray-400", "font-regular", "text-sm")
+    .add("drop-shadow-sm")
+    .add("transition-all")
+    .add("relative")
+
+builder
+    .createChild("label")
+    .add("block")
+    .add("text-gray-500", "text-sm", "font-bold", "mb-3");
+
+builder.createChild("small").add("text-xs", "mt-4", "block", "text-red-500");
+
         const selectRef = ref(null as HTMLElement | null);
         const classes = computed(() => ({
-            select: builder.make({
-                ...props,
-                noSelected: !props.modelValue,
-            }),
-            label: builder.child("label").make(props),
-            small: builder.child("small").make(props),
-            menu: builder.child("menu").make(props),
+            select: builder.make(),
+            label: builder.child("label").make(),
+            small: builder.child("small").make(),
         }));
 
         const model = computed({
@@ -88,11 +80,11 @@ export default defineComponent({
         );
 
         function validateModel() {
-            return validate(props.modelValue);
+            return validation.value.validate(props.modelValue);
         }
 
         function resetValidation() {
-            reset();
+           validation.value.reset();
         }
 
         if (form) {
@@ -100,7 +92,7 @@ export default defineComponent({
             form.resets.value.push(resetValidation);
         }
 
-        watch(model, validate);
+        watch(model, validation.value.validate);
 
         onUnmounted(() => {
             if (!form) return;
@@ -124,27 +116,13 @@ export default defineComponent({
 
             model.value = option;
         }
-
-        return {
-            menu,
-            classes,
-            model,
-            messages,
-            validate,
-            resetValidation,
-            optionsFormatted,
-            onChange,
-            selectRef,
-        };
-    },
-});
 </script>
 
 <template>
     <label
+        v-if="label"
         :for="$attrs.id ? String($attrs.id) : undefined"
         :class="classes.label"
-        v-if="label"
     >
         {{ label }}
     </label>
@@ -169,7 +147,7 @@ export default defineComponent({
 
     <small
         :class="classes.small"
-        v-for="message in messages.slice(0, 1)"
+        v-for="message in validation.messages.slice(0, 1)"
         :key="message"
     >
         {{ message }}
