@@ -5,7 +5,7 @@ import { colors, sizes } from './variations'
 const props = defineProps({
     color: {
         type: String,
-        default: "blue",
+        default: "teal",
     },
     'custom:color': {
         type: String,

@@ -1,50 +1,54 @@
-<script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-
-export const builder = useBuilder();
-builder
-    .option("color", "bg", "white")
-    .option("width", "w", "full")
-    .option("maxWidth", "max-w")
-    .option("height", "h")
-    .option("minHeight", "min-h")
-    .option("maxHeight", "max-h");
-</script>
 <script setup lang="ts">
-import { computed } from "vue";
+import { useBuilder } from "../../composables/builder";
+import { colors } from "./variations";
 
 const props = defineProps({
     color: {
         type: String,
         default: "white",
     },
-    width: {
-        type: String,
-        default: "full",
-    },
-    maxWidth: {
+    'custom:color': {
         type: String,
         default: null,
     },
-    height: {
-        type: String,
-        default: null,
+    shadow: {
+        type: Boolean,
+        default: true,
     },
-    maxHeight: {
-        type: String,
-        default: null,
-    },
-    minHeight: {
-        type: String,
-        default: null,
+    rounded: {
+        type: Boolean,
+        default: true,
     },
 });
 
-const classes = computed(() => builder.make(props));
-</script>
+const builder = useBuilder();
 
+builder
+    .add(props['custom:color'] ?? colors[props.color])
+    .toggler("drop-shadow", props.shadow)
+    .toggler("rounded", props.rounded)
+
+builder.createChild('header').add('border-b px-4 py-2 flex items-center')
+
+builder.createChild('footer').add('border-t px-4 py-2 flex items-center')
+
+builder.createChild('content').add('px-4 py-2')
+
+</script>
 <template>
-    <div :class="classes">
-        <slot></slot>
+    <div :class="builder.make()">
+        
+        <div v-if="$slots.header" :class="builder.child('header').make()">
+            <slot name="header" />
+        </div>
+
+        <div :class="builder.child('content').make()">
+            <slot />
+        </div>
+
+        
+        <div v-if="$slots.footer" :class="builder.child('footer').make()">
+            <slot name="footer" />
+        </div>
     </div>
 </template>

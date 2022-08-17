@@ -21,10 +21,6 @@
   @apply text-xl;
 }
 
-.page p {
-  @apply mb-4 text-sm;
-}
-
 .page  ul {
   @apply my-4;
 }

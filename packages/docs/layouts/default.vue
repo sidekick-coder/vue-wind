@@ -28,7 +28,8 @@ const { data } = await useAsyncData<ParsedContentMeta>('navigation', () => {
             <w-drawer class="border-r" layout-id="drawer">
                 <nuxt-link
                     v-for="c in data[0].children" :key="c._path" :to="c._path"
-                    class="block py-2 px-4 cursor-pointer text-gray-500 hover:bg-teal-50 text-sm"
+                    class="block py-3 px-4 cursor-pointer text-gray-500 hover:bg-teal-50 text-sm"
+                    active-class="text-teal-500 font-bold"
                 >
                     {{ c.title }}
                 </nuxt-link>
