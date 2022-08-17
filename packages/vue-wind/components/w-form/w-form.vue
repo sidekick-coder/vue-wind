@@ -17,13 +17,15 @@ function submit() {
     emit("submit");
 }
 
-function resetValidation() {
-    form.resets.value.forEach((reset) => reset());
+function reset() {
+    setTimeout(() => {
+        form.resets.value.forEach((r) => r());
+    }, 5);
 }
 
 defineExpose({
     submit,
-    resetValidation,
+    reset,
 });
 </script>
 <template>
