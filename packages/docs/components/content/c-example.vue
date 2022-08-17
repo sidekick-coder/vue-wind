@@ -1,9 +1,5 @@
 <script setup lang="ts">
 const props = defineProps({
-    name: {
-        type: String,
-        default: '',
-    },
     file: {
         type: String,
         default: '',
