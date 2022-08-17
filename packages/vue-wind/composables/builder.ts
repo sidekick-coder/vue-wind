@@ -3,7 +3,9 @@ class Builder {
     private _child = new Map<string, ReturnType<typeof useBuilder>>();
 
     public add(...args: string[]){
-        this._classes.push(...args);
+        const notAdded = args.filter(arg => !this._classes.includes(arg));
+
+        this._classes.push(...notAdded);
 
         return this;
     }
@@ -16,19 +18,25 @@ class Builder {
 
     
     public makeArray(): string[] {
-        const childClasses = Array.from(this._child.values()).map(c => c.make());
-
-        return this._classes.concat(childClasses);
+        return this._classes
     }
     
     public make(): string {
         return this.makeArray().join(" ");
     }
 
-    public child(name: string) {
+    public createChild(name: string) {
         if (!this._child.has(name))  this._child.set(name, new Builder());
 
         return this._child.get(name) as Builder;
+    }
+    
+    public child(name: string) {
+        const child = this._child.get(name);
+        
+        if (!child) throw new Error(`Child ${name} not found`);
+
+        return child
     }
 
     public toggler(name: string, value: boolean) {

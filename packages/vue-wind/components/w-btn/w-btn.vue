@@ -1,121 +1,89 @@
-<script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useBuilder } from "@/composable/tailwind";
-import { useSvg } from "@/composable/svg";
+<script setup lang="ts">
+import { useBuilder } from "../../composables/builder";
+import { colors, sizes } from './variations'
 
-export const builder = useBuilder();
+const props = defineProps({
+    color: {
+        type: String,
+        default: "blue",
+    },
+    'custom:color': {
+        type: String,
+        default: null,
+    },
+    size: {
+        type: String,
+        default: "md",
+    },
+    'custom:size': {
+        type: String,
+        default: null,
+    },
+    loading: {
+        type: Boolean,
+        default: false,
+    },
+    outlined: {
+        type: Boolean,
+        default: false,
+    },
+    rounded: {
+        type: Boolean,
+        default: true,
+    },
+    roundedFull: {
+        type: Boolean,
+        default: false,
+    },
+    shadow: {
+        type: Boolean,
+        default: true,
+    }
+})
+
+const builder = useBuilder();
+
+const findColor = () => {
+    if (props['custom:color']) {	
+        return props['custom:color']
+    }
+
+    if (props.outlined) {
+
+        return colors[`outlined:${props.color}`]
+    }
+
+
+    return colors[`basic:${props.color}`]
+}
 
 builder
-    .option("bgColor", "bg", "gray-500")
-    .option("textColor", "text", "white")
-    .option("textSize", "text", "base")
-    .option("borderColor", "border", "transparent")
-    .option("width", "w", "auto")
-    .option("px", "px", "4")
-    .option("py", "py", "2")
-    .static("disabled:opacity-75 border")
-    .static("drop-shadow rounded font-medium");
+    .add(findColor())
+    .add(props['custom:size'] ?? sizes[props.size])
+    .add("disabled:opacity-75 relative")
+    .add("flex items-center justify-center")
+    .add("hover:opacity-75 transition-opacity duration-150")
+    .toggler("rounded", props.rounded)
+    .toggler("drop-shadow", props.shadow)
 
 builder
-    .child("loading")
-    .static("absolute  inset-0 flex items-center justify-center rounded")
-    .option("bgColor", "bg", "gray-500")
-    .option("textColor", "text", "white");
+    .createChild("loading")
+    .toggler("rounded", props.rounded)
+    .add("absolute inset-0 flex items-center justify-center ")
+    .add(findColor())
 
-builder
-    .child("spin")
-    .static("animate-spin")
-    .option("bgColor", "text", "transparent")
-    .option("color", "fill", "red-500");
+if (props.roundedFull) {
+    builder.add("rounded-full").remove("rounded")
+    builder.child("loading").add("rounded-full").remove("rounded")
+}
 
-export const sizes = {
-    sm: {
-        px: "4",
-        py: "2",
-        textSize: "xs",
-        spin: 20,
-    },
-    md: {
-        px: "4",
-        py: "2",
-        textSize: "base",
-        spin: 20,
-    },
-    lg: {
-        px: "4",
-        py: "2",
-        textSize: "lg",
-        spin: 20,
-    },
-    xl: {
-        px: "4",
-        py: "2",
-        textSize: "xl",
-        spin: 20,
-    },
-};
-
-export default defineComponent({
-    props: {
-        ...builder.props,
-        color: {
-            type: String,
-            default: "gray-500",
-        },
-        size: {
-            type: String,
-            default: "md",
-        },
-        sizes: {
-            type: Object,
-            default: () => sizes,
-        },
-        loading: {
-            type: Boolean,
-            default: false,
-        },
-        outlined: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    setup(props: any) {
-        const svg = useSvg();
-
-        const currentSize = computed(
-            () => props.sizes[props.size] || props.sizes.md
-        );
-
-        const classes = computed(() => ({
-            btn: builder.make({
-                ...props,
-                ...currentSize.value,
-                borderColor: props.outlined ? props.color : "transparent",
-                textColor: props.outlined ? props.color : props.textColor,
-                bgColor: props.outlined ? "transparent" : props.color,
-                hideText: props.loading,
-            }),
-            loading: builder.child("loading").make({
-                bgColor: props.outlined ? "white" : props.color,
-                textColor: props.outlined ? props.color : props.textColor,
-            }),
-            spin: builder.child("spin").make({
-                color: props.outlined ? props.color : props.textColor,
-            }),
-        }));
-
-        return { classes, svg, currentSize };
-    },
-});
 </script>
 
 <template>
-    <button :class="classes.btn">
-        <div
-            v-if="loading"
-            :class="classes.loading"
-            v-html="svg.circle(currentSize.spin, classes.spin)"
-        />
+    <button :class="builder.make()">
+            <div v-if="loading"  :class="builder.child('loading').make()">
+                <slot name="loading">...</slot>
+            </div>
         <slot />
     </button>
 </template>

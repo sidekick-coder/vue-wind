@@ -49,17 +49,17 @@ const builder = useBuilder();
 const form = useForm();
 
 builder
-    .child("list")
+    .createChild("list")
     .add("max-h-[200px]")
     .add("overflow-y-auto border bg-white");
 
 builder
-    .child("item")
+    .createChild("item")
     .add("py-2 px-4")
     .add("cursor-pointer text-gray-500 hover:bg-gray-100")
     .add("border-b last:border-b-0 border-gray-200");
 
-builder.child("small").add("text-xs", "mt-4", "block", "text-red-500");
+builder.createChild("small").add("text-xs", "mt-4", "block", "text-red-500");
 
 
 
