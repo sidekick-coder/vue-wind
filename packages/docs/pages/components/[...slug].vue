@@ -1,6 +1,3 @@
-<script setup lang="ts">
-
-</script>
 <template>
   <main class="px-4 py-5 page">
     <ContentDoc />
@@ -9,11 +6,15 @@
 
 <style>
 .page {
-  @apply text-gray-500 w-full h-full overflow-auto max-w-[1200px] mx-auto;
+  @apply text-gray-500 max-w-[900px] mx-auto;
 }
 
-h1 {
+.page h1 {
   @apply font-bold text-xl mb-4;
 
+}
+
+.page p {
+  @apply mb-4 text-sm;
 }
 </style>
