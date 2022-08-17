@@ -1,30 +1,6 @@
-<script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-
-export const builder = useBuilder();
-
-builder
-    .option("color", "focus:border", "teal-500")
-    .option("minHeight", "min-h")
-    .static("w-full", "py-3", "px-4")
-    .static("focus:outline-none", "outline-none")
-    .static("border", "rounded", "border-gray-300")
-    .static("placeholder-shown:bg-gray-200", "focus:bg-white")
-    .static("text-gray-400", "font-regular", "text-sm")
-    .static("drop-shadow-sm")
-    .static("transition-all");
-
-const labelBuilder = useBuilder();
-const smallBuilder = useBuilder();
-
-labelBuilder
-    .static("block")
-    .static("text-gray-500", "text-sm", "font-bold", "mb-3");
-
-smallBuilder.static("text-xs", "mt-4", "block", "text-red-500");
-</script>
 <script setup lang="ts">
-import { useValidation, ValidationRule } from "@/composable/validation";
+import { useBuilder } from "../../composables/builder";
+import { useValidation, ValidationRule } from "../../composables/validation";
 import { useVModel } from "@vueuse/core";
 import { computed, onUnmounted, PropType, watch } from "vue";
 import { useForm } from "../w-form/composable";
@@ -54,19 +30,36 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const validation = useValidation(props.rules);
 const model = useVModel(props, "modelValue", emit);
 
-const { messages, validate, reset } = useValidation(props.rules);
+const builder = useBuilder();
+
+builder
+    .add("w-full", "py-3", "px-4")
+    .add("focus:outline-none", "outline-none")
+    .add("border", "rounded", "border-gray-300")
+    .add("placeholder-shown:bg-gray-200", "focus:bg-white")
+    .add("text-gray-400", "font-regular", "text-sm")
+    .add("drop-shadow-sm")
+    .add("transition-all");
+
+builder
+    .createChild('label')
+    .add("block")
+    .add("text-gray-500", "text-sm", "font-bold", "mb-3");
+
+builder.createChild('small').add("text-xs", "mt-4", "block", "text-red-500");
 
 function validateModel() {
-    return validate(model.value);
+    return validation.value.validate(model.value);
 }
 
 function resetValidation() {
-    reset();
+    validation.value.reset();
 }
 
-watch(() => props.modelValue, validate);
+watch(() => props.modelValue, validation.value.validate);
 
 const form = useForm();
 
@@ -83,12 +76,9 @@ onUnmounted(() => {
 });
 
 const classes = computed(() => ({
-    textarea: builder.make({
-        color: props.color,
-        minHeight: props.minHeight,
-    }),
-    small: smallBuilder.make(),
-    label: labelBuilder.make(),
+    textarea: builder.make(),
+    label: builder.child("label").make(),
+    small: builder.child("small").make(),
 }));
 </script>
 <template>
@@ -100,7 +90,7 @@ const classes = computed(() => ({
 
     <small
         :class="classes.small"
-        v-for="message in messages.slice(0, 1)"
+        v-for="message in validation.messages.slice(0, 1)"
         :key="message"
     >
         {{ message }}
