@@ -1,12 +1,38 @@
+
+<script setup lang="ts">
+import type { ParsedContentMeta } from '@nuxt/content/dist/runtime/types'
+
+const { data } = await useAsyncData<ParsedContentMeta>('navigation', () => {
+    const query = queryContent('components')
+    
+    return fetchContentNavigation(query)
+})
+
+</script>
+
 <template>
-  <main class="px-4 py-5 page">
-    <ContentDoc />
-  </main>
+  <w-layout use-percentage>
+    <w-drawer class="border-r" layout-id="drawer">
+        <nuxt-link
+            v-for="c in data[0].children" :key="c._path" :to="c._path"
+            class="block py-3 px-4 cursor-pointer text-gray-500 hover:bg-teal-50 text-sm"
+            active-class="text-teal-500 font-bold"
+        >
+            {{ c.title }}
+        </nuxt-link>
+    </w-drawer>
+
+    <w-content>
+      <main class="w-full h-full overflow-auto">
+        <ContentDoc class="px-4 py-5 page" />
+      </main>
+    </w-content>
+  </w-layout>
 </template>
 
 <style>
 .page {
-  @apply text-gray-500 max-w-[900px] mx-auto;
+  @apply max-w-[800px] mx-auto;
 }
 
 .page h1, h2 {

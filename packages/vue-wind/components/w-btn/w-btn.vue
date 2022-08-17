@@ -38,7 +38,11 @@ const props = defineProps({
     shadow: {
         type: Boolean,
         default: true,
-    }
+    },
+    nuxt: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const builder = useBuilder();
@@ -80,7 +84,14 @@ if (props.roundedFull) {
 </script>
 
 <template>
-    <button :class="builder.make()">
+    <nuxt-link v-if="nuxt" :class="builder.make()">
+        <div v-if="loading"  :class="builder.child('loading').make()">
+                <slot name="loading">...</slot>
+            </div>
+        <slot />
+    </nuxt-link>
+
+    <button v-else :class="builder.make()">
             <div v-if="loading"  :class="builder.child('loading').make()">
                 <slot name="loading">...</slot>
             </div>

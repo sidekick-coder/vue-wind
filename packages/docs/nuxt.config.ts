@@ -1,8 +1,24 @@
 import { defineNuxtConfig } from 'nuxt'
+import packageJSON from '../../package.json'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
     ssr: false,
+    app: {
+      head: {
+        title: 'Vue wind',
+        meta: [
+          { property: 'og:type', content: 'website' },
+          { property: 'og:title', content: packageJSON.name },
+          { property: 'og:description', content: packageJSON.description },
+          { property: 'og:url', content: packageJSON.homepage },
+          { property: 'og:site_name', content: packageJSON.name },
+          { property: 'og:image', content: `${packageJSON.homepage}/og-image.png`},
+          { property: 'og:image:with', content: '1024' },
+          { property: 'og:image:height', content: '768' },
+        ]
+      }
+    },
     components: [
       {
         path: '~/components',

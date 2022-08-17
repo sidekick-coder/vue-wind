@@ -1,7 +1,9 @@
 {
   "name": "vue-wind",
   "version": "1.0.0",
-  "description": "",
+  "description": "vue components using tailwind styles",
+  "homepage": "vue-wind.sidekick-coder.com",
+  
   "scripts": {
     "docs": "npm -w docs run dev"
   },
