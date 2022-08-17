@@ -1,46 +1,39 @@
-<script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-import { useVModel } from "@vueuse/core";
-import { computed, defineComponent } from "vue";
+<script setup lang="ts">
+import { useBuilder } from "../../composables/builder";
+import { useVModel } from "../../composables/v-model";
+import { computed } from "vue";
 
-export const builder = useBuilder();
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false,
+    },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const builder = useBuilder();
+const model = useVModel(props, "modelValue", emit);
 
 builder
-    .static("bg-black/75")
-    .static("fixed")
-    .static("inset-0", "z-20")
-    .static("h-full", "w-full")
-    .static("flex", "items-center", "justify-center")
-    .toggle("hidden", "hidden");
+    .add("bg-black/75")
+    .add("fixed")
+    .add("inset-0", "z-20")
+    .add("h-full", "w-full")
+    .add("flex", "items-center", "justify-center")
 
-export default defineComponent({
-    props: {
-        ...builder.props,
-        modelValue: {
-            default: false,
-            type: Boolean,
-            required: false,
-        },
-    },
-    emits: ["update:modelValue"],
-    setup(props, { emit }) {
-        const model = useVModel(props, "modelValue", emit);
+const classes = computed(() =>
+    builder
+        .make()
+);
 
-        const classes = computed(() =>
-            builder.make({
-                ...props,
-                hidden: !model.value,
-            })
-        );
-
-        return { classes, model };
-    },
-});
 </script>
 <template>
-    <div :class="classes" @click="model = false">
-        <div @click.stop="">
-            <slot />
+    <teleport to="body" >
+        <div v-show="model" :class="classes" @click="model = false">
+            <div @click.stop="">
+                <slot />
+            </div>
         </div>
-    </div>
+    </teleport>    
 </template>
