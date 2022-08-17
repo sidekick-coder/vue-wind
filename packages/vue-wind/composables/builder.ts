@@ -16,15 +16,6 @@ class Builder {
         return this;
     }
 
-    
-    public makeArray(): string[] {
-        return this._classes
-    }
-    
-    public make(): string {
-        return this.makeArray().join(" ");
-    }
-
     public createChild(name: string) {
         if (!this._child.has(name))  this._child.set(name, new Builder());
 
@@ -43,6 +34,20 @@ class Builder {
         if (value) this.add(name);
 
         return this;
+    }
+
+    public makeArray(): string[] {
+        return this._classes
+    }
+    
+    public make(): string {
+        return this.makeArray().join(" ");
+    }
+
+    public makeChild(...names: string[]) {
+        const child = names.map(name => this.child(name))
+
+        return child.map(c => c.make()).join(" ");
     }
 }
 

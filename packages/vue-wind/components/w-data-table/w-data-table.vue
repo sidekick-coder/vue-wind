@@ -1,99 +1,62 @@
-<script lang="ts">
-import { useBuilder } from "@/composable/tailwind";
-import { defineComponent, computed, ref } from "vue";
+<script setup lang="ts">
+import { useBuilder } from "../../composables/builder";
+import { computed } from "vue";
 
 interface TableColumn {
     name: string;
-    label: string;
-    field: string;
+    label?: string;
+    field?: string;
     style?: string;
 }
 
-export const builder = useBuilder();
+const builder = useBuilder();
 
-builder.option("width", "w", "full").static("focus:outline-none");
-
-builder
-    .child("th")
-    .option("thColor", "text", "gray-500")
-    .option("borderColor", "border", "gray-200")
-    .static("p-2 text-left border-b");
-
-builder
-    .child("tr")
-    .option("focusColor", "focus:bg", "gray-100")
-    .static("outline-none");
-
-builder
-    .child("td")
-    .option("tdColor", "text", "gray-500")
-    .option("focusColor", "focus:bg", "gray-100")
-    .option("borderColor", "border", "gray-200")
-    .static("p-2 text-left border-b outline-none");
-
-builder.child("tbody").toggle("loading", "opacity-30");
-
-builder
-    .child("loadingBar")
-    .option("loadingBarColor", "bg", "gray-500")
-    .static("h-1 w-full animate-pulse");
-
-export default defineComponent({
-    props: {
-        ...builder.props,
-        ...builder.child("tr").props,
-        ...builder.child("td").props,
-        ...builder.child("loadingBar").props,
-        columns: {
-            type: Array as () => TableColumn[],
-            default: () => [],
-        },
-        items: {
-            type: Array as () => any[],
-            default: () => [],
-        },
-        tdAttrs: {
-            type: Function as () => Record<string, any>,
-            default: () => ({}),
-        },
-        loading: {
-            type: Boolean,
-            default: false,
-        },
+const props = defineProps({
+    columns: {
+        type: Array as () => TableColumn[],
+        default: () => [],
     },
-    setup(props) {
-        const tableRef = ref<HTMLTableElement>();
-
-        const position = ref({
-            x: 0,
-            y: 0,
-        });
-
-        const rows = ref<HTMLElement[]>([]);
-        const cells = ref<HTMLElement[]>([]);
-
-        const classes = computed(() => ({
-            main: builder.make(props),
-            th: builder.child("th").make(props),
-            td: builder.child("td").make(props),
-            tr: builder.child("tr").make(props),
-            tbody: builder.child("tbody").make(props),
-            loadingBar: builder.child("loadingBar").make(props),
-        }));
-
-        return {
-            rows,
-            classes,
-            tableRef,
-            position,
-            cells,
-        };
+    items: {
+        type: Array as () => any[],
+        default: () => [],
     },
-});
+    loading: {
+        type: Boolean,
+        default: false,
+    },
+})
+
+builder.add('w-full')
+
+builder.createChild("tbody");
+
+builder.createChild('cell').add('px-3 py-2 text-left border-b')
+
+builder.createChild("th").add("font-bold");
+
+builder.createChild("td")
+
+builder.createChild("tr")
+
+
+builder
+    .createChild("loadingBar")
+    .add("h-1 w-full animate-pulse bg-blue-500");
+ 
+ const classes = computed(() => ({
+    table: builder.make(),
+    th: builder.makeChild('cell', 'th'),
+    td: builder.makeChild('cell', 'td'),
+    tr: builder.child("tr").make(),
+    tbody: builder.child("tbody")
+        .toggler("opacity-40", props.loading)
+        .make(),
+    loadingBar: builder.child("loadingBar").make(),
+}));
+
 </script>
-
 <template>
-    <table ref="tableRef" :class="classes.main">
+    <table :class="classes.table">
         <thead>
             <tr>
                 <slot name="column" :columns="columns">
@@ -123,9 +86,12 @@ export default defineComponent({
             <slot name="body-prepend" />
 
             <tr v-for="(item, y) in items" :key="y" :class="classes.tr">
-                <slot name="item" :item="item" :columns="columns">
+                <slot
+                    name="item"
+                    :item="item"
+                    :columns="columns"
+                >
                     <td
-                        v-bind="tdAttrs"
                         v-for="(column, x) in columns"
                         :key="x"
                         :class="classes.td"
@@ -134,8 +100,9 @@ export default defineComponent({
                             :name="`item-${column.name}`"
                             :column="column"
                             :item="item"
+                            :value="column.field ? item[column.field] : ''"
                         >
-                            {{ item[column.field] }}
+                            {{ column.field ? item[column.field] : '' }}
                         </slot>
                     </td>
                 </slot>
