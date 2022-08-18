@@ -6,7 +6,7 @@ import { useVariation } from '../../composables/button';
 const props = defineProps({
     color: {
         type: String,
-        default: undefined,
+        default: null,
     },
     'custom:color': {
         type: String,

@@ -1,4 +1,5 @@
-import { ref, Ref, inject, provide } from "vue";
+import { ref, inject, provide } from "vue";
+import type { Ref } from "vue";
 
 interface FormInputValidation {
     (): string | boolean;

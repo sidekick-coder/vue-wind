@@ -3,14 +3,7 @@
     "version": "0.0.50-next",
     "description": "vue components using tailwind styles",
     "types": "types",
-    "exports": {
-        ".": {
-            "import": "./dist",
-            "require": "./dist"
-        }
-    },
     "scripts": {
-        "build": "node build.mjs",
         "test": "vitest",
         "coverage": "vitest run --coverage"
     },
@@ -45,8 +38,5 @@
         "vue": "^3.2.33",
         "vue-tsc": "^0.32.1"
     },
-    "dependencies": {
-        "@vueuse/core": "^9.1.0",
-        "lodash": "^4.17.21"
-    }
+    "dependencies": {}
 }

@@ -1,4 +1,5 @@
-import { provide, inject, InjectionKey } from 'vue'
+import { provide, inject } from 'vue'
+import type { InjectionKey } from 'vue'
 
 export interface WInputVariation {
     // default color

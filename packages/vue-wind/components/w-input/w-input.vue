@@ -4,10 +4,12 @@ import { useVModel } from "../../composables/v-model";
 
 import { useBuilder } from "../../composables/builder";
 import { useForm } from "../w-form/composable";
-import { ValidationRule, useValidation } from "../../composables/validation";
+import { useValidation } from "../../composables/validation";
 import { useVariation } from "../../composables/input";
 
-const props  =defineProps({
+import type { ValidationRule } from "../../composables/validation";
+
+const props = defineProps({
     modelValue: {
         type: [String, Number],
         default: "",
@@ -26,7 +28,7 @@ const props  =defineProps({
     },
     color: {
         type: String,
-        default: undefined,
+        default: null,
     }
 })
 
