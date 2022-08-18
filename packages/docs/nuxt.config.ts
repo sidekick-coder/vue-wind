@@ -48,14 +48,14 @@ export default defineNuxtConfig({
           '@fortawesome/free-solid-svg-icons',
           '@fortawesome/free-brands-svg-icons',
       ],
-        postcss: {
-          postcssOptions: {
-            plugins: {
-              tailwindcss: {},
-              autoprefixer: {},
-            },
+      postcss: {
+        postcssOptions: {
+          plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
           },
         },
+      },
     },
     css: [
       "~/assets/tailwind.css",

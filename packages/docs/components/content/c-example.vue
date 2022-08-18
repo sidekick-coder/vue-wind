@@ -37,7 +37,7 @@ const componentName = computed(() => {
         <transition name="slide-down">
 
             <div v-if="show">
-                <prose-code v-html="content" />
+                <prose-code v-html="content" :rounded="false" />
                 
                 <div class="text-center w-full py-2" >
                     <button @click="show = false">

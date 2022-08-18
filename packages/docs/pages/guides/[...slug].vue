@@ -29,27 +29,3 @@ const { data } = await useAsyncData<ParsedContentMeta>('guides-navigation', () =
     </w-content>
   </w-layout>
 </template>
-
-<style>
-.page {
-  @apply max-w-[800px] mx-auto;
-}
-
-.page h1, h2 {
-  @apply font-bold mb-4;
-}
-
-.page h1 {
-  @apply text-2xl;
-}
-
-.page h2 {
-  @apply text-xl;
-}
-
-.page  ul {
-  @apply my-4;
-}
-
-
-</style>

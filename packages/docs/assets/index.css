@@ -4,3 +4,24 @@ body {
     @apply text-gray-500;
     font-family: 'Roboto', sans-serif;
 }
+
+.page {
+    @apply max-w-[800px] mx-auto;
+}
+  
+.page h1, h2, h3 {
+    @apply font-bold mb-4;
+}
+
+.page h1 {
+    @apply text-2xl;
+}
+
+.page h2 {
+    @apply text-xl;
+}
+
+.page  ul {
+    @apply my-4;
+}
+  

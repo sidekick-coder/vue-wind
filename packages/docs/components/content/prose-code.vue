@@ -18,13 +18,17 @@ export default defineComponent({
     highlights: {
       type: Array as () => number[],
       default: () => []
-    }
+    },
+    rounded: {
+      type: Boolean,
+      default: true
+    },
   }
 })
 </script>
 
 <template>
-  <div class="code-container">
+  <div class="code-container" :class="{ rounded }">
     <slot />
   </div>
 </template>
@@ -32,7 +36,7 @@ export default defineComponent({
 
 <style>
 .code-container {
-  @apply bg-gray-800 block px-5 py-4;
+  @apply bg-gray-800 block px-5 py-4 my-4 overflow-auto;
 }
 
 .code-container code {
