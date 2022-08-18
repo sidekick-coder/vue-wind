@@ -1,8 +1,16 @@
+<script lang="ts">
+export default defineComponent({})
+</script>
 <script setup lang="ts">
+import { defineComponent, resolveComponent } from "vue";
 import { useBuilder } from "../../composables/builder";
 import { colors, sizes } from './variations'
 
 const props = defineProps({
+    tag: {
+        type: String,
+        default: 'button'
+    },
     color: {
         type: String,
         default: "teal",
@@ -81,20 +89,15 @@ if (props.roundedFull) {
     builder.child("loading").add("rounded-full").remove("rounded")
 }
 
+const tag = props.nuxt ? resolveComponent('nuxt-link') : 'button'
+
 </script>
 
 <template>
-    <nuxt-link v-if="nuxt" :class="builder.make()">
-        <div v-if="loading"  :class="builder.child('loading').make()">
+    <component :is="tag" :class="builder.make()">
+        <div v-if="loading" :class="builder.child('loading').make()">
                 <slot name="loading">...</slot>
             </div>
         <slot />
-    </nuxt-link>
-
-    <button v-else :class="builder.make()">
-            <div v-if="loading"  :class="builder.child('loading').make()">
-                <slot name="loading">...</slot>
-            </div>
-        <slot />
-    </button>
+    </component>
 </template>
