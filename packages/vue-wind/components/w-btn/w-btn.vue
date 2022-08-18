@@ -1,19 +1,12 @@
-<script lang="ts">
-export default defineComponent({})
-</script>
 <script setup lang="ts">
-import { defineComponent, resolveComponent } from "vue";
+import { resolveComponent } from "vue";
 import { useBuilder } from "../../composables/builder";
-import { colors, sizes } from './variations'
+import { useVariation } from '../../composables/button';
 
 const props = defineProps({
-    tag: {
-        type: String,
-        default: 'button'
-    },
     color: {
         type: String,
-        default: "teal",
+        default: undefined,
     },
     'custom:color': {
         type: String,
@@ -53,6 +46,9 @@ const props = defineProps({
     },
 })
 
+const variation = useVariation()
+const color = props.color ?? variation.color
+
 const builder = useBuilder();
 
 const findColor = () => {
@@ -61,17 +57,16 @@ const findColor = () => {
     }
 
     if (props.outlined) {
-
-        return colors[`outlined:${props.color}`]
+        return  variation.colors[`outlined:${color}`]
     }
 
 
-    return colors[`basic:${props.color}`]
+    return variation.colors[`basic:${color}`]
 }
 
 builder
     .add(findColor())
-    .add(props['custom:size'] ?? sizes[props.size])
+    .add(props['custom:size'] ?? variation.sizes[props.size])
     .add("disabled:opacity-75 relative")
     .add("flex items-center justify-center")
     .add("hover:opacity-75 transition-opacity duration-150")

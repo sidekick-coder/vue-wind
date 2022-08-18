@@ -2,8 +2,8 @@
 <script setup lang="ts">
 import type { ParsedContentMeta } from '@nuxt/content/dist/runtime/types'
 
-const { data } = await useAsyncData<ParsedContentMeta>('components-navigation', () => {
-    const query = queryContent('components')
+const { data } = await useAsyncData<ParsedContentMeta>('guides-navigation', () => {
+    const query = queryContent('guides')
     
     return fetchContentNavigation(query)
 })

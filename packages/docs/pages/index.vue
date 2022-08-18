@@ -14,9 +14,17 @@
                 <w-btn
                     nuxt
                     class="mr-4"
-                    to="/components/w-autocomplete"
+                    to="/guides"
                 >
-                    View docs
+                    Guides
+                </w-btn>
+
+                <w-btn
+                    nuxt
+                    class="mr-4"
+                    to="/components"
+                >
+                    Components
                 </w-btn>
                 
                 <w-btn
