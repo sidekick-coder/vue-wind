@@ -9,6 +9,7 @@ module.exports = {
     "./nuxt.config.{js,ts}",
 
     "../vue-wind/components/**/*.{vue,ts}",
+    "../vue-wind/composables/**/*.{vue,ts}",
   ],
   theme: {
     extend: {},

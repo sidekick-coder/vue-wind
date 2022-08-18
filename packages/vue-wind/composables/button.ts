@@ -1,4 +1,4 @@
-import { provide, ref, inject, InjectionKey, Ref } from 'vue'
+import { provide, inject, InjectionKey } from 'vue'
 
 interface WBtnVariation {
     // default color
@@ -43,7 +43,6 @@ export function provideVariation(variation: WBtnVariation){
 }
 
 export function useVariation(){
-    console.log('useVariation')
     return inject(key, {
         color: 'gray',
         size: 'md',

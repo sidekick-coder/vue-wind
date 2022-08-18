@@ -1,21 +1,54 @@
-<script lang="ts">
-import { computed, PropType, watch, onUnmounted, defineComponent } from "vue";
+<script setup lang="ts">
+import { watch, onUnmounted } from "vue";
 import { useVModel } from "../../composables/v-model";
 
 import { useBuilder } from "../../composables/builder";
 import { useForm } from "../w-form/composable";
 import { ValidationRule, useValidation } from "../../composables/validation";
+import { useVariation } from "../../composables/input";
 
-export const builder = useBuilder();
+const props  =defineProps({
+    modelValue: {
+        type: [String, Number],
+        default: "",
+    },
+    label: {
+        type: String,
+        default: "",
+    },
+    rules: {
+        type: Array as () => ValidationRule[],
+        default: () => [],
+    },
+    placeholder: {
+        type: String,
+        default: " ",
+    },
+    color: {
+        type: String,
+        default: undefined,
+    }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const builder = useBuilder();
+const variation = useVariation()
+const form = useForm();
+
+const validation = useValidation(props.rules);
+const model = useVModel(props, "modelValue", emit);
+const color = props.color ?? variation.color
 
 builder
+    .add(variation.colors[color])
     .add("w-full", "py-3", "px-4")
     .add("focus:outline-none", "outline-none")
-    .add("border", "rounded", "border-gray-300")
+    .add("border", "rounded")
     .add("placeholder-shown:bg-gray-200", "focus:bg-white")
     .add("text-gray-400", "font-regular", "text-sm")
     .add("drop-shadow-sm")
-    .add("transition-all");
+    .add("transition-all")
 
 builder
     .createChild("label")
@@ -24,76 +57,43 @@ builder
 
 builder.createChild("small").add("text-xs", "mt-4", "block", "text-red-500");
 
-export default defineComponent({
-    props: {
-        modelValue: {
-            type: [String, Number],
-            default: "",
-        },
-        label: {
-            type: String,
-            default: "",
-        },
-        rules: {
-            type: Array as PropType<ValidationRule[]>,
-            default: () => [],
-        },
-        placeholder: {
-            type: String,
-            default: " ",
-        },
-    },
-    emits: ["update:modelValue"],
-    setup(props, { emit }) {
-        const model = useVModel(props, "modelValue", emit);
 
-        const validation = useValidation(props.rules);
+function validateModel() {
+    return validation.value.validate(props.modelValue);
+}
 
-        const classes = computed(() => ({
-            input: builder.make(),
-            label: builder.child("label").make(),
-            small: builder.child("small").make(),
-        }));
+function resetValidation() {
+    validation.value.reset();
+}
 
-        function validateModel() {
-            return validation.value.validate(props.modelValue);
-        }
+watch(() => props.modelValue, validation.value.validate);
 
-        function resetValidation() {
-            validation.value.reset();
-        }
+if (form) {
+    form.inputs.value.push(validateModel);
+    form.resets.value.push(resetValidation);
+}
 
-        watch(() => props.modelValue, validation.value.validate);
+onUnmounted(() => {
+    if (!form) {
+        return;
+    }
 
-        const form = useForm();
+    form.inputs.value.splice(
+        form.inputs.value.indexOf(validateModel),
+        1
+    );
 
-        if (form) {
-            form.inputs.value.push(validateModel);
-            form.resets.value.push(resetValidation);
-        }
-
-        onUnmounted(() => {
-            if (!form) {
-                return;
-            }
-            form.inputs.value.splice(
-                form.inputs.value.indexOf(validateModel),
-                1
-            );
-            form.resets.value.splice(
-                form.resets.value.indexOf(resetValidation),
-                1
-            );
-        });
-
-        return { classes, model, validation, resetValidation };
-    },
+    form.resets.value.splice(
+        form.resets.value.indexOf(resetValidation),
+        1
+    );
 });
+
 </script>
 <template>
     <label
         :for="$attrs.id ? String($attrs.id) : undefined"
-        :class="classes.label"
+        :class="builder.makeChild('label')"
         v-if="label"
     >
         {{ label }}
@@ -102,12 +102,12 @@ export default defineComponent({
     <input
         v-model="model"
         v-bind="$attrs"
-        :class="classes.input"
+        :class="builder.make()"
         :placeholder="placeholder"
     />
 
     <small
-        :class="classes.small"
+        :class="builder.makeChild('small')"
         v-for="message in validation.messages.slice(0, 1)"
         :key="message"
     >
