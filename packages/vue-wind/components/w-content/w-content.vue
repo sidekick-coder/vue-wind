@@ -1,11 +1,11 @@
 <script lang="ts">
-import { useBuilder } from "../../composables/tailwind";
+import { useBuilder } from "../../composables/builder";
 import { ref, defineComponent, onMounted, computed } from "vue";
 import { useLayout, useLayoutItem } from "../w-layout/composable";
 
 export const builder = useBuilder();
 
-builder.static("overflow-hidden w-full h-full");
+builder.add("overflow-hidden w-full h-full");
 
 export default defineComponent({
     props: {
@@ -57,7 +57,7 @@ export default defineComponent({
             });
         });
 
-        const classes = computed(() => builder.make(props));
+        const classes = computed(() => builder.make());
 
         return { root, classes, padding };
     },

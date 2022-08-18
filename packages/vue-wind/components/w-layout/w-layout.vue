@@ -1,37 +1,27 @@
-<script lang="ts">
-import { useBuilder } from "../../composables/tailwind";
-import { defineComponent, computed } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
+
+import { useBuilder } from "../../composables/builder";
 import { provideLayout } from "./composable";
 
-export const builder = useBuilder();
+const props = defineProps({
+    usePercentage: {
+        type: Boolean,
+        default: false,
+    },
+})
+
+const builder = useBuilder();
 
 builder
-    .static("overflow-hidden flex flex-wrap relative")
-    .toggle("useScreen", "h-screen w-screen")
-    .toggle("usePercentage", "h-full w-full");
+    .add("overflow-hidden flex flex-wrap relative")
+    .toggler("h-screen w-screen", !props.usePercentage)
+    .toggler( "h-full w-full", props.usePercentage);
 
-export default defineComponent({
-    props: {
-        ...builder.props,
-        usePercentage: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    setup(props) {
-        provideLayout();
+const classes = computed(() => builder.make());
 
-        const classes = computed(() =>
-            builder.make({
-                ...props,
-                usePercentage: props.usePercentage,
-                useScreen: !props.usePercentage,
-            })
-        );
+provideLayout();
 
-        return { classes };
-    },
-});
 </script>
 
 <template>

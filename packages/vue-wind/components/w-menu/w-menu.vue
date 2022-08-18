@@ -1,12 +1,12 @@
 <script lang="ts">
-import { useBuilder } from "../../composables/tailwind";
+import { useBuilder } from "../../composables/builder";
 import { computed, defineComponent, ref, watch } from "vue";
 
 export const builder = useBuilder();
 
-builder.static("relative");
+builder.add("relative");
 
-builder.child("menu").static(" rounded z-20 absolute w-full overflow-hidden");
+builder.createChild("menu").add(" rounded z-20 absolute w-full overflow-hidden");
 
 export default defineComponent({
     props: {

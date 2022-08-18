@@ -2,32 +2,30 @@
 import { computed, PropType, watch, onUnmounted, defineComponent } from "vue";
 import { useVModel } from "../../composables/v-model";
 
-import { useBuilder } from "../../composables/tailwind";
+import { useBuilder } from "../../composables/builder";
 import { useForm } from "../w-form/composable";
 import { ValidationRule, useValidation } from "../../composables/validation";
 
 export const builder = useBuilder();
 
 builder
-    .option("color", "focus:border", "teal-500")
-    .static("w-full", "py-3", "px-4")
-    .static("focus:outline-none", "outline-none")
-    .static("border", "rounded", "border-gray-300")
-    .static("placeholder-shown:bg-gray-200", "focus:bg-white")
-    .static("text-gray-400", "font-regular", "text-sm")
-    .static("drop-shadow-sm")
-    .static("transition-all");
+    .add("w-full", "py-3", "px-4")
+    .add("focus:outline-none", "outline-none")
+    .add("border", "rounded", "border-gray-300")
+    .add("placeholder-shown:bg-gray-200", "focus:bg-white")
+    .add("text-gray-400", "font-regular", "text-sm")
+    .add("drop-shadow-sm")
+    .add("transition-all");
 
 builder
-    .child("label")
-    .static("block")
-    .static("text-gray-500", "text-sm", "font-bold", "mb-3");
+    .createChild("label")
+    .add("block")
+    .add("text-gray-500", "text-sm", "font-bold", "mb-3");
 
-builder.child("small").static("text-xs", "mt-4", "block", "text-red-500");
+builder.createChild("small").add("text-xs", "mt-4", "block", "text-red-500");
 
 export default defineComponent({
     props: {
-        ...builder.props,
         modelValue: {
             type: [String, Number],
             default: "",
@@ -52,9 +50,9 @@ export default defineComponent({
         const validation = useValidation(props.rules);
 
         const classes = computed(() => ({
-            input: builder.make(props),
-            label: builder.child("label").make(props),
-            small: builder.child("small").make(props),
+            input: builder.make(),
+            label: builder.child("label").make(),
+            small: builder.child("small").make(),
         }));
 
         function validateModel() {
