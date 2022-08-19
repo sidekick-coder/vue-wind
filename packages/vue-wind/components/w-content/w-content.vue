@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useBuilder } from "../../composables/builder";
-import { ref, defineComponent, onMounted, computed } from "vue";
+import { ref, defineComponent, computed } from "vue";
 import { useLayout, useLayoutItem } from "../w-layout/composable";
 
 export const builder = useBuilder();
@@ -45,17 +45,17 @@ export default defineComponent({
             return `${top}px ${right}px 0 ${left}px`;
         });
 
-        onMounted(() => {
-            useLayoutItem({
-                id: props.layoutId,
-                ref: root.value,
-                type: "content",
-                offsetType: "none",
-                height: 0,
-                width: 0,
-                isVisible: () => true,
-            });
+        
+        useLayoutItem({
+            id: props.layoutId,
+            ref: root.value,
+            type: "content",
+            offsetType: "none",
+            height: 0,
+            width: 0,
+            isVisible: () => true,
         });
+        
 
         const classes = computed(() => builder.make());
 

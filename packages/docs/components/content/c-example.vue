@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 const props = defineProps({
     file: {
@@ -6,13 +7,9 @@ const props = defineProps({
     }
 })
 
-const loading = ref(true)
 const show = ref(false)
-const content = ref('')
 
-$fetch(`/api/examples/${props.file}`)
-    .then(res => content.value = res)
-    .finally(() => loading.value = false)
+const { data: content } = await useFetch(`/api/examples/${props.file}`)
 
 const componentName = computed(() => {
     return `example-${props.file.replace(/\//g, '-')}`
@@ -24,9 +21,7 @@ const componentName = computed(() => {
     <div class="w-full border rounded drop-shadow bg-white">
         <div class="p-5">
             <component :is="componentName" />
-        </div>
-
-        
+        </div>        
         
         <div class="border-t px-5 py-2 text-right">
             <button @click="show = !show">
@@ -35,7 +30,6 @@ const componentName = computed(() => {
         </div>
 
         <transition name="slide-down">
-
             <div v-if="show">
                 <prose-code v-html="content" :rounded="false" />
                 
@@ -46,8 +40,6 @@ const componentName = computed(() => {
                 </div>
             </div>
         </transition>
-
-
     </div>
 </template>
 

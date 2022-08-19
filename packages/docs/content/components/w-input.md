@@ -4,4 +4,4 @@ Input component
 
 ## Basic
 
-:c-example{file="input/basic"}
+::c-example{file="input/basic"}

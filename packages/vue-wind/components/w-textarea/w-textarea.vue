@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBuilder } from "../../composables/builder";
 import { useValidation, ValidationRule } from "../../composables/validation";
-import { useVModel } from "@vueuse/core";
+import { useVModel } from "../../composables/v-model";
 import { computed, onUnmounted, PropType, watch } from "vue";
 import { useForm } from "../w-form/composable";
 

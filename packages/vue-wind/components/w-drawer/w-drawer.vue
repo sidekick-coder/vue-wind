@@ -3,7 +3,7 @@ export default defineComponent({ inheritAttrs: false });
 </script>
 
 <script setup lang="ts">
-import { ref, computed, defineComponent, onMounted } from "vue";
+import { ref, computed, defineComponent } from "vue";
 import { useBuilder } from "../../composables/builder";
 import { useLayout, useLayoutItem } from "../w-layout/composable";
 import { useVModel } from "../../composables/v-model";
@@ -25,6 +25,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    width: {
+        type: Number,
+        default: 300,
+    },
 })
 
 const emit = defineEmits(['update:modelValue']);
@@ -40,28 +44,30 @@ builder
     .add("top-0")
     .add("transition-transform")
     .add('h-full')
-    .add('w-[300px]')
     .toggler("right-0", props.right)
     .toggler("left-0", !props.right)
 
-    onMounted(() => {
-        useLayoutItem({
-            id: props.layoutId,
-            ref: root.value,
-            type: "drawer",
-            height: 0,
-            width: 0,
-            isVisible: () => props.modelValue,
-            offsetType: props.right ? "right" : "left",
-        });
+    
+    useLayoutItem({
+        id: props.layoutId,
+        ref: root.value,
+        type: "drawer",
+        height: 0,
+        width: props.width,
+        isVisible: () => props.modelValue,
+        offsetType: props.right ? "right" : "left",
     });
+    
 
-    const paddingTop = computed(() =>
-        items.value
+    const padding = computed(() => {
+        const top = items.value
             .filter((item) => item.type === "toolbar")
             .filter((item) => item.offsetType === "top")
             .filter((item) => item.isVisible())
             .reduce((acc, item) => acc + item.height, 0)
+
+        return `${top}px 0 0 0`;
+    }
     );
 
     const model = useVModel(props, "modelValue", emit);
@@ -79,7 +85,7 @@ builder
     <aside
         ref="root"
         :class="classes"
-        :style="{ paddingTop: `${paddingTop}px`, transform }"
+        :style="{ padding, transform, width: `${width}px` }"
     >
         <div class="h-full w-full overflow-auto" v-bind="$attrs">
             <slot />

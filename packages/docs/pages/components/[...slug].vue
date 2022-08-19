@@ -24,7 +24,7 @@ const { data } = await useAsyncData<ParsedContentMeta>('components-navigation', 
 
     <w-content>
       <main class="w-full h-full overflow-auto">
-        <ContentDoc class="px-4 py-5 page" />
+        <content-doc class="px-4 py-5 page" />
       </main>
     </w-content>
   </w-layout>

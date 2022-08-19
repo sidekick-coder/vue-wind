@@ -1,5 +1,7 @@
-import { throttle } from "lodash";
+import { throttle } from "../../composables/throttle";
 import { ref, provide, inject, InjectionKey } from "vue";
+
+const isClient = typeof window !== "undefined";
 
 export interface LayoutItem {
     id: string;
@@ -35,6 +37,8 @@ export function useLayout() {
 export function useLayoutItem(item: LayoutItem) {
     const { items } = useLayout();
 
+    items.value.push(item);
+
     useResize(item.ref, (width, heigh) => {
         const search = items.value.find((i) => i.id === item.id);
 
@@ -44,16 +48,16 @@ export function useLayoutItem(item: LayoutItem) {
         search.height = heigh;
     });
 
-    items.value.push(item);
-
-    return { item };
+    
 }
 
 export function useResize(
     el: HTMLElement,
     cb: (width: number, height: number) => void
 ) {
-    const resize = throttle(() => cb(el.offsetWidth, el.offsetHeight), 100);
+    if (!isClient || !el) return;
+
+    const resize = throttle(() => cb(el.offsetWidth, el.offsetHeight), 50);
 
     window.addEventListener("resize", resize);
     el.addEventListener("resize", resize);

@@ -4,4 +4,4 @@ Textarea component
 
 ## Basic
 
-:c-example{file="textarea/basic"}
+::c-example{file="textarea/basic"}

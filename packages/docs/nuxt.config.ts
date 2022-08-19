@@ -1,10 +1,14 @@
 import { defineNuxtConfig } from 'nuxt'
+import { fileURLToPath } from 'url'
 import packageJSON from '../../package.json'
+
+const vuePath = 'node_modules/vue/dist/vue.esm-bundler.js'
+const clientUrl = fileURLToPath(new URL(vuePath, import.meta.url))
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    ssr: false,
     app: {
+      cdnURL: process.env.CDN_URL || "https://vue-wind.sidekick-coder.com",
       head: {
         title: 'Vue wind',
         meta: [
@@ -47,6 +51,7 @@ export default defineNuxtConfig({
           '@fortawesome/fontawesome-svg-core',
           '@fortawesome/free-solid-svg-icons',
           '@fortawesome/free-brands-svg-icons',
+          "@fortawesome/vue-fontawesome",
       ],
       postcss: {
         postcssOptions: {
@@ -62,4 +67,9 @@ export default defineNuxtConfig({
       "~/assets/index.css",
       "@fortawesome/fontawesome-svg-core/styles.css"
     ],
+    hooks: {
+      'vite:extendConfig': (config, {isClient, isServer}) => {
+          if(isClient) (config.resolve.alias as any).vue = clientUrl
+      },
+  },
 })
