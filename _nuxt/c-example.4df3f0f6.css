@@ -1,0 +1,1 @@
+.slide-down-enter-active,.slide-down-leave-active{transition:max-height .5s ease-in-out}.slide-down-enter-to,.slide-down-leave-from{max-height:1000px;overflow:hidden}.slide-down-enter-from,.slide-down-leave-to{max-height:0;overflow:hidden}
