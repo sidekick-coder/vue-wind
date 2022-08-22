@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt'
 import { fileURLToPath } from 'url'
 import packageJSON from '../../package.json'
 
-const vuePath = 'node_modules/vue/dist/vue.esm-bundler.js'
+const vuePath = require.resolve('vue/dist/vue.esm-bundler.js')
 const clientUrl = fileURLToPath(new URL(vuePath, import.meta.url))
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
