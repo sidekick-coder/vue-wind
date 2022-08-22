@@ -1,8 +1,16 @@
 name: Deploy site
 
+# on:
+#   release:
+#     types: [created]
+
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main  # Set a branch name to trigger deployment
+
+permissions:
+  repository-projects: write
     
 jobs:
   build:
