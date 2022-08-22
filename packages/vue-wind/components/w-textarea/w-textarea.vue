@@ -4,6 +4,7 @@ import { useValidation, ValidationRule } from "../../composables/validation";
 import { useVModel } from "../../composables/v-model";
 import { computed, onUnmounted, PropType, watch } from "vue";
 import { useForm } from "../w-form/composable";
+import { useVariation } from "composables/input";
 
 const props = defineProps({
     modelValue: {
@@ -20,22 +21,21 @@ const props = defineProps({
     },
     color: {
         type: String,
-        default: "teal-500",
-    },
-    minHeight: {
-        type: String,
-        default: "4",
+        default: null,
     },
 });
 
 const emit = defineEmits(["update:modelValue"]);
 
+const variation = useVariation();
 const validation = useValidation(props.rules);
 const model = useVModel(props, "modelValue", emit);
 
 const builder = useBuilder();
+const color = props.color ?? variation.color
 
 builder
+    .add(variation.colors[color])
     .add("w-full", "py-3", "px-4")
     .add("focus:outline-none", "outline-none")
     .add("border", "rounded", "border-gray-300")

@@ -2,8 +2,8 @@ import { describe, it, assert, vi, afterEach } from "vitest";
 import { nextTick } from "vue";
 import { mount, VueWrapper } from "@vue/test-utils";
 
-import WLayout from "@/components/w-layout/w-layout.vue";
-import WToolbar from "@/components/w-toolbar/w-toolbar.vue";
+import WLayout from "../w-layout/w-layout.vue";
+import WToolbar from "../w-toolbar/w-toolbar.vue";
 import WContent from "./w-content.vue";
 
 let wrapper: VueWrapper;

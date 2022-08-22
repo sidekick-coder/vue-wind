@@ -17,7 +17,9 @@ function submit() {
     emit("submit");
 }
 
-function reset() {
+function reset(noDelay = false) {
+    if (noDelay) return form.resets.value.forEach((r) => r());
+
     setTimeout(() => {
         form.resets.value.forEach((r) => r());
     }, 5);

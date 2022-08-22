@@ -1,7 +1,7 @@
 import { afterEach, expect, it } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import { ComponentPublicInstance, nextTick } from "vue";
-import WInput from "@/components/w-input/w-input.vue";
+import WInput from "./w-input.vue";
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof WInput>>;
 

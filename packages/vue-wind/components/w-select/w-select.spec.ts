@@ -1,7 +1,7 @@
 import { afterEach, expect, it } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import { ComponentPublicInstance, nextTick } from "vue";
-import WSelect from "@/components/w-select/w-select.vue";
+import WSelect from "./w-select.vue";
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof WSelect>>;
 

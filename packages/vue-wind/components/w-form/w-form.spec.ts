@@ -3,7 +3,7 @@ import { mount, VueWrapper } from "@vue/test-utils";
 import { ComponentPublicInstance, nextTick } from "vue";
 
 import WForm from "./w-form.vue";
-import WInput from "@/components/w-input/w-input.vue";
+import WInput from "../w-input/w-input.vue";
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof WForm>>;
 
@@ -114,9 +114,11 @@ describe("w-form", () => {
 
         expect(wrapper.findAll("small").length).toBe(3);
 
-        wForm.vm.resetValidation();
+        wForm.vm.reset(true);
 
         await nextTick();
+
+        console.log(wrapper.html())
 
         expect(wrapper.findAll("small").length).toBe(0);
     });

@@ -35,7 +35,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const builder = useBuilder();
-const variation = useVariation()
+const variation = useVariation();
 const form = useForm();
 
 const validation = useValidation(props.rules);
