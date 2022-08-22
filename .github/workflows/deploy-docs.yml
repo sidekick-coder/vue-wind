@@ -8,13 +8,12 @@ on:
   push:
     branches:
       - main  # Set a branch name to trigger deployment
-
-permissions:
-  repository-projects: write
     
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       
