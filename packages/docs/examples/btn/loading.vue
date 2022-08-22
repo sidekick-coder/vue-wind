@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
 const loading = ref({
-    default: false,
-    text: false,
-    spin: false,
+    default: true,
+    text: true,
+    spin: true,
 })
 </script>
 

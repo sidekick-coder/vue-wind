@@ -4,7 +4,7 @@ import { useValidation, ValidationRule } from "../../composables/validation";
 import { useVModel } from "../../composables/v-model";
 import { computed, onUnmounted, PropType, watch } from "vue";
 import { useForm } from "../w-form/composable";
-import { useVariation } from "composables/input";
+import { useVariation } from "../../composables/input";
 
 const props = defineProps({
     modelValue: {

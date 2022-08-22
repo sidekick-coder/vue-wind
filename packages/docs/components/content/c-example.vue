@@ -18,7 +18,7 @@ const componentName = computed(() => {
 </script>
 
 <template>
-    <div class="w-full border rounded drop-shadow bg-white">
+    <div class="w-full border rounded drop-shadow bg-white my-5">
         <div class="p-5">
             <component :is="componentName" />
         </div>        
