@@ -1,13 +1,8 @@
 name: Deploy site
 
-# on:
-#   release:
-#     types: [created]
-
 on:
-  push:
-    branches:
-      - main  # Set a branch name to trigger deployment
+  release:
+    types: [created]
     
 jobs:
   deploy:
@@ -40,3 +35,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./packages/docs/.output/public
           commit_message: ${{ github.event.head_commit.message }}
+          cname: vue-wind.sidekick-coder.com
