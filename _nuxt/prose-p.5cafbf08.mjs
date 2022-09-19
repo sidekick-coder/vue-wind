@@ -1,1 +1,0 @@
-import{q as s,o as t,h as o,s as r}from"./entry.7fef546f.mjs";const c={},n={class:"mb-4 text-sm"};function a(e,_){return t(),o("p",n,[r(e.$slots,"default")])}const f=s(c,[["render",a]]);export{f as default};

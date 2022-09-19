@@ -1,1 +1,0 @@
-import{q as s,f as o,o as c,h as a,l as n,j as r,s as l}from"./entry.7fef546f.mjs";const _={},f={class:"flex items-center mb-2 last:mb-0 text-sm"};function i(e,m){const t=o("fa-icon");return c(),a("li",f,[n(t,{icon:"circle",class:"mr-2 text-[5px] text-teal-500"}),r("p",null,[l(e.$slots,"default")])])}const d=s(_,[["render",i]]);export{d as default};
