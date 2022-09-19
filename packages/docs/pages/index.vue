@@ -13,15 +13,15 @@
             <div class="w-full flex justify-center">
                 <w-btn
                     nuxt
-                    class="mr-4"
-                    to="/guides"
+                    class="mr-4 w-[150px]"
+                    to="/guides/installation"
                 >
                     Guides
                 </w-btn>
 
                 <w-btn
                     nuxt
-                    class="mr-4"
+                    class="mr-4 w-[150px]"
                     to="/components"
                 >
                     Components
@@ -31,6 +31,7 @@
                     nuxt
                     target="_blank"
                     to="https://github.com/sidekick-coder/vue-wind"
+                    class="w-[150px]"
                 >
                     <fa-icon icon="fa-brands fa-github" />
                     <div class="ml-2">

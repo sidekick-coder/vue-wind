@@ -1,5 +1,8 @@
+<script lang="ts">
+export default defineComponent({ inheritAttrs: false });
+</script>
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, defineComponent } from "vue";
 
 import { useBuilder } from "../../composables/builder";
 import { useLayoutItem, useLayout } from "../w-layout/composable";
@@ -30,6 +33,11 @@ builder
     .add("w-full")
     .add("absolute top-0 left-0")
     .add("flex items-center");
+
+builder
+    .createChild('content')
+    .add('h-full w-full')
+    .add('flex items-center')
  
 const { items } = useLayout();
 
@@ -64,16 +72,24 @@ useLayoutItem({
     type: "toolbar",
 });
 
-const classes = computed(() => builder.make());
+const classes = computed(() => ({
+    main: builder.make(),
+    content: builder.makeChild('content')
+}));
 
 </script>
 
 <template>
     <div
         ref="root"
-        :class="classes"
+        :class="classes.main"
         :style="{ padding: padding, height: `${height}px` }"
     >
-        <slot />
+        <div
+            :class="classes.content"
+            v-bind="$attrs"
+        >
+            <slot />
+        </div>
     </div>
 </template>
