@@ -1,9 +1,10 @@
 name: Deploy site
 
 on:
-  release:
-    types: [created]
-    
+  push:
+    branches:
+      - "main"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,11 +12,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      
+
       - uses: actions/setup-node@v1
         with:
-          node-version: '16.14.0'
-      
+          node-version: "16.14.0"
+
       - uses: actions/cache@v3
         id: cache-dependencies
         with:
@@ -28,7 +29,7 @@ jobs:
 
       - name: build
         run: npm -w docs run generate
-      
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
