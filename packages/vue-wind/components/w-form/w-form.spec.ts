@@ -118,8 +118,6 @@ describe("w-form", () => {
 
         await nextTick();
 
-        console.log(wrapper.html())
-
         expect(wrapper.findAll("small").length).toBe(0);
     });
 });
