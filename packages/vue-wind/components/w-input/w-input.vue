@@ -2,7 +2,7 @@
 import { watch, onUnmounted } from "vue";
 import { useVModel } from "../../composables/v-model";
 
-import { useBuilder } from "../../composables/builder";
+import { useBuilder, BuilderModify } from "../../composables/builder";
 import { useForm } from "../w-form/composable";
 import { useValidation } from "../../composables/validation";
 import { useVariation } from "../../composables/input";
@@ -29,6 +29,10 @@ const props = defineProps({
     color: {
         type: String,
         default: null,
+    },
+    modify: {
+        type: Function as unknown as () => BuilderModify,
+        default: () => () => {}
     }
 })
 
@@ -58,6 +62,14 @@ builder
     .add("text-gray-500", "text-sm", "font-bold", "mb-3");
 
 builder.createChild("small").add("text-xs", "mt-4", "block", "text-red-500");
+
+builder.modify(props.modify)
+
+const classes = {
+    main: builder.make(),
+    label: builder.makeChild('label'),
+    small: builder.makeChild('small')
+}
 
 
 function validateModel() {
@@ -95,7 +107,7 @@ onUnmounted(() => {
 <template>
     <label
         :for="$attrs.id ? String($attrs.id) : undefined"
-        :class="builder.makeChild('label')"
+        :class="classes.label"
         v-if="label"
     >
         {{ label }}
@@ -104,12 +116,12 @@ onUnmounted(() => {
     <input
         v-model="model"
         v-bind="$attrs"
-        :class="builder.make()"
+        :class="classes.main"
         :placeholder="placeholder"
     />
 
     <small
-        :class="builder.makeChild('small')"
+        :class="classes.small"
         v-for="message in validation.messages.slice(0, 1)"
         :key="message"
     >

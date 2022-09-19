@@ -1,6 +1,10 @@
+export interface BuilderModify {
+    (b: Builder): void
+}
 class Builder {
     private _classes: string[] = [];
     private _child = new Map<string, ReturnType<typeof useBuilder>>();
+    private _modifiers: BuilderModify[] = []
 
     public add(...args: string[]){
         const notAdded = args.filter(arg => !this._classes.includes(arg));
@@ -36,7 +40,13 @@ class Builder {
         return this;
     }
 
+    public modify(modifier: BuilderModify) {
+        this._modifiers.push(modifier)
+    }
+
     public makeArray(): string[] {
+        this._modifiers.forEach(modify => modify(this))
+
         return this._classes
     }
     

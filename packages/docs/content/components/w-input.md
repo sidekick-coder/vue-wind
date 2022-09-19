@@ -6,3 +6,8 @@ Input component
 
 ::c-example{file="input/basic"}
 ::
+
+## Modify
+
+::c-example{file="input/modify"}
+::
