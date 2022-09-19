@@ -5,7 +5,8 @@
   "homepage": "vue-wind.sidekick-coder.com",
   
   "scripts": {
-    "docs": "npm -w docs run dev"
+    "docs": "npm -w docs run dev",
+    "docs:preview": "npx serve packages/docs/dist"
   },
   "workspaces": [
     "packages/*"

@@ -1,12 +1,25 @@
+import fg from 'fast-glob'
 import { defineNuxtConfig } from 'nuxt'
+import path from 'path'
 import { fileURLToPath } from 'url'
 import packageJSON from '../../package.json'
 
 const vuePath = require.resolve('vue/dist/vue.esm-bundler.js')
 const clientUrl = fileURLToPath(new URL(vuePath, import.meta.url))
 
+const examplePath = path.resolve(__dirname, 'examples')
+
+const routes = fg
+  .sync(path.resolve(examplePath, '**', '*.vue'))
+  .map(e => e.replace(examplePath, '/api/examples').replace('.vue', ''))
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  nitro: {
+    prerender: {
+      routes: routes
+    }
+  },
     app: {
       cdnURL: process.env.CDN_URL || "https://vue-wind.sidekick-coder.com",
       head: {

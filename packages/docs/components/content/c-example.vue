@@ -9,7 +9,9 @@ const props = defineProps({
 
 const show = ref(false)
 
-const { data: content } = await useFetch(`/api/examples/${props.file}`)
+const { data: content } = await useFetch(`/api/examples/${props.file}`, {
+    key: props.file,
+})
 
 const componentName = computed(() => {
     return `example-${props.file.replace(/\//g, '-')}`
