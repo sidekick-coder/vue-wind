@@ -9,7 +9,7 @@ Some warnings before you use this lib:
 ## Install the lib
 
 ```sh
-npm i vue-wind@next
+npm i vue-wind
 ```
 
 ## Vite config
