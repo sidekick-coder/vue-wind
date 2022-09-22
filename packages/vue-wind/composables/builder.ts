@@ -37,6 +37,8 @@ class Builder {
     public toggler(name: string, value: boolean) {
         if (value) this.add(name);
 
+        if (!value) this.remove(name)
+
         return this;
     }
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 const items = []
+const loading = ref(true)
+
 const columns = [
     { name: 'id', field: 'id', label: '#' },
     { name: 'title', field: 'title', label: 'Title' },
@@ -18,13 +20,15 @@ for (let i = 0; i < 10; i++) {
 </script>
 
 <template>
-    <w-data-table
-        :items="items"
-        :columns="columns"
-        class="border"
-        loading
-    >
-        
+    <div>
+        <w-btn class="mb-4" @click="loading = !loading">Set Loading</w-btn>
+    
+        <w-data-table
+            :items="items"
+            :columns="columns"
+            class="border"
+            :loading="loading"
+        />
 
-    </w-data-table>
+    </div>
 </template>
