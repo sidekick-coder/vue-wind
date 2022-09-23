@@ -6,10 +6,8 @@ const dialog = ref(false)
     <div class="flex justify-center">
         <w-btn @click="dialog = true" >Show</w-btn>
 
-        <w-dialog v-model="dialog">
-            <w-card>
-                Hello word
-            </w-card>
+        <w-dialog v-model="dialog">            
+            Hello word
         </w-dialog>
     </div>
 </template>

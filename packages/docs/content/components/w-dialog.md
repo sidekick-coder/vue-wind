@@ -6,3 +6,6 @@ Component to show a pop dialog
 
 ::c-example{file="dialog/basic"}
 ::
+
+::c-example{file="dialog/close-with-button"}
+::
