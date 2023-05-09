@@ -2,16 +2,29 @@
   "name": "@vue-wind/composables",
   "version": "0.0.1",
   "description": "Composables & macros from vue-wind",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "vitest",
-    "build": "tsup"
-  },
   "keywords": [
     "vue",
     "tailwind"
   ],
   "author": "Henrique",
-  "license": "MIT"
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.mjs",
+      "require": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "vue": "^3.2.47"
+  }
 }
