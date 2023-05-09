@@ -1,14 +1,17 @@
 {
   "name": "vue-wind",
-  "version": "1.0.0",
-  "description": "vue components using tailwind styles",
-  "homepage": "vue-wind.sidekick-coder.com",
-  
+  "private": true,
   "scripts": {
     "docs": "npm -w docs run dev",
     "docs:preview": "npx serve packages/docs/dist"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vite": "^3.0.9",
+    "vitest": "^0.31.0"
+  }
 }
