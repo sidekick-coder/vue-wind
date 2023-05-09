@@ -5,126 +5,115 @@ import { defineVariation } from './define-variation'
 
 describe('define-variation (unit)', () => {
     test('should return correct variation classes', () => {
-        const props = { color: 'accent' }
-
-        const variant = defineVariation(props, 'color', {
+        const variant = defineVariation({
             accent: 'bg-accent',
             info: 'bg-info',
         })
 
-        expect(variant.classes).toBe('bg-accent')
-    })
+        const accent = variant.mount('accent')
 
-    test('should update variation classes', () => {
-        const props = reactive({ color: 'accent' })
+        expect(accent.classes).toBe('bg-accent')
 
-        const variant = defineVariation(props, 'color', {
-            accent: 'bg-accent',
-            info: 'bg-info',
-        })
+        const info = variant.mount('info')
 
-        expect(variant.classes).toBe('bg-accent')
-
-        props.color = 'info'
-
-        expect(variant.classes).toBe('bg-info')
+        expect(info.classes).toBe('bg-info')
     })
 
     test('should be able to use function as variation', () => {
-        const props = { color: 'accent' }
-
-        const variant = defineVariation(props, 'color', {
+        const variant = defineVariation({
             accent: () => ({ classes: 'bg-accent', styles: 'color: var(--accent)' }),
         })
 
-        expect(variant.classes).toBe('bg-accent')
-        expect(variant.styles).toBe('color: var(--accent)')
+        const accent = variant.mount('accent')
+
+        expect(accent.classes).toBe('bg-accent')
+        expect(accent.styles).toBe('color: var(--accent)')
     })
 
     test('should add shared classes between variations ', () => {
-        const props = reactive({ color: 'accent' })
-
-        const variant = defineVariation(props, 'color', {
-            _shared: 'border',
+        const variant = defineVariation({
             accent: 'bg-accent',
             info: 'bg-info',
         })
 
-        expect(variant.classes).toBe('border bg-accent')
+        variant.setShared('border')
 
-        props.color = 'info'
+        const accent = variant.mount('accent')
 
-        expect(variant.classes).toBe('border bg-info')
+        expect(accent.classes).toBe('border bg-accent')
+
+        const info = variant.mount('info')
+
+        expect(info.classes).toBe('border bg-info')
     })
 
     test('should add shared styles between variations ', () => {
-        const props = reactive({ color: 'accent' })
-
-        const variant = defineVariation(props, 'color', {
-            _shared: () => ({ styles: 'font-weight:bold;' }),
+        const variant = defineVariation({
             accent: () => ({ styles: 'color: var(--accent);' }),
             info: () => ({ styles: 'color: var(--info);' }),
         })
 
-        expect(variant.styles).toBe('font-weight:bold; color: var(--accent);')
+        variant.setShared(() => ({ styles: 'font-weight:bold;' }))
 
-        props.color = 'info'
+        const accent = variant.mount('accent')
 
-        expect(variant.styles).toBe('font-weight:bold; color: var(--info);')
+        expect(accent.styles).toBe('font-weight:bold; color: var(--accent);')
+
+        const info = variant.mount('info')
+
+        expect(info.styles).toBe('font-weight:bold; color: var(--info);')
     })
 
-    test('should use _empty classes when variation was not found ', () => {
-        const props = reactive({ color: 'unknown' })
-
-        const variant = defineVariation(props, 'color', {
+    test('should use _empty classes & styles when variation was not found ', () => {
+        const variant = defineVariation({
             _empty: 'text-gray',
         })
 
-        expect(variant.classes).toBe('text-gray')
-    })
+        variant.onEmpty(() => ({ classes: 'text-gray', styles: 'color: grey' }))
 
-    test('should use _empty styles when variation was not found ', () => {
-        const props = reactive({ color: 'unknown' })
+        const unknown = variant.mount('unknown')
 
-        const variant = defineVariation(props, 'color', {
-            _empty: () => ({ styles: 'color: grey' }),
-        })
-
-        expect(variant.styles).toBe('color: grey')
+        expect(unknown.classes).toBe('text-gray')
+        expect(unknown.styles).toBe('color: grey')
     })
 
     test('should update variations options', () => {
-        const props = reactive({ color: 'accent' })
-
-        const variant = defineVariation(props, 'color', {
-            _shared: 'border',
+        const variant = defineVariation({
             accent: 'bg-accent',
             info: 'bg-info',
         })
 
-        expect(variant.classes).toBe('border bg-accent')
+        variant.setShared('border')
 
-        variant.setOptions({
-            _shared: 'font-bold',
+        const accent = variant.mount('accent')
+
+        expect(accent.classes).toBe('border bg-accent')
+
+        variant.update({
             accent: 'text-accent',
             info: 'text-info',
         })
 
-        expect(variant.classes).toBe('font-bold text-accent')
+        variant.setShared('font-bold')
 
-        props.color = 'info'
+        const accentUpdated = variant.mount('accent')
 
-        expect(variant.classes).toBe('font-bold text-info')
+        expect(accentUpdated.classes).toBe('font-bold text-accent')
+
+        const infoUpdated = variant.mount('info')
+
+        expect(infoUpdated.classes).toBe('font-bold text-info')
     })
 
     test('should use _shared & empty at same type options', () => {
-        const props = reactive({ color: 'text-unknown' })
+        const variant = defineVariation()
 
-        const variant = defineVariation(props, 'color', {
-            _shared: 'border',
-            _empty: (v) => ({ classes: v }),
-        })
+        variant.setShared('border')
 
-        expect(variant.classes).toBe('border text-unknown')
+        variant.onEmpty((v) => ({ classes: v }))
+
+        const unknown = variant.mount('text-unknown')
+
+        expect(unknown.classes).toBe('border text-unknown')
     })
 })

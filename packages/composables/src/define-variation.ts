@@ -13,18 +13,61 @@ interface Options {
     [key: string]: string | OptionFunction
 }
 
-export function defineVariation<P extends object, K extends keyof P>(
-    props: P,
-    key: K,
-    variationOptions: Options & OptionSpecialMethods = {}
-) {
+type Variant = ReturnType<typeof defineVariation>
+
+export function defineVariation(variationOptions: Options & OptionSpecialMethods = {}) {
     const options = ref(variationOptions)
 
-    function setOptions(variationOptions: Options & OptionSpecialMethods) {
+    let _shared: string | OptionFunction = ''
+    let _empty: string | OptionFunction = ''
+
+    function update(variationOptions: Options & OptionSpecialMethods) {
         options.value = variationOptions
     }
 
-    function getVariant(name: string) {
+    function setShared(value: string | OptionFunction) {
+        _shared = value
+    }
+
+    function getShared(value?: any) {
+        const result = {
+            classes: '',
+            styles: '',
+        }
+
+        if (typeof _shared === 'string') {
+            result.classes = _shared
+        }
+
+        if (typeof _shared === 'function') {
+            Object.assign(result, _shared(value))
+        }
+
+        return result
+    }
+
+    function onEmpty(value: string | OptionFunction) {
+        _empty = value
+    }
+
+    function getEmpty(value?: any) {
+        const result = {
+            classes: '',
+            styles: '',
+        }
+
+        if (typeof _empty === 'string') {
+            result.classes = _empty
+        }
+
+        if (typeof _empty === 'function') {
+            Object.assign(result, _empty(value))
+        }
+
+        return result
+    }
+
+    function getVariant(name: string, value?: any) {
         const option = options.value[name]
 
         const result = {
@@ -39,59 +82,62 @@ export function defineVariation<P extends object, K extends keyof P>(
         }
 
         if (typeof option === 'function') {
-            Object.assign(result, option(props[key]))
+            Object.assign(result, option(value))
         }
 
         return result
     }
 
-    const classes = computed(() => {
-        const result: string[] = []
+    function mount(value: string) {
 
-        const variant = getVariant(props[key] as string)
-        const shared = getVariant('_shared')
-        const empty = getVariant('_empty')
+        const styles: string[] = []
+        const classes: string[] = []
+
+        const variant = getVariant(value)
+        const shared = getShared(value)
+        const empty = getEmpty(value)
 
         if (shared) {
-            result.push(shared.classes)
+            styles.push(shared.styles)
+            classes.push(shared.classes)
         }
 
         if (variant) {
-            result.push(variant.classes)
+            styles.push(variant.styles)
+            classes.push(variant.classes)
         }
 
         if (!variant && empty) {
-            result.push(empty.classes)
+            styles.push(empty.styles)
+            classes.push(empty.classes)
         }
 
-        return result.join(' ')
-    })
-
-    const styles = computed(() => {
-        const result: string[] = []
-
-        const variant = getVariant(props[key] as string)
-        const shared = getVariant('_shared')
-        const empty = getVariant('_empty')
-
-        if (shared) {
-            result.push(shared.styles)
+        return {
+            styles: styles.join(' ').trim(),
+            classes: classes.join(' ').trim(),
         }
 
-        if (variant) {
-            result.push(variant.styles)
-        }
-
-        if (!variant && empty) {
-            result.push(empty.styles)
-        }
-
-        return result.join(' ')
-    })
+    }
 
     return reactive({
-        classes: classes,
-        styles: styles,
-        setOptions,
+        mount,
+        update,
+        setShared,
+        onEmpty,
     })
+}
+
+export function mountAllVariations(values: [string, Variant][]) {
+    const styles: string[] = []
+    const classes: string[] = []
+
+    values.forEach(([value, variant]) => {        
+        styles.push(variant.mount(value).styles)
+        classes.push(variant.mount(value).classes)
+    })
+
+    return {
+        style: styles.join(' '),
+        class: classes.join(' '),
+    }
 }
