@@ -11,6 +11,10 @@ const props = defineProps({
     closeOnOverlayClick: {
         type: Boolean,
         default: true,
+    },
+    cardClass: {
+        type: String,
+        default: 'w-full max-w-[500px]'
     }
 })
 
@@ -30,7 +34,7 @@ builder
 builder
     .createChild('card')
     .add('transition  ease-in-out')
-    .add('w-full max-w-[500px]')
+    .add(props.cardClass)
 
 const classes = computed(() => ({
     main: builder.make(),
@@ -52,7 +56,7 @@ function onClick(){
 }
 
 function onClickContent(){
-    
+    //
 }
 
 </script>
