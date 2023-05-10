@@ -1,7 +1,17 @@
 {
   "name": "@vue-wind/components",
   "version": "0.0.1",
+  "author": "Henrique",
+  "license": "MIT",
   "description": "Vue components using tailwind",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "vue",
+    "tailwind",
+    "components"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
@@ -16,15 +26,9 @@
   },
   "scripts": {
     "test": "vitest",
-    "build": "tsx build.ts"
+    "build": "tsx build.ts",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [
-    "vue",
-    "tailwind",
-    "components"
-  ],
-  "author": "Henrique",
-  "license": "MIT",
   "dependencies": {
     "@vue-wind/composables": "^0.0.1"
   }
