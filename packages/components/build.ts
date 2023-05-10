@@ -73,7 +73,27 @@ async function buildFile(filename: string) {
   await build(config)
 }
 
+
+function copyVueFiles() {
+
+  const haveFolder = fs.existsSync(resolve(__dirname, 'vue'))
+
+  if (haveFolder) {
+    fs.rmSync(resolve(__dirname, 'vue'), { recursive: true })
+  }
+
+  fs.mkdirSync(resolve(__dirname, 'vue'))
+
+  for (const file of files) {
+    if (!file.endsWith('.vue')) continue
+
+    fs.copyFileSync(file, resolve(__dirname, 'vue', basename(file)))
+  }
+}
+
 async function main(){
+
+  copyVueFiles()
 
   const haveDist = fs.existsSync(resolve(__dirname, 'dist'))
 
@@ -99,6 +119,7 @@ async function main(){
   console.log('watching files...')
 
 }
+
 
 
 main()

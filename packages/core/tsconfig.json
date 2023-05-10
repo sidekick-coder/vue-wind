@@ -1,0 +1,10 @@
+{
+    "include": ["tsup.config.ts" , "src/**/*"],
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "ESNext",
+      "moduleResolution": "nodenext",
+      "skipLibCheck": true,
+      "esModuleInterop": true
+    },
+  }

@@ -1,0 +1,26 @@
+{
+  "name": "@vue-wind/core",
+  "version": "0.0.1",
+  "description": "Composables & components for vuejs",
+  "author": "Henrique",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "tailwind"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "vue-wind": "dist/cli.js"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@poppinss/cliui": "^3.0.5",
+    "commander": "^10.0.1",
+    "vue": "^3.2.47"
+  }
+}
