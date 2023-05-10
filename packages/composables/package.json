@@ -2,12 +2,15 @@
   "name": "@vue-wind/composables",
   "version": "0.0.1",
   "description": "Composables & macros from vue-wind",
+  "author": "Henrique",
+  "license": "MIT",
   "keywords": [
     "vue",
     "tailwind"
   ],
-  "author": "Henrique",
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
