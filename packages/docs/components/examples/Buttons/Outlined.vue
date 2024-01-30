@@ -15,6 +15,7 @@ const colors = [
         <vw-btn
             v-for="color in colors" :color="color" :key="color"
             class="capitalize"
+            variant="outlined"
         >
             {{ color }}
         </vw-btn>

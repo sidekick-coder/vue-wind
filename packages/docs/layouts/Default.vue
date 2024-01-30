@@ -12,7 +12,7 @@ const links = [
 
 </script>
 <template>
-    <div class="h-screen w-screen flex flex-col">
+    <div class="h-screen w-full flex flex-col">
         <DAppToolbar />
 
         <div class="flex grow">

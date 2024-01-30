@@ -2,12 +2,14 @@
 
 Buttons allow users to take actions, and make choices, with a single tap.
 
-::component-showcase{filename="Buttons/Default"}
+## Source
 
-#preview
-asdasd
+:component-src{name="VwBtn"}
 
-#code
-asdasdcode
+## Default use
 
-::
+:component-example{name="Buttons/Default"}
+
+## Outlined
+
+:component-example{name="Buttons/Outlined"}

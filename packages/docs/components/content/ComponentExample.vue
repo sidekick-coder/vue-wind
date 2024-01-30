@@ -3,7 +3,7 @@ import { codeToHtml } from 'shiki'
 const tab = ref('preview')
 
 const props = defineProps({
-    filename: {
+    name: {
         type: String,
         required: true
     }
@@ -26,8 +26,8 @@ const showcaseComponent = shallowRef<any>({
 const htmlCode = ref('')
 
 async function load() {
-    const instance = all[`../examples/${props.filename}.vue`] as any
-    const raw = allRaw[`../examples/${props.filename}.vue`] as any
+    const instance = all[`../examples/${props.name}.vue`] as any
+    const raw = allRaw[`../examples/${props.name}.vue`] as any
 
     showcaseComponent.value = {
         instance: instance?.default,
@@ -63,7 +63,7 @@ watch(() => showcaseComponent.value.raw, loadCode, {
         </div>
 
         <div>
-            <div v-if="tab === 'preview'">
+            <div v-if="tab === 'preview'" class="p-4">
                 <component v-if="showcaseComponent.instance" :is="showcaseComponent.instance" />
             </div>
             
@@ -71,9 +71,3 @@ watch(() => showcaseComponent.value.raw, loadCode, {
         </div>
     </div>
 </template>
-
-<style>
-.component-showcase .shiki {
-    @apply p-4;
-}
-</style>
