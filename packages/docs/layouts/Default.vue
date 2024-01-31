@@ -3,6 +3,7 @@
 interface Header {
     label: string
     header: true
+    icon?: string
 }
 
 interface Link {
@@ -12,12 +13,19 @@ interface Link {
 
 const links = ref<(Link | Header)[]>([])
 
-async function addSection(label: string, documentsPath: string) {
+interface SectionOptions {
+    label: string
+    documentsPath: string
+    icon?: string
+}
+
+async function addSection({ label, documentsPath, icon }: SectionOptions) {
     const docs = await queryContent(documentsPath).find()
 
     links.value.push({    
         label,
         header: true,
+        icon
     })
 
     docs.forEach((doc) => {
@@ -28,9 +36,23 @@ async function addSection(label: string, documentsPath: string) {
     })
 }
 
-await addSection("Guides", "guides")
-await addSection("Components", "components")
-await addSection("Directives", "directives")
+await addSection({
+    label: 'Guides',
+    documentsPath: 'guides',
+    icon: 'mdi:rocket',
+})
+
+await addSection({
+    label: 'Components',
+    documentsPath: 'components',
+    icon: 'mdi:cube-outline',
+})
+
+await addSection({
+    label: 'Directives',
+    documentsPath: 'directives',
+    icon: 'mdi:toolbox-outline',
+})
 
 </script>
 <template>
@@ -45,12 +67,17 @@ await addSection("Directives", "directives")
                         v-for="link in links"
                         :key="link.label"
                         :to="link.to"
-                        class="px-4 px-4 py-2"
+                        class="px-4 px-4 py-2 flex items-center text-sm"
                         :class="[
-                            link.header ? 'font-bold' : '',
+                            link.header ? 'font-bold text-teal-900' : '',
                             link.to ? 'hover:bg-zinc-200' : ''
                         ]"
                     >
+                        <d-icon
+                            :name="link.icon || 'mdi:circle-small'"
+                            class="mr-2"
+                        />
+
                         {{ link.label }}
                     </nuxt-link>
                 </div>

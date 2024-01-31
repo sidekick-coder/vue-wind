@@ -1,5 +1,7 @@
 <template>
-    <h1 :id="id" class="font-bold text-2xl">
+    <h1 :id="id" class="font-bold text-2xl mb-2 flex items-center">
+      <d-icon name = "mdi:hashtag" class="mr-2 text-base text-teal-500" />
+
       <a
         v-if="generate"
         :href="`#${id}`"
