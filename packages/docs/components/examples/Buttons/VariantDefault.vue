@@ -1,19 +1,20 @@
 <script setup>
 const colors = [
-    'zinc-500',
-    'teal-500',
-    'red-500',
-    'blue-500',
-    'yellow-500',
-    'purple-500',
-    'pink-500',
-
+    'zinc',
+    'teal',
+    'red',
+    'blue',
+    'yellow',
+    'purple',
+    'pink',
 ]
 </script>
 <template>
     <div class="flex gap-2">
         <vw-btn
-            v-for="color in colors" :color="color" :key="color"
+            v-for="color in colors"
+            :color="color"
+            :key="color"
             class="capitalize"
         >
             {{ color }}

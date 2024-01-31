@@ -1,13 +1,12 @@
 <script setup>
 const colors = [
-    'zinc-500',
-    'teal-500',
-    'red-500',
-    'blue-500',
-    'yellow-500',
-    'purple-500',
-    'pink-500',
-
+    'zinc',
+    'teal',
+    'red',
+    'blue',
+    'yellow',
+    'purple',
+    'pink',
 ]
 </script>
 <template>
@@ -15,7 +14,7 @@ const colors = [
         <vw-btn
             v-for="color in colors" :color="color" :key="color"
             class="capitalize"
-            variant="outlined"
+            variant="text"
         >
             {{ color }}
         </vw-btn>

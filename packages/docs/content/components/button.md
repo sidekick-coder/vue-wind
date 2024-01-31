@@ -6,10 +6,18 @@ Buttons allow users to take actions, and make choices, with a single tap.
 
 :component-src{name="VwBtn"}
 
-## Default use
+## Default variant
 
-:component-example{name="Buttons/Default"}
+:component-example{name="Buttons/VariantDefault"}
 
-## Outlined
+## Outlined variant
 
-:component-example{name="Buttons/Outlined"}
+:component-example{name="Buttons/VariantOutlined"}
+
+## Text variant
+
+:component-example{name="Buttons/VariantText"}
+
+## Sizes
+
+:component-example{name="Buttons/Sizes"}
