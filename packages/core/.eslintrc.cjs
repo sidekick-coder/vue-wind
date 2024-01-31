@@ -11,5 +11,8 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    'vue/require-toggle-inside-transition': 'off',
   }
 }
