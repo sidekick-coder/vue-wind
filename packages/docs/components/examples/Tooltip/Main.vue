@@ -2,7 +2,7 @@
     <div class="flex justify-center">
         <vw-tooltip>
             <template #activator="{ attrs }">
-                <vw-btn v-bind="attrs" color="teal">
+                <vw-btn v-bind="attrs">
                     Hover me
                 </vw-btn>
             </template>

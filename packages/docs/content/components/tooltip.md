@@ -17,3 +17,15 @@ Tooltips display informative text when users hover over an element.
 
 :component-example{name="Tooltip/Main"}
 
+## Placements
+
+:component-example{name="Tooltip/Placements"}
+
+## Colors
+
+:component-example{name="Tooltip/Colors"}
+
+## Sizes
+
+:component-example{name="Tooltip/Sizes"}
+
