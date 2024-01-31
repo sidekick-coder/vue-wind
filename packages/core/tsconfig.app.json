@@ -1,11 +1,10 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/main.ts"],
+  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue", "src/main.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
-    "types": ["unplugin-vue-macros/macros-global"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
