@@ -1,9 +1,24 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useFloating, flip, offset, type Placement } from '@floating-ui/vue';
+import { twMerge } from 'tailwind-merge'
 import { vVisible } from '../directives/vVisible'; // replace with the path to the directive
 
 import type { ComponentPublicInstance, TransitionProps } from 'vue';
+
+// general
+const className = defineProp<string>('class', {
+    type: String,
+    default: null
+})
+
+const classMap = ref(new Map<string, string>())
+
+const classes = computed(() => {
+    const all = Array.from(classMap.value.values()).join(' ')
+
+    return twMerge(all, className.value)
+})
 
 // floating ui definition
 const root = ref<Element | null>(null)
@@ -31,6 +46,76 @@ function onRef(el: Element | ComponentPublicInstance | null)  {
     }
 }
 
+// color
+type ColorProp = 'none' | 'zinc' | 'teal' | 'red' | 'blue' | 'yellow' | 'purple' | 'pink'
+
+const color = defineProp<ColorProp>('color', {
+    type: String,
+    default: 'zinc',
+})
+
+function setColor(){
+    const options = {
+        'none': '',
+        'zinc': 'bg-zinc-500 hover:bg-zinc-600 focus:bg-zinc-600 text-white',
+        'teal': 'bg-teal-500 hover:bg-teal-600 focus:bg-teal-600 text-white',
+        'red': 'bg-red-500 hover:bg-red-600 focus:bg-red-600 text-white',
+        'blue': 'bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 text-white',
+        'yellow': 'bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 text-white',
+        'purple': 'bg-purple-500 hover:bg-purple-600 focus:bg-purple-600 text-white',
+        'pink': 'bg-pink-500 hover:bg-pink-600 focus:bg-pink-600 text-white',
+    }
+
+    classMap.value.set('color', options[color.value])
+}
+
+watch(color, setColor, { immediate: true })
+
+// size
+type SizeProp = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+const size = defineProp<SizeProp>('size', {
+    type: String,
+    default: 'sm',
+})
+
+function setSize(){
+    const options = {
+        'none': '',
+        'xs': 'px-2 py-1 text-xs',
+        'sm': 'px-3 py-1 text-sm',
+        'md': 'px-4 py-2 text-base',
+        'lg': 'px-6 py-3 text-lg',
+        'xl': 'px-8 py-4 text-xl',
+    }
+
+    classMap.value.set('size', options[size.value])
+}
+
+watch(size, setSize, { immediate: true })
+
+// rounded
+type RoundedProp = 'none' | 'sm' | 'md' | 'lg' | 'full'
+
+const rounded = defineProp<RoundedProp>('rounded', {
+    type: String,
+    default: 'md',
+})
+
+function setRounded(){
+    const options = {
+        none: '',
+        sm: 'rounded-sm',
+        md: 'rounded-md',
+        lg: 'rounded-lg',
+        full: 'rounded-full',
+    }
+
+    classMap.value.set('rounded', options[rounded.value])
+}
+
+watch(rounded, setRounded, { immediate: true })
+
 // visibility
 const model = defineModel({
     default: false,
@@ -43,8 +128,6 @@ function show() {
 function hide() {
     model.value = false
 }
-
-console.log(model.value)
 
 // transition
 const transitionAttrs = defineProp<TransitionProps>('transitionAttrs', {
@@ -69,33 +152,13 @@ const transitionAttrs = defineProp<TransitionProps>('transitionAttrs', {
         }" 
     />
 
-    <div ref="floating" :style="floatingStyles">
+    <div ref="floating" :style="floatingStyles" class="pointer-events-none">
         <transition v-bind="transitionAttrs">
             <div
-                class="bg-zinc-700 text-zinc-100 py-1 px-2 rounded relative"
+                :class="classes"
                 v-visible="model"
             >
                 <slot  />
-
-                <div
-                    class="flex absolute inset-0"
-                    :class="[
-                        placement === 'top' && 'justify-center items-end',
-                        placement === 'bottom' && 'justify-center items-start',
-                        placement === 'right' && 'justify-start items-center',
-                        placement === 'left' && 'justify-end items-center',               
-                    ]"
-                >
-                    <div
-                        class="w-2 h-2 bg-zinc-700 rotate-45"
-                        :class="[
-                            placement === 'top' && 'translate-y-1/2',
-                            placement === 'bottom' && '-translate-y-1/2',
-                            placement === 'right' && '-translate-x-1/2',
-                            placement === 'left' && 'translate-x-1/2',
-                        ]"
-                    />
-                </div>
                 
             </div>
             
