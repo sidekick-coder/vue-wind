@@ -1,14 +1,36 @@
 <script setup lang="ts">
-const links = [
-    {
-        label: "Components",
-        header: true
-    },
-    {
-        label: "Button",
-        to: "/components/button",
-    },
-]
+
+interface Header {
+    label: string
+    header: true
+}
+
+interface Link {
+    label: string
+    to: string
+}
+
+const links = ref<(Link | Header)[]>([])
+
+async function addSection(label: string, documentsPath: string) {
+    const docs = await queryContent(documentsPath).find()
+
+    links.value.push({    
+        label,
+        header: true,
+    })
+
+    docs.forEach((doc) => {
+        links.value.push({
+            label: doc.title || doc.slug,
+            to: doc._path!,
+        })
+    })
+}
+
+await addSection("Guides", "guides")
+await addSection("Components", "components")
+await addSection("Directives", "directives")
 
 </script>
 <template>

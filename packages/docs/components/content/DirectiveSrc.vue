@@ -2,14 +2,14 @@
 import { codeToHtml } from 'shiki'
 
 // general
-const files = import.meta.glob<any>('../../../core/src/components/**/*.vue', {
+const files = import.meta.glob<any>('../../../core/src/directives/**/*.ts', {
     eager: true,
     as: 'raw'
 })
 
 const components = Object.entries(files).map(([key, value]) => {
     return {
-        name: useBasename(key).replace('.vue', ''),
+        name: useBasename(key).replace('.ts', ''),
         code: value
     }
 })
@@ -33,7 +33,7 @@ async function setCode(){
 
 
     code.value = await codeToHtml(search.code, {
-        lang: 'vue',
+        lang: 'ts',
         theme: 'dracula'
     })
 }
