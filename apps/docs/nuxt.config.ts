@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   components: [
     {
-      path: '../core/src/components',
+      path: '../../packages/core/src/components',
       global: true,
     },
     {

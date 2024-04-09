@@ -2,10 +2,12 @@
 import { codeToHtml } from 'shiki'
 
 // general
-const files = import.meta.glob<any>('../../../core/src/components/**/*.vue', {
+const files = import.meta.glob<any>('../../../../packages/core/src/components/**/*.vue', {
     eager: true,
     as: 'raw'
 })
+
+console.log(files)
 
 const components = Object.entries(files).map(([key, value]) => {
     return {
