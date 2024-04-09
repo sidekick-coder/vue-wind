@@ -7,8 +7,6 @@ const files = import.meta.glob<any>('../../../../packages/core/src/components/**
     as: 'raw'
 })
 
-console.log(files)
-
 const components = Object.entries(files).map(([key, value]) => {
     return {
         name: useBasename(key).replace('.vue', ''),
