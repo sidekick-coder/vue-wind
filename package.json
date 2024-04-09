@@ -9,6 +9,7 @@
     "docs:preview": "npx serve packages/docs/dist"
   },
   "workspaces": [
+    "apps/*",
     "packages/*"
   ]
 }
