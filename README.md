@@ -1,6 +1,6 @@
 <div align="center">
 
-![vue-wind](/packages/docs/public/logo-full.svg)
+![vue-wind](/app/docs/public/logo-full.svg)
 
 # Vue wind
 
